@@ -1,0 +1,139 @@
+/* Defining colors */
+$blue: #5CB1C4;
+$lightblue: #DAF8FF;
+$bglightgray: #F7F7F7;
+$grayborder: #DCDEDD;
+$gray-light: #A2A5AE;
+$green: #4D9666;
+$red: #BB5A5A;
+
+/* Importing Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Lato:300,400,700,900|Open+Sans:400,300);
+
+/* Changing the styling of the body text
+See: http://getbootstrap.com/customize */
+$text-color: #636A7A;
+$line-height-base: 1.8;
+$font-family-sans-serif: "Source Sans Pro";
+$font-size-base: 14px;
+$font-size-h1: 3em;
+
+
+/* Changing the color of link text
+See: http://getbootstrap.com/customize */
+$brand-primary: $blue;
+
+/* Changing the color of header text
+See: http://getbootstrap.com/customize */
+$headings-font-family: 'Source Sans Pro';
+$headings-font-weight: 300;
+
+
+/* Padding between columns in grid */
+$grid-gutter-width: 0px;
+
+
+.menu {
+	margin: 0;
+	width: 100%;
+	background: $bglightgray;
+	border-bottom: 1px solid $grayborder;
+
+
+
+	.btn-group {
+		background: $bglightgray;
+	
+
+		/* BUTTON STYLE */
+		.btn-default {
+			font-family: $headings-font-family;
+			margin: 0;
+			padding: 20px 30px;
+			text-align: center;
+			display: inline-block; 
+			border-top: 0;
+			border-left: 0;
+			border-bottom: 0;
+			border-right: 1px solid $grayborder;
+			color: #A2A5AE;
+			background: $bglightgray;
+			text-transform: uppercase;
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+			font-size: 17px;
+			font-weight: 600;	
+		}
+		.btn-left-border {
+			border-left: 1px solid $grayborder;}
+
+		/* BUTTON HOVER AND ACTIVE STATES */
+		.btn-default:hover,
+		.btn-active,
+		.btn-default.active {
+			background: #fff;
+			color: #A2A5AE;
+		}
+		/* BUTTON FOCUS STATES */
+		.btn-default:focus, 
+		.btn-default:active, 
+		.open .dropdown-toggle.btn-default
+		 {
+			color: #A2A5AE;
+			background: #fff;
+			border-color: $grayborder;
+		}
+
+		/* SMALLTEXT WITHIN BUTTON */
+		span.smalltext {
+			margin-left: 5px;
+			color: #C9CCD4;
+			font-weight: 400;
+		}
+
+
+		/* DROPDOWN BUTTON STYLE */
+		.dropdown-toggle {
+			padding: 20px 24px 20px 30px;
+			span.glyphicon-chevron-down {
+				font-size: 11px;
+				margin-left: 10px;
+			}
+		}
+
+		/* DROPDOWN ITEMS STYLE */
+		ul.dropdown-menu {
+			min-width: 100%;
+			font-family: $headings-font-family;
+			margin: 0;
+			padding: 0;
+			border: 1px solid $grayborder;
+			color: #A2A5AE;
+			background: $bglightgray;
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+			font-size: 17px;
+			overflow: auto;
+
+			li {
+				border-bottom: 1px solid $grayborder;
+				a{
+					color: #A2A5AE;
+					padding: 10px 30px;
+					&:hover, &.active {
+						background: #fff;
+					}
+				}
+			}
+		}
+
+
+
+		
+
+	} /* btn-group */
+
+
+} /* menu */

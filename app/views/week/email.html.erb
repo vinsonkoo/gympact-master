@@ -1,0 +1,24 @@
+<div id="week_wrapper" class="show">
+
+	<%= render 'week/menu' %>
+	
+	<div id="email">
+		<div class="box">
+				<span class="glyphicon glyphicon-user"></span>
+				<textarea class="email_addresses">Put the emails for <%= @current_pact.pact_name %>'s users here for easy copy-and-pasting into Gmail! :) You can find this HTML template in /app/views/week/email.html.erb
+				</textarea>
+		</div>
+
+
+		<div class="box">
+				<span class="glyphicon glyphicon-envelope"></span>
+				<textarea class="email_template">Put your email template here with all of the current week's stats! :) You can find this HTML template in /app/views/week/email.html.erb</textarea>
+		</div>
+			
+			
+
+
+		
+
+	</div><!--/email-->
+</div><!--/#week_wrapper-->

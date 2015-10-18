@@ -1,0 +1,76 @@
+<div id="chat_wrapper" class="show">
+
+	<%= render 'chat/menu' %>
+	
+
+	<div id="chat">
+
+		<% # for each message in @messages, do... 
+			@messages.each do |message| %>
+
+			<!-- MESSAGE ************************** -->
+			<div id="message-row-<%= message.id %>" class="container-fluid chat-row <% if message.photo_url %>photo-row<% end %>">
+
+				<!-- AVATAR ********************************** -->
+				<div class="avatar col-md-1 text-center">
+					<% if message.user.avatar_url != "" %>
+						<%= image_tag ("avatars/" + message.user.avatar_url), class: 'avatar' %>
+					<% else %>
+						<%= image_tag ("avatars/default.png"), class: 'avatar' %>
+					<% end %>
+				</div><!--/.avatar-->
+
+				<!-- CHAT CONTENT (TEXT OR PHOTO) ********************************** -->
+
+				<div class="col-md-11 chat_content_container <% if message.photo_url.to_s != '' %>photo_container<% end %>">
+
+					<div class="container-fluid">
+						<div class="row">
+
+							<% if message.photo_url.to_s != '' %>
+								<div class="message col-md-6">
+									<span class="name">
+										<%= message.user %>
+									</span>
+									
+									<span class="datetime">
+										<%= message.date_sent.strftime("%A, %B %d, %Y %I:%M%p") %>
+									</span>
+
+									<span class="content">
+										<%= image_tag ("photos/" + message.photo_url), class: 'photo' %>
+									</span>
+								</div><!--/.message-->
+								<div class="edit_photo col-md-6">
+									<%= render 'chat/edit_photo' %>
+								</div><!--/.edit_photo-->
+
+							<% else %>
+								<div class="message col-md-6">
+									<span class="name">
+										<%= message.user %>
+									</span>
+									
+									<span class="datetime">
+										<%= message.date_sent.strftime("%A, %B %d, %Y %I:%M%p") %>
+									</span>
+
+									<span class="content">
+										<%= message.message %>
+									</span>
+								</div><!--/.message-->
+							<% end %>
+							
+						</div><!--/.row-->
+					</div><!--/.container-fluid-->
+				</div><!--/.chat_content_container-->
+
+
+
+			</div><!--/.chat-row-->
+		<% end %>
+
+
+
+	</div><!--/#chat-->
+</div><!--/#chat_wrapper-->

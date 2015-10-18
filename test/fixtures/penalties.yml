@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  goal_days: 1
+  penalty: 1.5
+
+two:
+  goal_days: 1
+  penalty: 1.5

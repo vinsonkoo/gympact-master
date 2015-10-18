@@ -1,0 +1,32 @@
+<div id="sidebar">
+
+  <div id="logo" class="text-center">
+    <%= link_to raw("Gym<span>Pact</span>"), root_path %>
+  </div><!--/#logo-->
+
+  
+  <% @active_pacts.each do |pact| %>
+    <div class="group-wrapper <% if @current_pact == pact %>active<% end %>">
+      <span class="title"><%= pact.name %></span>
+
+      <ul class="nav nav-pills nav-stacked">
+        <li <% if (@current_pact == pact) && (params[:controller] == 'chat')%> class="active"<% end %>>
+          <%= link_to raw("<span class='glyphicon glyphicon-comment'></span>WhatsApp"), chat_week_path(pact, pact.get_current_week), class: 'chat' %> 
+        </li>
+        <li<% if current_page?(tracking_path(pact)) %> class="active"<% end %>>
+          <%= link_to raw("<span class='glyphicon glyphicon-user'></span>Tracking"), tracking_path(pact), class: 'tracking' %> 
+        </li>
+        <li <% if (@current_pact == pact) && (params[:controller] == 'week') %> class="active"<% end %>>
+          <%= link_to raw("<span class='glyphicon glyphicon-calendar'></span>Weeks"), week_week_path(pact, pact.get_current_week), class: 'week' %> 
+        </li>
+
+        <li>
+          <%= link_to raw("<span class='glyphicon glyphicon-plus'></span>Upload Chat"), new_admin_chat_path, class: 'upload' %> 
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+</div><!--/#sidebar-->

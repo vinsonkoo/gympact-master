@@ -1,0 +1,2 @@
+module PactUserRelationsHelper
+end

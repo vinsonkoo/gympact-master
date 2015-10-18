@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  start_date: 2014-06-07
+  end_date: 2014-06-07
+  week_number: 1
+  goal_days: 1
+  missed_days: 1
+  charge: 1.5
+  paid: 1.5
+
+two:
+  start_date: 2014-06-07
+  end_date: 2014-06-07
+  week_number: 1
+  goal_days: 1
+  missed_days: 1
+  charge: 1.5
+  paid: 1.5

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  pact_name: MyString
+  start_date: 2014-06-07
+  end_date: 2014-06-07
+  is_active: false
+
+two:
+  pact_name: MyString
+  start_date: 2014-06-07
+  end_date: 2014-06-07
+  is_active: false

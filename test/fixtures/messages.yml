@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  message: MyText
+  date_sent: 2014-06-07
+  time_sent: 2014-06-07 22:45:01
+
+two:
+  message: MyText
+  date_sent: 2014-06-07
+  time_sent: 2014-06-07 22:45:01

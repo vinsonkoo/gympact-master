@@ -1,0 +1,99 @@
+/* Defining colors */
+$blue: #5CB1C4;
+$lightblue: #DAF8FF;
+$bglightgray: #F7F7F7;
+$grayborder: #DCDEDD;
+$gray-light: #A2A5AE;
+$green: #4D9666;
+$red: #BB5A5A;
+
+/* Importing Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Lato:300,400,700,900|Open+Sans:400,300);
+
+/* Changing the styling of the body text
+See: http://getbootstrap.com/customize */
+$text-color: #636A7A;
+$line-height-base: 1.8;
+$font-family-sans-serif: "Source Sans Pro";
+$font-size-base: 14px;
+$font-size-h1: 3em;
+
+
+/* Changing the color of link text
+See: http://getbootstrap.com/customize */
+$brand-primary: $blue;
+
+/* Changing the color of header text
+See: http://getbootstrap.com/customize */
+$headings-font-family: 'Source Sans Pro';
+$headings-font-weight: 300;
+
+
+/* Padding between columns in grid */
+$grid-gutter-width: 0px;
+
+
+img.avatar {
+	width: 50px; height: auto;
+	-webkit-border-radius: 1000px;
+	-moz-border-radius: 1000px;
+	border-radius: 1000px;
+}
+
+/**** BUTTONS ***************************/
+.btn-blue {
+	border: 0;
+	color: #fff;
+	background: $blue;
+	&:hover {
+		background: #66C4D9; 
+		color: #fff;
+	}
+}
+
+.btn-red {
+	border: 0;
+	color: #fff;
+	background: #BB5A5A;
+	&:hover {
+		background: #A54343; 
+		color: #fff;
+	}
+}
+
+
+/* TABLE ***************************/
+.table > thead > tr > th {
+		border: 0;
+		vertical-align: middle;
+	}
+table.table {
+	thead th, tr.total td{
+		font-family: $headings-font-family;
+		font-weight: normal;
+		font-size: 16px;
+		color: #A2A5AE;
+		background: $bglightgray;
+	}
+
+	th, td {
+		border-top: 0;
+		border-bottom: 1px solid $grayborder;
+		padding-top: 15px !important;
+		padding-bottom: 15px !important;
+		text-align: center;
+		vertical-align: middle;
+	}
+	td {background: #fff;}
+
+	/*thead:first-child th, tr:last-child td {padding-left: 30px;}
+	thead:last-child th, tr:last-child td {padding-right: 30px;}*/
+
+	.glyphicon {font-size: 16px;}
+	.glyphicon-ok-sign {color: $green;}
+	.glyphicon-question-sign {color: $gray-light;}
+	.glyphicon-remove-sign,
+	.glyphicon-ban-circle {color: $red;}
+
+
+}

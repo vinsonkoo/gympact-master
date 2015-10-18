@@ -1,0 +1,80 @@
+/* Defining colors */
+$blue: #5CB1C4;
+$lightblue: #DAF8FF;
+$bglightgray: #F7F7F7;
+$grayborder: #DCDEDD;
+$gray-light: #A2A5AE;
+$green: #4D9666;
+$red: #BB5A5A;
+
+/* Importing Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Lato:300,400,700,900|Open+Sans:400,300);
+
+/* Changing the styling of the body text
+See: http://getbootstrap.com/customize */
+$text-color: #636A7A;
+$line-height-base: 1.8;
+$font-family-sans-serif: "Source Sans Pro";
+$font-size-base: 14px;
+$font-size-h1: 3em;
+
+
+/* Changing the color of link text
+See: http://getbootstrap.com/customize */
+$brand-primary: $blue;
+
+/* Changing the color of header text
+See: http://getbootstrap.com/customize */
+$headings-font-family: 'Source Sans Pro';
+$headings-font-weight: 300;
+
+
+/* Padding between columns in grid */
+$grid-gutter-width: 0px;
+
+
+#home_wrapper {
+	padding: 100px 100px 0px 100px;
+
+	/* [USING SASS] Responsive: When screen gets to be below 950px and 600px respectively,
+	set the padding to 100px 50px and 100px 25px 
+	Read more: http://thesassway.com/intermediate/responsive-web-design-in-sass-using-media-queries-in-sass-32 */
+	@media screen and (max-width: 950px) {
+		padding: 100px 50px;
+	}
+	@media screen and (max-width: 600px) {
+		padding: 100px 0;
+	}
+
+
+	.btn{
+		padding: 80px 25px 75px 25px;
+		font-family: $headings-font-family; /* [USING SASS] these variables can be set in assets/stylesheets/partials/_variables.scss */
+		font-weight: $headings-font-weight;
+		font-size: $font-size-h1;
+		border: 0;
+		background: $blue;
+		overflow: auto;
+		margin: auto;
+		width: 99%;
+		color: #fff;
+
+		&.btn-left {margin-right: 20px;}
+		&.btn-right {margin-left: 20px;}
+
+		
+		/* [USING SASS] This compiles to a:hover {...}. 
+		Using & means to refer to the parent selector, in this case the 'a' */
+		&:hover {text-decoration: none;} 
+
+		/* [USING SASS] This compiles to button:hover {...} */
+		&:hover {
+			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+  		filter: alpha(opacity=85);/* IE 5-7 */
+  		-moz-opacity: 0.85; /* Netscape */
+  		-khtml-opacity: 0.85;/* Safari 1.x */
+  	  opacity: 0.85;/* Good browsers */
+		}
+	}
+}
+	

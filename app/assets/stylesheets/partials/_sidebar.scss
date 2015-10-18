@@ -1,0 +1,111 @@
+/* Defining colors */
+$blue: #5CB1C4;
+$lightblue: #DAF8FF;
+$bglightgray: #F7F7F7;
+$grayborder: #DCDEDD;
+$gray-light: #A2A5AE;
+$green: #4D9666;
+$red: #BB5A5A;
+
+/* Importing Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Lato:300,400,700,900|Open+Sans:400,300);
+
+/* Changing the styling of the body text
+See: http://getbootstrap.com/customize */
+$text-color: #636A7A;
+$line-height-base: 1.8;
+$font-family-sans-serif: "Source Sans Pro";
+$font-size-base: 14px;
+$font-size-h1: 3em;
+
+
+/* Changing the color of link text
+See: http://getbootstrap.com/customize */
+$brand-primary: $blue;
+
+/* Changing the color of header text
+See: http://getbootstrap.com/customize */
+$headings-font-family: 'Source Sans Pro';
+$headings-font-weight: 300;
+
+
+/* Padding between columns in grid */
+$grid-gutter-width: 0px;
+
+
+/************************************************* 
+SIDEBAR
+**************************************************/
+
+#sidebar {
+  background: #1D2027;
+  
+	#logo {
+		height: 100px;
+    padding-top: 27px;
+		background: $blue;
+    a {
+      display: block;
+      color: #DAF8FF;
+      font-family: $headings-font-family;
+      font-weight: $headings-font-weight;
+      font-size: 25px;
+      &:hover {text-decoration: none;}
+      span {color: #fff;}
+    }
+	}
+
+  /* GROUPS ***************************************/
+  .group-wrapper{
+    padding: 35px 0 25px 0;
+    &.active {
+      background: #262A32;
+    }
+
+    /* HEADLINE */
+    span.title {
+      font-size: 11px;
+      color: #7F8694;
+      display: block;
+      padding: 0px 25px 15px 25px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    /* MENU ITEMS */
+    ul.nav > li {
+      margin: 0;
+    }
+    ul.nav > li > a{
+        border-radius: 0px;
+        color: #7F8694;
+        padding: 10px 25px 10px 20px;
+        border-left: 5px solid transparent;
+        
+        span.glyphicon {
+          margin-right: 10px;
+        }
+
+        &:hover {
+          background: #383D46;
+          border-left: 5px solid $blue;
+          color: #fff;
+        }
+      }
+    ul.nav > li.active > a{
+      background: transparent;
+      border-left: 5px solid $blue;
+      color: #fff;
+
+      &:hover {
+        background: #383D46;
+        border-left: 5px solid $blue;
+        color: #fff;
+      }
+    }
+  } /*.group-wrapper*/
+  
+
+
+
+} /* #sidebar */
