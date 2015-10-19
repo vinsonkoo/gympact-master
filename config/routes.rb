@@ -6,6 +6,7 @@ Gympact::Application.routes.draw do
       post :import
     end
   end
+  resources :user
 
   get 'workout_types/index'
 

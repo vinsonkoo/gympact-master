@@ -30,7 +30,7 @@ class Message < ActiveRecord::Base
   end
 
   def self.import(file)
-
+    n = 1
     # open the file
     message_file = File.open(file.path, "r")
     # begin reading each line
@@ -44,11 +44,10 @@ class Message < ActiveRecord::Base
       # separate date and time
       @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
       # separate sender/user and message
-      @message.user, sep, @message.message = @message.message.partition(": ")
-
+      @message.sender, sep, @message.message = @message.message.partition(": ")
 
       # if fields are not blank, save. logic to check if any fields are blank before saving. date and time will most likely never be blank due to the constant format unlike users and messages, but will be checked anyway.
-      if @message.date != "" && @message.time != "" && @message.user != "" && @message.message != "" 
+      if @message.date != "" && @message.time != "" && @message.sender != "" && @message.message != "" 
         # format date
         @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         
@@ -69,18 +68,48 @@ class Message < ActiveRecord::Base
           @message.video = nil
           puts 'no media'
         end
-
+        ####### USER LOGIC #######
+        @user = User.new
+        @user.first_name, sep, @user.last_name = @message.sender.partition(" ")
+        @user.username = @message.sender
+        @user.email = @user.first_name.downcase + @user.last_name.downcase + '@example.com'
+        # @user.save
+        # if User.all.exists? == true
+        # if User's first and last name exist, do not save, else, save
+          # if User.find_by(first_name: @user.first_name).first_name == @user.first_name && User.find_by(last_name: @user.last_name).last_name == @user.last_name
+          
+          if User.find_by(last_name: @user.last_name, first_name: @user.first_name) == nil
+            # user not found, do not save
+            # raise
+            puts 'username ' + @user.username
+            @user.save
+            @message.user_id = @user.id
+            puts 'user not found'
+          else
+            puts 'user found'
+            # raise
+            found_user = User.find_by(username: @user.username, first_name: @user.first_name)
+            @user = User.find_by(username: found_user.username)
+            @message.user_id = @user.id
+            if n == 47
+              # raise
+            end
+          end
+        ####### USER LOGIC #######
+        n = n + 1
         # if date, time, user, message do not exist in db, create
         Message.find_or_create_by(
           :msg_date_time => @message.msg_date_time,
           :date => @message.date,
           :time => @message.time,
-          :user => @message.user,
+          :sender => @message.sender,
           :message => @message.message,
           :media => @message.media,
           :image => @message.image,
-          :video => @message.video
+          :video => @message.video,
+          :user_id => @message.user_id
         )
+
 
         # check if @message.time exists more than once, if @message.date exists more than once, and if @message.message is "<message omitted>"
         # if all true, delete @message because it's a duplicate media message that no longer has the image/video
@@ -96,7 +125,7 @@ class Message < ActiveRecord::Base
         # puts @message.all
         # currently, this does not check for media. it will create a new row in the db with "<image omitted>", if a new chat file is uploaded
 
-      elsif @message.date != "" && @message.time != "" && @message.user != "" && @message.message = ""
+      elsif @message.date != "" && @message.time != "" && @message.sender != "" && @message.message = ""
         # if message is blank, it's a system message
 
         # find in db the following attributes, if they do not exist, create the db entry. @message.user is the "system message", so replace @message.user with @message.message and change @message.user to "System Message"
@@ -106,8 +135,8 @@ class Message < ActiveRecord::Base
           :msg_date_time => @message.msg_date_time,
           :date => @message.date,
           :time => @message.time,
-          :message => @message.user,
-          :user => "System Message",
+          :message => @message.sender,
+          :sender => "System Message",
           :media => @message.media,
           :image => @message.image,
           :video => @message.video
@@ -121,7 +150,7 @@ class Message < ActiveRecord::Base
           previous_date_time = @message.msg_date_time
           previous_date = @message.date
           previous_time = @message.time
-          previous_user = @message.user
+          previous_sender = @message.sender
           previous_message = @message.message
           # puts previous_date, 'date'
           # puts previous_time, 'time'
@@ -130,17 +159,18 @@ class Message < ActiveRecord::Base
           @message = Message.all.last
           @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
 
-          # @message.message << previous_date_time << previous_user << previous_message
+          @message.message << previous_date_time << previous_sender << previous_message
           # @message.save
           Message.find_or_create_by(
             :msg_date_time => @message.msg_date_time,
             :date => @message.date,
             :time => @message.time,
-            :user => @message.user,
+            :sender => @message.sender,
             :message => @message.message,
             :media => @message.media,
             :image => @message.image,
-            :video => @message.video
+            :video => @message.video,
+            :user_id => @message.user_id
           )
 
           # the above creates a duplicate for multiline messages. the above needs to happen in order to check for the duplicate due to the nature of multiline messages

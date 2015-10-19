@@ -1,6 +1,8 @@
 class MessagesController < ApplicationController
+  
   def index
     @messages = Message.all
+    @users = User.all
   end
 
   def show
@@ -37,6 +39,8 @@ class MessagesController < ApplicationController
   private
   
   def message_params
-    params.require(:message).permit(:message, :pact_id, :user_id, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :user)
+    params.require(:message).permit(:message, :pact_id, :user_id, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user)
   end
+
+
 end

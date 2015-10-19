@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014031551) do
+ActiveRecord::Schema.define(version: 20151018215100) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -83,8 +83,9 @@ ActiveRecord::Schema.define(version: 20151014031551) do
     t.string   "video"
     t.date     "date"
     t.string   "msg_date_time"
-    t.string   "user"
     t.string   "time"
+    t.string   "sender"
+    t.string   "user"
   end
 
   add_index "messages", ["pact_id"], name: "index_pact_id_4"
@@ -144,7 +145,7 @@ ActiveRecord::Schema.define(version: 20151014031551) do
     t.datetime "updated_at",             null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["email"], name: "index_users_on_email"
 
   create_table "weeks", force: :cascade do |t|
     t.date     "start_date"
