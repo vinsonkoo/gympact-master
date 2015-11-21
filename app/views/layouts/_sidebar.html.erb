@@ -10,6 +10,8 @@
       <span class="title"><%= pact.name %></span>
 
       <ul class="nav nav-pills nav-stacked">
+<%
+=begin %>
         <li <% if (@current_pact == pact) && (params[:controller] == 'chat')%> class="active"<% end %>>
           <%= link_to raw("<span class='glyphicon glyphicon-comment'></span>WhatsApp"), chat_week_path(pact, pact.get_current_week), class: 'chat' %> 
         </li>
@@ -19,7 +21,8 @@
         <li <% if (@current_pact == pact) && (params[:controller] == 'week') %> class="active"<% end %>>
           <%= link_to raw("<span class='glyphicon glyphicon-calendar'></span>Weeks"), week_week_path(pact, pact.get_current_week), class: 'week' %> 
         </li>
-
+<%
+=end %>
         <li>
           <%= link_to raw("<span class='glyphicon glyphicon-plus'></span>Upload Chat"), new_admin_chat_path, class: 'upload' %> 
         </li>

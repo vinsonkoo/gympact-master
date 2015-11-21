@@ -1,4 +1,4 @@
-class WeekController < ApplicationController
+class WeeksController < ApplicationController
 	def show
 		# put variables that you need in /week/:pact_id/:week_id here
   end
@@ -9,7 +9,7 @@ class WeekController < ApplicationController
 
   private
 
-  def week_params
+  def weeks_params
     params.require(:week).permit(:end_date, :start_date, :week_number, :pact_id)
   end
   

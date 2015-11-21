@@ -13,7 +13,6 @@
     <%= file_field_tag :file %>
     <%= submit_tag "Import Chat" %>
   <% end %>
-</div>
 
 
 <table>
@@ -26,6 +25,8 @@
       <th>User ID</th>
       <th>Sender</th>
       <th>Message</th>
+      <th>Week Number</th>
+      <th>Workout?</th>
     </tr>
   </thead>
   <tbody>
@@ -47,6 +48,13 @@
           <% else %> 
             <%= message.message %>
           <% end %>
+        </td>
+        <td class="message-week-number"><%= message.week_number %></td>
+        <td class="message-is-workout">
+        <%= message.is_workout %>
+        <% if message.is_workout == true %>
+          <p><%=link_to 'Edit', edit_admin_message_path(message) %></p>
+        <% end %>
         </td>
       </tr>
     <% end %>
@@ -72,6 +80,27 @@
         <td class="user-last-name"><%= user.last_name %></td>
         <td class="user-username"><%= user.username %></td>
         <td class="user-email"><%= user.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Week ID</th>
+      <th>Week Number</th>
+      <th>Week Start Date</th>
+      <th>Week End Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @weeks.each do |week| %>
+      <tr>
+        <td class="week-id"><%= week.id %></td>
+        <td class="week-week-number"><%= week.week_number %></td>
+        <td class="week-start"><%= week.start_date %></td>
+        <td class="week-end"><%= week.end_date %></td>
       </tr>
     <% end %>
   </tbody>

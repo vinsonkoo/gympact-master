@@ -13,4 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+//= require bootstrap-datepicker
 //= require_tree .
+$(function() {
+    $('text_field.datepicker').data({behaviour: "datepicker"}).datepicker();
+});

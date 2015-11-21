@@ -1,5 +1,7 @@
 class Pact < ActiveRecord::Base
+  require 'date'
 
+  after_create :check_active, :parse_weeks
 	#######################################################
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
@@ -27,6 +29,7 @@ class Pact < ActiveRecord::Base
   # OBJECT ACTIONS
   # Actions you'd want to do on a Pact object
   # Example: The way you would use these would be if in your HTML file, you want to get a list of all the pact's users. You will write <%= pact.get_users %> which would return an array (list) of user objects.
+
 
 
   # Gets users who are in this pact
@@ -74,5 +77,40 @@ class Pact < ActiveRecord::Base
  	def get_week_money_owed(current_week)
  	end
 
+  private
+
+  def check_active
+    @pact = Pact.last
+    if (@pact.start_date..@pact.end_date).cover?(Date.today)
+      @pact.is_active = true
+      @pact.save
+      # redirect_to @pact
+    else
+      @pact.is_active = false
+      @pact.save
+      # redirect_to @pact
+    end
+  end
+
+  def parse_weeks
+    @pact = Pact.last
+    start_date  = @pact.start_date
+    end_date = @pact.end_date
+    date_range = start_date..end_date
+    weeks = date_range.to_a.map(&:beginning_of_week).uniq
+    # weeks variable above checks for 'uniqueness' of weeks for every day in the date range and puts them in an array
+    # for each week, create a new week with start and end dates
+    n = 0
+    weeks.each do |week|
+      @week = Week.new
+      @week.start_date = weeks[n] 
+      # start date of week is the nth object in the weeks array
+      @week.end_date = @week.start_date + 6
+      @week.week_number = n + 1
+      @week.pact_id = @pact.id
+      @week.save
+      n += 1
+    end
+  end
 
 end

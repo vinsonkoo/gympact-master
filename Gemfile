@@ -15,6 +15,8 @@ group :production do
 	gem 'rails_12factor'
 end
 
+gem 'bootstrap-datepicker-rails'
+
 gem 'autoprefixer-rails'
 # For using SASS (a CSS framework)
 gem 'bootstrap-sass', '~> 3.3.5'

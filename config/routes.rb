@@ -1,12 +1,18 @@
 Gympact::Application.routes.draw do
 
+
+  devise_for :users
+  
   resources :messages do
     collection do
       get 'import/new', action: :new_import # import_new_chats_path (?)
       post :import
     end
   end
-  resources :user
+  
+  # resources :user
+  resources :pacts
+  resources :week
 
   get 'workout_types/index'
 
@@ -32,8 +38,8 @@ Gympact::Application.routes.draw do
 
   get 'tracking/:pact_id'             => 'tracking#show', as: 'tracking'   # Tracking for pact_id
 
-  get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
-  get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
+  # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
+  # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
   get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
   get 'email/:pact_id/:week_id'       => 'week#email',    as: 'email_week' # week_id for pact_id
 

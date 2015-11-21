@@ -4,14 +4,16 @@
 	<div class="container-fluid">
 		<div class="row">
 
-
+<%
+=begin %>
 			<% # "For each 'pact' in the list of objects '@pacts', do... %>
 			<% @active_pacts.each do |pact| %>
 				<div class="align-center col-lg-6">
 					<%= link_to pact.name, chat_week_path(pact, pact.get_current_week), class: 'btn btn-active btn-default' %> 
 				</div>
 			<% end %>
-
+<%
+=end %>
 		</div><!--/.row-->
 	</div><!--/.container-fluid-->
 

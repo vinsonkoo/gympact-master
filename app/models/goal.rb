@@ -5,7 +5,7 @@ class Goal < ActiveRecord::Base
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
 	belongs_to :user
 	belongs_to :pact
-	belongs_to :week
+	belongs_to :weeks
 
 	#######################################################
   # deprecated in rails 4

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151018215100) do
+ActiveRecord::Schema.define(version: 20151121223556) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 20151018215100) do
     t.string   "time"
     t.string   "sender"
     t.string   "user"
+    t.integer  "week_number"
+    t.boolean  "is_workout"
   end
 
   add_index "messages", ["pact_id"], name: "index_pact_id_4"
@@ -136,16 +138,25 @@ ActiveRecord::Schema.define(version: 20151018215100) do
   add_index "photos", ["message_id"], name: "index_message_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name", limit: 255
-    t.string   "last_name",  limit: 255
-    t.string   "username",   limit: 255
-    t.string   "avatar_url", limit: 255
-    t.string   "email",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "username"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
   create_table "weeks", force: :cascade do |t|
     t.date     "start_date"
@@ -156,7 +167,6 @@ ActiveRecord::Schema.define(version: 20151018215100) do
     t.integer  "pact_id"
   end
 
-  add_index "weeks", ["pact_id", "week_number"], name: "index_weeks_on_pact_id_and_week_number", unique: true
   add_index "weeks", ["pact_id"], name: "index_pact_id_3"
 
   create_table "workout_types", force: :cascade do |t|
