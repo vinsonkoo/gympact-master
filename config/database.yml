@@ -21,5 +21,6 @@ test:
 production:
   adapter: postgresql
   database: dc8ke8igv39vm
+  password: <%= ENV['HEROKU_POSTGRES_ROSE_URL'] %>
   pool: 5
   timeout: 5000
