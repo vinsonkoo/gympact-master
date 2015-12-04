@@ -1,4 +1,5 @@
 <%= form_for @pact do |f| %>
+  
   <% if @pact.errors.any? %>
     <div class="error_explanation">
       <h2><%=pluralize(@pact.errors.count, "error") %> prohibited this pact from being saved.</h2>
@@ -9,6 +10,7 @@
       </ul>
     </div>
   <% end %>
+
   <div class="col-md-3">
     <%= f.label :pact_name, 'Pact Name' %>
     <%= f.text_field :pact_name %>
@@ -25,6 +27,5 @@
   <div class="col-md-3">
     <%= f.submit :class => "btn" %>
   </div>
+  
 <% end %>
-
-  <!-- :end_date, :is_active, :pact_name, :start_date -->

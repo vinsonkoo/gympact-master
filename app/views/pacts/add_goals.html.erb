@@ -1,0 +1,43 @@
+<%= form_for @pact do |f| %>
+  
+  <% if @pact.errors.any? %>
+    <div class="error_explanation">
+      <h2><%=pluralize(@pact.errors.count, "error") %> prohibited this goal from being saved.</h2>
+      <ul>
+        <% @pact.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+
+    <% @pact.users.each do |pu| %>
+
+      <div class="col-md-3">
+        <%= pu.first_name %>
+        <%= pu.last_name %>
+        <%= pu.username %>
+      </div>
+
+      <div class="col-md-6">
+        <% @pact.weeks.each do |pw| %>
+          Week <%= pw.week_number %>
+        <% end %>
+      </div>
+
+      <div class="col-md-3">
+        <%= f.label :goals, 'Goal' %>
+        <%= f.number_field :goals, min: 0, max: 7%>
+      </div>
+
+    <% end %>
+
+  </div>
+
+  <div class="col-md-12 text-right">
+    <%= f.submit "Add Goals", :class => "btn" %>
+  </div>
+  
+<% end %>

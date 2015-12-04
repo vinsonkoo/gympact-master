@@ -1,9 +1,11 @@
-<div class="container">
 
 <h3><%= link_to 'New Pact', new_pact_path %></h3>
+
+<h1><%= @pact.pact_name %></h1>
   <table>
     <thead>
       <tr>
+        <th>Pact ID</th>
         <th>Pact Name</th>
         <th>Start Date</th>
         <th>End Date</th>
@@ -13,6 +15,7 @@
 
     <tbody>
       <tr>
+        <td><%= @pact.id %></td>
         <td><%= @pact.pact_name %></td>
         <td><%= @pact.start_date %></td>
         <td><%= @pact.end_date %></td>
@@ -20,25 +23,111 @@
       </tr>
     </tbody>
   </table>
+  
   <table>
-  <thead>
-    <tr>
-      <th>Week ID</th>
-      <th>Week Number</th>
-      <th>Week Start Date</th>
-      <th>Week End Date</th>
-      <th>Pact</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for week in Week.where(pact_id: @pact.id) %>
+    <thead>
       <tr>
-        <td class="week-id"><%= week.id %></td>
-        <td class="week-week-number"><%= week.week_number %></td>
-        <td class="week-start"><%= week.start_date %></td>
-        <td class="week-end"><%= week.end_date %></td>
-        <td class="week-pact-id"><%= week.pact_id %></td>
+        <th>Week ID</th>
+        <th>Week Number</th>
+        <th>Week Start Date</th>
+        <th>Week End Date</th>
+        <th>Pact</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% for week in Week.where(pact_id: @pact.id) %>
+        <tr>
+          <td class="week-id"><%= week.id %></td>
+          <td class="week-week-number"><%= week.week_number %></td>
+          <td class="week-start"><%= week.start_date %></td>
+          <td class="week-end"><%= week.end_date %></td>
+          <td class="week-pact-id"><%= week.pact_id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <th>User IDs</th>
+      <th>First Names</th>
+      <th>Last Names</th>
+      <th>Usernames</th>
+    </thead>
+    <tbody>
+      <% if !@users.empty? %>
+
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.first_name %></td>
+            <td><%= user.last_name %></td>
+            <td><%= user.username %></td>
+          </tr>
+        <% end %>
+
+      <% else %>
+
+        <tr>
+          <p><%= link_to "Create Users", new_admin_user_path %></p>
+          
+        </tr>
+
+      <% end %>
+      <p><%= link_to "Add users to #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact %></p>
+<%
+=begin
+%>      
+      <tr>
+        <td><%= @pact.users.map(&:id).sort.join(", ") %></td>
+        <td><%= @pact.users.map(&:first_name).sort.join(", ") %></td>
+        <td><%= @pact.users.map(&:last_name).sort.join(", ") %></td>
+        <td><%= @pact.users.map(&:username).sort.join(", ") %></td>
+      </tr>
+<%
+=end %>
+    </tbody>
+  </table>
+
+
+  <table>
+    <thead>
+      <th colspan="2">Penalty</th>
+    </thead>
+    <tbody>
+      
+      <% if @pact.penalty.present? %>
+
+        <% (0..7).each do |i| %>
+          <tr>
+            <td>Goal Days <%= i %> </td>
+            <td><%= number_to_currency(@pact.penalty * i) %></td>
+          </tr>
+        <% end %>
+
+      <% else %>
+        <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>
+      <% end %>
+      
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <th colspan="2">Goals</th>
+    </thead>
+    <tbody>
+      <% @pact.user_ids.each do |pu| %>
+      <tr>
+        <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
+<%
+=begin %>
+        <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
+      </tr>
+<%
+=end %>
+      <% end %>
+      
+    </tbody>
+
+  </table>

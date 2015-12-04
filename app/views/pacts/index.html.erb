@@ -4,6 +4,7 @@
 <table>
   <thead>
     <tr>
+      <th>Pact Name</th>
       <th>Start Dates</th>
       <th>End Dates</th>
       <th>Active?</th>
@@ -13,6 +14,7 @@
   <tbody>
     <% @pact.each do |pact| %>
       <tr>
+        <td><%= link_to pact.pact_name, pact %></td>
         <td><%= pact.start_date %></td>
         <td><%= pact.end_date %></td>
         <td><%= pact.is_active %></td>

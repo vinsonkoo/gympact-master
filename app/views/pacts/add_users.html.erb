@@ -1,0 +1,28 @@
+<h3>Add Users To <%= @pact.pact_name %></h3>
+<%= link_to 'Create New Users', new_admin_user_path, :target => "_blank" %>
+<p>Refresh page after creating new users</p>
+
+<%= form_for @pact do |f| %>
+
+  <% if @pact.errors.any? %>
+    <div class="error_explanation">
+      <h2><%=pluralize(@pact.errors.count, "error") %> prohibited this pact from being saved.</h2>
+      <ul>
+        <% @pact.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="col-md-12">
+    <%= f.collection_check_boxes :user_ids, User.all, :id, :username do |b| %>
+      <%= b.check_box %>
+      <%= b.label %>
+    <% end %>
+  </div>
+
+  <%= f.submit "Add Users", :class => "btn" %>
+
+<% end %>
+

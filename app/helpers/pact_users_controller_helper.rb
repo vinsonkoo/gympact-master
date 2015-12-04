@@ -1,0 +1,2 @@
+module PactUsersControllerHelper
+end

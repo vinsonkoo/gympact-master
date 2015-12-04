@@ -1,5 +1,23 @@
 Gympact::Application.routes.draw do
 
+  get 'penalties/new'
+
+  get 'penalties/create'
+
+  get 'penalties/index'
+
+  get 'penalties/show'
+
+  get 'pact_users_controller/new'
+
+  get 'pact_users_controller/create'
+
+  get 'pact_users_controller/index'
+
+  get 'pact_users_controller/show'
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
 
   devise_for :users
   
@@ -11,21 +29,28 @@ Gympact::Application.routes.draw do
   end
   
   # resources :user
+  get 'pacts/:id/add_users'      => 'pacts#add_users'
+  get 'pacts/:id/add_penalty'      => 'pacts#add_penalty'
+  get 'pacts/:id/add_goals'      => 'pacts#add_goals'
   resources :pacts
+  # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
+
+  get 'pacts/pact_users'         => 'pacts#pact_users'
   resources :week
 
   get 'workout_types/index'
 
   get 'workouts/index'
 
-  get 'pact_user_relations/index'
+  resources :pact_user_relations
+  # get ':pact_user_relations(/:new(/:id(.:format)))' => 'pact_user_relations#new'
+  # get 'pact_user_relations/index'
 
   get 'messages/index'
 
-  get 'goals/index'
 
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+  resources :goals
+
 
   # STATIC PAGES
   root :to                      => 'pages#home'

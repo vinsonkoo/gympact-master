@@ -5,12 +5,13 @@ class Pact < ActiveRecord::Base
 	#######################################################
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
-	has_many :users
-	has_many :pact_user_relations
+	has_and_belongs_to_many :users
+	has_many :goals, through: :users, dependent: :destroy
 
 	has_many :chats
 
-	has_many :penalties
+	has_many :penalty, dependent: :destroy
+ #  accepts_nested_attributes_for :penalty
 
 	has_many :weeks
 
@@ -33,9 +34,9 @@ class Pact < ActiveRecord::Base
 
 
   # Gets users who are in this pact
-	def get_users
-		User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
-	end
+	# def get_users
+	# 	User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
+	# end
 
 	# Gets the week that the pact is on as of today
 	def get_current_week
@@ -98,6 +99,10 @@ class Pact < ActiveRecord::Base
     end_date = @pact.end_date
     date_range = start_date..end_date
     weeks = date_range.to_a.map(&:beginning_of_week).uniq
+    if weeks[0] != start_date
+      weeks.delete(weeks[0])
+      # if start date is not on a monday, it will take the first monday before the start date and insert it into the weeks array. this is to delete that week since it does not fall into the start/end dates range
+    end
     # weeks variable above checks for 'uniqueness' of weeks for every day in the date range and puts them in an array
     # for each week, create a new week with start and end dates
     n = 0

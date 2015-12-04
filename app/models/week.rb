@@ -4,6 +4,7 @@ class Week < ActiveRecord::Base
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
 	belongs_to :pact
   has_many :messages
+  has_many :goals
 
 
 	#######################################################

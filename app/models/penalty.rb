@@ -8,5 +8,5 @@ class Penalty < ActiveRecord::Base
 
   #######################################################
 	# Makes it so that you can edit these database columns via ActiveAdmin and forms
-  attr_accessible :goal, :penalty, :pact_id
+  # attr_accessible :goal, :penalty, :pact_id
 end

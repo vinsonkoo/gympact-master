@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121223556) do
+ActiveRecord::Schema.define(version: 20151128185924) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 20151121223556) do
   end
 
   add_index "pact_user_relations", ["pact_id", "user_id"], name: "index_pact_user_relations_on_pact_id_and_user_id", unique: true
-  add_index "pact_user_relations", ["pact_id"], name: "index_pact_id_5"
-  add_index "pact_user_relations", ["user_id"], name: "index_user_id_4"
+  add_index "pact_user_relations", ["pact_id"], name: "index_pact_user_relations_on_pact_id"
+  add_index "pact_user_relations", ["user_id"], name: "index_pact_user_relations_on_user_id"
 
   create_table "pacts", force: :cascade do |t|
     t.string   "pact_name",  limit: 255
@@ -111,9 +111,19 @@ ActiveRecord::Schema.define(version: 20151121223556) do
     t.boolean  "is_active"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.float    "penalty"
   end
 
   add_index "pacts", ["pact_name"], name: "index_pacts_on_pact_name", unique: true
+
+  create_table "pacts_penalties", id: false, force: :cascade do |t|
+    t.integer "pact_id"
+  end
+
+  create_table "pacts_users", id: false, force: :cascade do |t|
+    t.integer "pact_id"
+    t.integer "user_id"
+  end
 
   create_table "penalties", force: :cascade do |t|
     t.integer  "goal",       default: 0,   null: false

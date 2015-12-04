@@ -1,0 +1,29 @@
+<%
+=begin %>
+<%= form_for @pact_user_relation do |f| %>
+  <%= select(:pact_user_relation, :pact_id, @pact_user_relation_options) %>
+  <% @users.each do |user| %>
+      <%= check_box_tag "pact_user_relation[user_id]", user.id, false %>
+      <%= f.label user.username %>
+
+  <% end %>
+
+  <p><%= f.submit :class => "btn" %></p>
+
+<% end %>
+<%
+=end %>
+<%= form_tag pact_user_relations_path do %>
+  <%= select(:pact_user_relation, :pact_id, @pact_user_relation_options) %>
+  <% @relations.each do |pact_user_relation| %>
+    <% @users.each do |user| %>
+      <%= check_box_tag "pact_user_relation[user_id]", user.id, false %>
+      <%= label_tag user.username %>
+
+    <% end %>
+
+  <% end %>
+
+  <p><%= submit_tag "Add Users To Pact" %></p>
+
+<% end %>

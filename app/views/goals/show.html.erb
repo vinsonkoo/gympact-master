@@ -1,0 +1,20 @@
+<h1>Goals</h1>
+
+<%= render 'form' %>
+
+
+<table>
+  <thead>
+    <td>User</td>
+    <td>Goals</td>
+  </thead>
+  <tbody>
+    <% @goal.pact.user_ids.each do |pu| %>
+    <tr>
+      <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
+      <td><%= @goal.goal %></td>
+    </tr>
+    <% end %>
+
+  </tbody>
+</table>
