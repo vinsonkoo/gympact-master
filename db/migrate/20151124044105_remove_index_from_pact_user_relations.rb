@@ -1,4 +1,4 @@
-class RemoveIndexFromPactUserRelations < ActiveRecord::Migration
+ class RemoveIndexFromPactUserRelations < ActiveRecord::Migration
   def change
     remove_index(:pact_user_relations, :name => 'index_pact_user_relations_on_pact_id_and_user_id')
     remove_index(:pact_user_relations, :name => 'index_pact_id_5')
