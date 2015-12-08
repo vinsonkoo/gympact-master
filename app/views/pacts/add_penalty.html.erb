@@ -12,12 +12,39 @@
       </ul>
     </div>
   <% end %>
+<%
+=begin
+%>  
+  <div class="col-md-4">
+    <% (1..7).each do |n| %>
+      <%= f.label :goal_days, 'Goal Days' %>
+      <%= f.number_field :goal_days, min: 0, max: 7, :value => n %>
+      <%= f.label :penalty, 'Penalty' %>
+      <%= f.number_field :penalty, min: 0, :step => 'any', :precisions => 2 %>
+    <% end %>
+    <%= f.submit :class => "btn" %>
 
-  <div class="col-md-3">
-    <%= f.label :penalty, 'Penalty' %>
-    <%= f.number_field :penalty, min: 0, :step => 'any', :precisions => 2 %>
-  </div>
+    <%= f.fields_for :penalty do |penalty_fields| %>
+      <%= penalty_fields.label :goal_days, 'Goal Days' %>
+      <%= penalty_fields.number_field :goal_days %>
+      <br />
+      <%= penalty_fields.label :penalty, 'Penalty' %>
+      <%= penalty_fields.number_field :penalty,  min: 0, max: 9, :step => 'any', :precisions => 2 %>
+      <%= f.submit :class => "btn" %>
+    <% end %>
+<%
+=end %>
 
+  <%= f.fields_for :penalties_attributes, @penalty do |ff| %>
+
+    <%= ff.label :goal_days, 'Goal Days' %>
+    <%= ff.number_field :goal_days %>
+    <br />
+    <%= ff.label :penalty, 'Penalty' %>
+    <%= ff.number_field :penalty %>
+  <% end %>
   <%= f.submit :class => "btn" %>
+  <!-- </div> -->
 
 <% end %>
+

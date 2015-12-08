@@ -95,7 +95,9 @@
       <th colspan="2">Penalty</th>
     </thead>
     <tbody>
-      
+<%
+=begin
+%>      
       <% if @pact.penalty.present? %>
 
         <% (0..7).each do |i| %>
@@ -108,7 +110,11 @@
       <% else %>
         <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>
       <% end %>
-      
+<%
+=end
+%>
+
+  <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>    
     </tbody>
   </table>
 
@@ -118,16 +124,47 @@
     </thead>
     <tbody>
       <% @pact.user_ids.each do |pu| %>
-      <tr>
-        <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
-<%
-=begin %>
-        <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
-      </tr>
-<%
-=end %>
+        <tr>
+          <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
+        </tr>
       <% end %>
-      
+    </tbody>
+
+  </table>
+
+  <!-- Spreadsheet view -->
+  <table>
+    <thead>
+      <th>User ID</th>
+      <th>Full Name</th>
+      <th>Week</th>
+      <th>Goal Days</th>
+      <th>Penalty Per Missed Days</th>
+      <th>Weekly Total Workouts</th>
+      <th>Workout Days Remaining</th>
+      <th>Bonus Days</th>
+      <th>Total Missed Days At Beginning Of Week</th>
+      <th>Total Missed Days At End Of Week</th>
+      <th>Weekly Penalty Total</th>
+      <th>Penalty Total At Beginning Of Week</th>
+      <th>Amount Paid</th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>User ID</td>
+        <td>Full Name</td>
+        <td>Week</td>
+        <td>Goal Days</td>
+        <td>Penalty Per Missed Days</td>
+        <td>Weekly Total Workouts</td>
+        <td>Workout Days Remaining</td>
+        <td>Bonus Days</td>
+        <td>Total Missed Days At Beginning Of Week</td>
+        <td>Total Missed Days At End Of Week</td>
+        <td>Weekly Penalty Total</td>
+        <td>Penalty Total At Beginning Of Week</td>
+        <td>Amount Paid</td>
+      </tr>
     </tbody>
 
   </table>

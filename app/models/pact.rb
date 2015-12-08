@@ -10,8 +10,9 @@ class Pact < ActiveRecord::Base
 
 	has_many :chats
 
-	has_many :penalty, dependent: :destroy
- #  accepts_nested_attributes_for :penalty
+	has_many :penalties, dependent: :destroy
+  accepts_nested_attributes_for :penalties
+  
 
 	has_many :weeks
 

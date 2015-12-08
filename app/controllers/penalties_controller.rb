@@ -1,11 +1,19 @@
 class PenaltiesController < ApplicationController
   def new
+    @penalty = Penalty.new
   end
 
   def create
+    @penalty = Penalty.new
+    if @penalty.save
+      redirect_to penalties_path
+    else
+      render 'new'
+    end
   end
 
   def index
+    @penalty = Penalty.all
   end
 
   def show

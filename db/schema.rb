@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204034653) do
+ActiveRecord::Schema.define(version: 20151208033013) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(version: 20151204034653) do
     t.boolean  "is_active"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "penalty"
   end
 
   add_index "pacts", ["pact_name"], name: "index_pacts_on_pact_name", unique: true
@@ -125,15 +124,12 @@ ActiveRecord::Schema.define(version: 20151204034653) do
   end
 
   create_table "penalties", force: :cascade do |t|
-    t.integer  "goal",       default: 0,   null: false
-    t.float    "penalty",    default: 0.0, null: false
+    t.integer  "goal_days"
+    t.float    "penalty"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "pact_id"
   end
-
-  add_index "penalties", ["pact_id", "goal"], name: "index_penalties_on_pact_id_and_goal", unique: true
-  add_index "penalties", ["pact_id"], name: "index_pact_id"
 
   create_table "photos", force: :cascade do |t|
     t.string   "photo_url"

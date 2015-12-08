@@ -1,2 +1,23 @@
 <h1>Penalties#index</h1>
 <p>Find me in app/views/penalties/index.html.erb</p>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Pact Name</th>
+      <th>Start Dates</th>
+      <th>End Dates</th>
+      <th>Active?</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @penalty.each do |penalty| %>
+      <tr>
+        <td><%= penalty.goal_days %></td>
+        <td><%= penalty.penalty %></td>
+      </tr>
+      <% end %>
+  </tbody>
+</table>
