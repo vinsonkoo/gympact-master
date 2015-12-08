@@ -92,27 +92,32 @@
 
   <table>
     <thead>
-      <th colspan="2">Penalty</th>
+      <th>Goal Days</th>
+      <th>Penalty</th>
     </thead>
     <tbody>
-<%
-=begin
-%>      
-      <% if @pact.penalty.present? %>
+      <% if @pact.penalties.present? %>
+        <% @pact.penalties.each do |penalty| %>
+          <tr>
+            <td><%= penalty.goal_days %></td>
+            <td><%= penalty.penalty %></td>
+          </tr>
+        <% end %>
 
+<%
+=begin %>
         <% (0..7).each do |i| %>
           <tr>
             <td>Goal Days <%= i %> </td>
             <td><%= number_to_currency(@pact.penalty * i) %></td>
           </tr>
         <% end %>
+<%
+=end %>
 
       <% else %>
         <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>
       <% end %>
-<%
-=end
-%>
 
   <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>    
     </tbody>

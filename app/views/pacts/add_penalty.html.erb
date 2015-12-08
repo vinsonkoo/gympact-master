@@ -1,6 +1,6 @@
 <h3>Add Penalties To <%= @pact.pact_name %></h3>
 
-<%= form_for @pact do |f| %>
+<%= form_for setup_pact(@pact) do |f| %>
 
   <% if @pact.errors.any? %>
     <div class="error_explanation">
@@ -35,13 +35,14 @@
 <%
 =end %>
 
-  <%= f.fields_for :penalties_attributes, @penalty do |ff| %>
+  <%= f.fields_for :penalties do |ff| %>
 
     <%= ff.label :goal_days, 'Goal Days' %>
     <%= ff.number_field :goal_days %>
     <br />
     <%= ff.label :penalty, 'Penalty' %>
     <%= ff.number_field :penalty %>
+    <%= ff.hidden_field :pact_id, :value => @pact.id %>
   <% end %>
   <%= f.submit :class => "btn" %>
   <!-- </div> -->

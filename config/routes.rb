@@ -25,7 +25,9 @@ Rails.application.routes.draw do
   # get 'pacts/pact_users'         => 'pacts#pact_users'
   get 'pacts/:id/add_penalty'      => 'pacts#add_penalty'
   get 'pacts/:id/add_goals'      => 'pacts#add_goals'
-  resources :pacts
+  resources :pacts do
+    resources :penalties
+  end
   # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
 
   resources :penalties

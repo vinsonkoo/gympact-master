@@ -5,18 +5,28 @@
 <table>
   <thead>
     <tr>
-      <th>Pact Name</th>
-      <th>Start Dates</th>
-      <th>End Dates</th>
-      <th>Active?</th>
+      <th>Goal Days</th>
+      <th>Penalties</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @penalty.each do |penalty| %>
+    <% @penalties.each do |penalty| %>
       <tr>
-        <td><%= penalty.goal_days %></td>
-        <td><%= penalty.penalty %></td>
+        <td>
+          <% if penalty.goal_days.nil? %>
+            nil
+          <% else %>
+          <%= penalty.goal_days %>
+          <% end %>
+          </td>
+        <td>
+          <% if penalty.penalty.nil? %>
+            nil
+          <% else %>
+            <%= penalty.penalty %>
+          <% end %>
+        </td>
       </tr>
       <% end %>
   </tbody>

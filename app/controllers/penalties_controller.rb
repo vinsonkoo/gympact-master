@@ -13,7 +13,7 @@ class PenaltiesController < ApplicationController
   end
 
   def index
-    @penalty = Penalty.all
+    @penalties = Penalty.all
   end
 
   def show

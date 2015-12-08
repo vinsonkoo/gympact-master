@@ -54,7 +54,7 @@ class PactsController < ApplicationController
 
   def add_penalty 
     @pact = Pact.find(params[:id])
-    @penalty = Penalty.new
+    # @penalty = Penalty.new
     @pact.penalties.build
 
     # if @pact.save
@@ -73,11 +73,12 @@ class PactsController < ApplicationController
 
   def pact_params
     params.require(:pact).permit(
+      :id,
       :end_date, 
       :is_active, 
       :pact_name, 
       :start_date, 
-      penalties_attributes:[:pact_id, :penalty, :goal_days], 
+      penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
       user_ids:[], 
       goals:[]
       )
