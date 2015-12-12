@@ -74,20 +74,10 @@
         </tr>
 
       <% end %>
-      <p><%= link_to "Add users to #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact %></p>
-<%
-=begin
-%>      
-      <tr>
-        <td><%= @pact.users.map(&:id).sort.join(", ") %></td>
-        <td><%= @pact.users.map(&:first_name).sort.join(", ") %></td>
-        <td><%= @pact.users.map(&:last_name).sort.join(", ") %></td>
-        <td><%= @pact.users.map(&:username).sort.join(", ") %></td>
-      </tr>
-<%
-=end %>
+      
     </tbody>
   </table>
+  <p><%= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact %></p>
 
 
   <table>
@@ -100,29 +90,19 @@
         <% @pact.penalties.each do |penalty| %>
           <tr>
             <td><%= penalty.goal_days %></td>
-            <td><%= penalty.penalty %></td>
+            <td>$<%= penalty.penalty %></td>
           </tr>
         <% end %>
-
-<%
-=begin %>
-        <% (0..7).each do |i| %>
-          <tr>
-            <td>Goal Days <%= i %> </td>
-            <td><%= number_to_currency(@pact.penalty * i) %></td>
-          </tr>
-        <% end %>
-<%
-=end %>
-
-      <% else %>
-        <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>
+      
       <% end %>
-
-  <p>Penalty does not exist yet. <%= link_to 'Add Penalty', controller: "pacts", action: "add_penalty", id: @pact  %></p>    
+ 
     </tbody>
   </table>
-
+  <% if @pact.penalties.present? %>
+    <p>Penalties do not exist yet. <%= link_to "Add Penalty", controller: "pacts", action: "add_penalty", id: @pact  %></p>
+  <% end %>
+<%
+=begin %>
   <table>
     <thead>
       <th colspan="2">Goals</th>
@@ -136,6 +116,27 @@
     </tbody>
 
   </table>
+<%
+=end %>
+  <table>
+    <thead>
+      <th>User ID</th>
+      <th>Pact ID</th>
+      <th>Goal</th>
+      <th>Week</th>
+    </thead>
+    <tbody>
+      <% @pact.goals.each do |pg| %>
+        <tr>
+          <td><%= pg.user_id %></td>
+          <td><%= pg.pact_id %></td>
+          <td><%= pg.goal %></td>
+          <td><%= pg.week_id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p><%= link_to 'Edit Goals', controller: "pacts", action: "add_goals", id: @pact %>
 
   <!-- Spreadsheet view -->
   <table>

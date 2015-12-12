@@ -2,11 +2,14 @@ class Pact < ActiveRecord::Base
   require 'date'
 
   after_create :check_active, :parse_weeks
+  # after_update :check_goals
 	#######################################################
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
 	has_and_belongs_to_many :users
-	has_many :goals, through: :users, dependent: :destroy
+	
+  has_many :goals
+  accepts_nested_attributes_for :goals
 
 	has_many :chats
 
@@ -118,5 +121,9 @@ class Pact < ActiveRecord::Base
       n += 1
     end
   end
+
+  # def check_goals
+
+  # end
 
 end

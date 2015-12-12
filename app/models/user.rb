@@ -6,4 +6,5 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :pacts
   has_many :goals, dependent: :destroy
+  accepts_nested_attributes_for :goals
 end

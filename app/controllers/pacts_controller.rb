@@ -54,15 +54,6 @@ class PactsController < ApplicationController
 
   def add_penalty 
     @pact = Pact.find(params[:id])
-    # @penalty = Penalty.new
-    @pact.penalties.build
-
-    # if @pact.save
-    #   redirect_to @pact
-    #   # redirect_to 'add_users_path'
-    # else
-    #   # render 'new'
-    # end
   end
 
   def add_goals
@@ -78,9 +69,9 @@ class PactsController < ApplicationController
       :is_active, 
       :pact_name, 
       :start_date, 
-      penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
-      user_ids:[], 
-      goals:[]
+      penalties_attributes:[:id, :pact_id, :penalty, :goal_days],
+      goals_attributes:[:id, :pact_id, :goal, :user_id, :week_id],
+      user_ids:[]
       )
   end	
 
