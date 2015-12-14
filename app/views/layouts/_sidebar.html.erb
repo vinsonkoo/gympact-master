@@ -1,35 +1,42 @@
-<div id="sidebar">
+<div class="sidebar">
 
-  <div id="logo" class="text-center">
-    <%= link_to raw("Gym<span>Pact</span>"), root_path %>
+  <div class="sidebar-logo">
+    <%= link_to raw("Gym<span>Pact</span>"), root_path, class: 'sidebar-logo-link' %>
   </div><!--/#logo-->
 
-<%
-=begin %>  
-  <% @active_pacts.each do |pact| %>
-    <div class="group-wrapper <% if @current_pact == pact %>active<% end %>">
-      <span class="title"><%= pact.name %></span>
 
-      <ul class="nav nav-pills nav-stacked">
+  <div class="sidebar-pacts">
+    <% if @pacts %>
+      <% @pacts.each do |pact| %>
+        <div class="sidebar-pact <% if @current_pact == pact %>sidebar-pact-active<% end %>">
+          <span class="sidebar-pact-title"><%= pact.name %></span>
 
-        <li <% if (@current_pact == pact) && (params[:controller] == 'chat')%> class="active"<% end %>>
-          <%= link_to raw("<span class='glyphicon glyphicon-comment'></span>WhatsApp"), chat_week_path(pact, pact.get_current_week), class: 'chat' %> 
-        </li>
-        <li<% if current_page?(tracking_path(pact)) %> class="active"<% end %>>
-          <%= link_to raw("<span class='glyphicon glyphicon-user'></span>Tracking"), tracking_path(pact), class: 'tracking' %> 
-        </li>
-        <li <% if (@current_pact == pact) && (params[:controller] == 'week') %> class="active"<% end %>>
-          <%= link_to raw("<span class='glyphicon glyphicon-calendar'></span>Weeks"), week_week_path(pact, pact.get_current_week), class: 'week' %> 
-        </li>
+          <ul class="sidebar-pact-menu">
+            <li class="sidebar-pact-menu-item sidebar-pact-menu-item-chat<% if (@current_pact == pact) && (params[:controller] == 'chat')%> sidebar-pact-menu-item-active<% end %>">
+              <%= link_to raw("<span class='sidebar-glyphicon glyphicon glyphicon-comment'></span>WhatsApp"), chat_week_path(pact, pact.get_current_week), class: 'sidebar-pact-menu-item-link' %> 
+            </li>
 
-        <li>
-          <%= link_to raw("<span class='glyphicon glyphicon-plus'></span>Upload Chat"), new_admin_chat_path, class: 'upload' %> 
+            <li class="sidebar-pact-menu-item sidebar-pact-menu-item-tracking<% if current_page?(tracking_path(pact)) %> sidebar-pact-menu-item-active<% end %>">
+              <%= link_to raw("<span class='sidebar-glyphicon glyphicon glyphicon-user'></span>Tracking"), tracking_path(pact), class: 'sidebar-pact-menu-item-link' %> 
+            </li>
+
+            <li class="sidebar-pact-menu-item sidebar-pact-menu-item-upload">
+              <%= link_to raw("<span class='sidebar-glyphicon glyphicon glyphicon-plus'></span>Upload Chat"), new_admin_chat_path, class: 'sidebar-pact-menu-item-link' %> 
+            </li>
+          </ul>
+          
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="sidebar-pact">
+      <ul class="sidebar-pact-menu">
+        <li class="sidebar-pact-menu-item">
+          <%= link_to raw("<span class='sidebar-glyphicon glyphicon glyphicon-plus'></span>Create Pact"), new_pact_path, class: 'sidebar-pact-menu-item-link' %> 
         </li>
       </ul>
     </div>
-  <% end %>
-<%
-=end %>
+  </div><!--/.sidebar-pacts-->
 
 
-</div><!--/#sidebar-->
+</div><!--/.sidebar-->

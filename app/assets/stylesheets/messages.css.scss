@@ -1,0 +1,21 @@
+@import "partials/variables";
+
+.message {
+  text-align: left;
+}
+
+table {
+  th {
+    width: 11.1111111%;
+    text-align: center;
+  }
+  tr {
+    td{
+      text-align: center;
+
+      .attached-image {
+        width: 100px;
+      }
+    }
+  }
+}

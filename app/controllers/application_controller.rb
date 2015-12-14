@@ -2,10 +2,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   # before_action :authenticate_user!
 
-  # before_action :render_sidebar, :current_pact, :current_week, :this_week
+  before_action :render_sidebar, :current_pact, :current_week, :this_week
 
   def render_sidebar
-  	@active_pacts = Pact.where(is_active: true).order(:created_at)
+  	@pacts = Pact.all
 		@current_pact = current_pact
 		@current_week = current_week
     @this_week = this_week
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   	if(params.has_key?(:pact_id))
   		Pact.find(params[:pact_id])
     else
-      Pact.first
+      nil
   	end
   end
 

@@ -1,20 +1,7 @@
-<div id="home_wrapper">
+<div class="home-container">
 
-	<!-- "container-fluid", "row", and "col-lg-6" are Bootstrap grid classes: http://getbootstrap.com/css/#grid -->
-	<div class="container-fluid">
-		<div class="row">
-
-<%
-=begin %>
-			<% # "For each 'pact' in the list of objects '@pacts', do... %>
-			<% @active_pacts.each do |pact| %>
-				<div class="align-center col-lg-6">
-					<%= link_to pact.name, chat_week_path(pact, pact.get_current_week), class: 'btn btn-active btn-default' %> 
-				</div>
-			<% end %>
-<%
-=end %>
-		</div><!--/.row-->
-	</div><!--/.container-fluid-->
-
+	<% @pacts.each do |pact| %>
+     <%= link_to pact.name, chat_week_path(pact, pact.get_current_week), class: 'home-pact-button' %> 
+  <% end %>
+	
 </div><!--/#home_wrapper-->
