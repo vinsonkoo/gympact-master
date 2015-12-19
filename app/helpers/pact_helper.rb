@@ -11,13 +11,17 @@ module PactHelper
   end
 
   def setup_pact_goals(pact)
-    n = 0
-    pact.users.each do |pu|
-      pact.goals.build
-      
-    end
+    # only build if goals do not exist yet
 
+    if !pact.goals.present?
+      # debugger
+      pact.goals.build
+      puts 'hello helper'
+    else
+      puts 'bye'
+    end
     pact
   end
+
 
 end

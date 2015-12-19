@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208033013) do
+ActiveRecord::Schema.define(version: 20151219144311) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -64,10 +64,14 @@ ActiveRecord::Schema.define(version: 20151208033013) do
     t.integer  "week_id"
   end
 
-  add_index "goals", ["pact_id", "user_id", "week_id"], name: "index_goals_on_pact_id_and_user_id_and_week_id", unique: true
   add_index "goals", ["pact_id"], name: "index_pact_id_6"
   add_index "goals", ["user_id"], name: "index_user_id_5"
   add_index "goals", ["week_id"], name: "index_week_id_2"
+
+  create_table "goals_pacts", id: false, force: :cascade do |t|
+    t.integer "pact_id"
+    t.integer "goal_id"
+  end
 
   create_table "messages", force: :cascade do |t|
     t.text     "message"
@@ -113,6 +117,11 @@ ActiveRecord::Schema.define(version: 20151208033013) do
   end
 
   add_index "pacts", ["pact_name"], name: "index_pacts_on_pact_name", unique: true
+
+  create_table "pacts_goals", id: false, force: :cascade do |t|
+    t.integer "pact_id"
+    t.integer "goal_id"
+  end
 
   create_table "pacts_penalties", id: false, force: :cascade do |t|
     t.integer "pact_id"

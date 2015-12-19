@@ -31,7 +31,7 @@
         <th>Week Number</th>
         <th>Week Start Date</th>
         <th>Week End Date</th>
-        <th>Pact</th>
+        <th>Pact ID</th>
       </tr>
     </thead>
     <tbody>
@@ -55,28 +55,17 @@
       <th>Usernames</th>
     </thead>
     <tbody>
-      <% if !@users.empty? %>
-
-        <% @users.each do |user| %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.first_name %></td>
-            <td><%= user.last_name %></td>
-            <td><%= user.username %></td>
-          </tr>
-        <% end %>
-
-      <% else %>
-
+      <% @users.each do |user| %>
         <tr>
-          <p><%= link_to "Create Users", new_admin_user_path %></p>
-          
+          <td><%= user.id %></td>
+          <td><%= user.first_name %></td>
+          <td><%= user.last_name %></td>
+          <td><%= user.username %></td>
         </tr>
-
       <% end %>
-      
     </tbody>
   </table>
+  <p><%= link_to "Create Users", new_admin_user_path, :target => '_blank' %></p>
   <p><%= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact %></p>
 
 
@@ -90,7 +79,7 @@
         <% @pact.penalties.each do |penalty| %>
           <tr>
             <td><%= penalty.goal_days %></td>
-            <td>$<%= penalty.penalty %></td>
+            <td><%= number_to_currency(penalty.penalty) %></td>
           </tr>
         <% end %>
       
@@ -99,31 +88,18 @@
     </tbody>
   </table>
   <% if @pact.penalties.present? %>
+    <p><%= link_to "Edit penalties for #{@pact.pact_name}", controller: "pacts", action: "add_penalty", id: @pact %></p>
+  <% else %>
     <p>Penalties do not exist yet. <%= link_to "Add Penalty", controller: "pacts", action: "add_penalty", id: @pact  %></p>
   <% end %>
-<%
-=begin %>
-  <table>
-    <thead>
-      <th colspan="2">Goals</th>
-    </thead>
-    <tbody>
-      <% @pact.user_ids.each do |pu| %>
-        <tr>
-          <td><%= User.find_by(id: @pact.user_ids[pu-1]).username %></td>
-        </tr>
-      <% end %>
-    </tbody>
 
-  </table>
-<%
-=end %>
   <table>
     <thead>
       <th>User ID</th>
       <th>Pact ID</th>
       <th>Goal</th>
-      <th>Week</th>
+      <th>Goal ID</th>
+      <th>Week ID / Week #</th>
     </thead>
     <tbody>
       <% @pact.goals.each do |pg| %>
@@ -131,7 +107,17 @@
           <td><%= pg.user_id %></td>
           <td><%= pg.pact_id %></td>
           <td><%= pg.goal %></td>
-          <td><%= pg.week_id %></td>
+          <td><%= pg.id %></td>
+          <% if pg.week_id == nil %>
+            
+          <% else %>
+<%
+=begin %>
+NOT SURE WHY IT NEEDS THE .NEXT BUT IT WORKS
+<%
+=end %>
+
+          <% end %>
         </tr>
       <% end %>
     </tbody>

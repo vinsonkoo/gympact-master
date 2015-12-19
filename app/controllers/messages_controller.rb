@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)  
     if @message.save
       # handle successful save
-      redirect_to root_url, notice: "Saved"
+      redirect_to root_url, notice: "Message created."
     else
       render 'new'
     end

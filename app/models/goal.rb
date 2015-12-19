@@ -5,9 +5,9 @@ class Goal < ActiveRecord::Base
 	#######################################################
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
-	belongs_to :user
+	# belongs_to :user
 	belongs_to :pact
-	belongs_to :weeks
+	# belongs_to :weeks
 
 	#######################################################
   # deprecated in rails 4
