@@ -112,8 +112,8 @@ class Pact < ActiveRecord::Base
     if weeks[0] != start_date
       weeks.delete(weeks[0])
       # if start date is not on a monday, it will take the first monday before the start date and insert it into the weeks array. this is to delete that week since it does not fall into the start/end dates range
-    else date_range.cover?(weeks.last+6)
-      weeks.last.delete
+    elsif !date_range.cover?(weeks.last+6)
+      weeks.pop
       # if last date and its week (monday - sunday) in the weeks array is not covered in the start/end dates range, delete it from the array
     end
 
