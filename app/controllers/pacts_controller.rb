@@ -54,19 +54,16 @@ class PactsController < ApplicationController
 
   def add_penalty 
     @pact = Pact.find(params[:id])
-    # @penalty = Penalty.new
-    # 8.times{@pact.penalties.build}
-
-    # if @pact.save
-    #   redirect_to @pact
-    #   # redirect_to 'add_users_path'
-    # else
-    #   # render 'new'
-    # end
   end
 
   def add_goals
     @pact = Pact.find(params[:id])
+  end
+
+  def import
+    @pact = Pact.find(params[:id])
+    uploaded_file = Pact.import(params[:file])
+    redirect_to messages_path, notice: 'Chat imported.'
   end
 
   private

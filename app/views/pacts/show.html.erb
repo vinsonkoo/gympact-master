@@ -109,8 +109,10 @@
           <td><%= pg.goal %></td>
           <td><%= pg.id %></td>
           <% if pg.week_id == nil %>
-            
+            <td>nil</td>
           <% else %>
+
+            <td><%= pg.week_id %> / <%= @pact.weeks.find_by(id: pg.week_id).week_number %></td>
 <%
 =begin %>
 NOT SURE WHY IT NEEDS THE .NEXT BUT IT WORKS
@@ -142,21 +144,31 @@ NOT SURE WHY IT NEEDS THE .NEXT BUT IT WORKS
       <th>Amount Paid</th>
     </thead>
     <tbody>
-      <tr>
-        <td>User ID</td>
-        <td>Full Name</td>
-        <td>Week</td>
-        <td>Goal Days</td>
-        <td>Penalty Per Missed Days</td>
-        <td>Weekly Total Workouts</td>
-        <td>Workout Days Remaining</td>
-        <td>Bonus Days</td>
-        <td>Total Missed Days At Beginning Of Week</td>
-        <td>Total Missed Days At End Of Week</td>
-        <td>Weekly Penalty Total</td>
-        <td>Penalty Total At Beginning Of Week</td>
-        <td>Amount Paid</td>
-      </tr>
+      <% @pact.weeks.each do |pw| %>
+        <% @pact.users.each do |pu| %>
+          <tr>
+            <td><%= pu.id %></td>
+            <td><%= pu.first_name %> <%= pu.last_name %> / <%= pu.username %> </td>
+            <td><strong><%= pw.week_number %></strong></td>
+            <% if pu.goals.find_by(week_id: pw.id).nil? %>
+            <% else %>
+              <td><%= pu.goals.find_by(week_id: pw.id).goal %></td>
+            <% end %>
+            <% if @pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id))).nil? %>
+            <% else %>
+              <td><%= number_to_currency(@pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id).goal) ).goal_days) %></td>
+            <% end %>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+            <td><%=  %></td>
+          </tr>
+        <% end %>
+      <% end %>
     </tbody>
 
   </table>

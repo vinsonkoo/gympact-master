@@ -18,7 +18,7 @@ module PactHelper
       pact.goals.build
       puts 'hello helper'
     else
-      puts 'bye'
+      puts 'bye helper'
     end
     pact
   end

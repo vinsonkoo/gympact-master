@@ -21,14 +21,20 @@ Rails.application.routes.draw do
   end
   
   # resources :user
-  get 'pacts/:id/add_users'      => 'pacts#add_users'
-  # get 'pacts/pact_users'         => 'pacts#pact_users'
-  get 'pacts/:id/add_penalty'      => 'pacts#add_penalty'
-  get 'pacts/:id/add_goals'      => 'pacts#add_goals'
+  get 'pacts/:id/add_users'       => 'pacts#add_users'
+  # get 'pacts/pact_users'          => 'pacts#pact_users'
+  get 'pacts/:id/add_penalty'     => 'pacts#add_penalty'
+  get 'pacts/:id/add_goals'       => 'pacts#add_goals'
+  # get 'pacts/:id/import'          => 'pacts#import'
   resources :pacts do
     resources :penalties
     resources :goals
     resources :users
+    collection do
+      get ':pact_id/import/new', action: :new_import
+      post :import
+      
+    end
   end
   # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
 
