@@ -4,75 +4,81 @@
 SIDEBAR
 **************************************************/
 
-#sidebar {
+.sidebar {
   background: #1D2027;
-  
-	#logo {
-		height: 100px;
-    padding-top: 27px;
-		background: $blue;
-    a {
-      display: block;
-      color: #DAF8FF;
-      font-family: $headings-font-family;
-      font-weight: $headings-font-weight;
-      font-size: 25px;
-      &:hover {text-decoration: none;}
-      span {color: #fff;}
-    }
-	}
+}
+.sidebar-logo {
+	height: 100px;
+  padding-top: 27px;
+	background: $blue;
+}
+.sidebar-logo-link {
+  display: block;
+  color: #DAF8FF;
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  font-size: 25px;
+  &:hover {text-decoration: none;}
+  span {color: #fff;}
+}
 
-  /* GROUPS ***************************************/
-  .group-wrapper{
-    padding: 35px 0 25px 0;
-    &.active {
-      background: #262A32;
-    }
+/* PACTS ***************************************/
+.sidebar-pacts {
+}
+.sidebar-pact{
+  padding: 30px 0 25px;
+}
+.sidebar-pact-active {
+  background: #262A32;
+}
+.sidebar-pact-name {
+  font-size: 11px;
+  color: #7F8694;
+  display: block;
+  padding: 0px 25px 15px 25px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
 
-    /* HEADLINE */
-    span.title {
-      font-size: 11px;
-      color: #7F8694;
-      display: block;
-      padding: 0px 25px 15px 25px;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
+.sidebar-pact-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-pact-menu-item {
+  margin: 0;
+}
+.sidebar-pact-menu-item-link,
+.sidebar-pact-menu-item-link:focus,
+.sidebar-pact-menu-item-link:active {
+  display: block;
+  color: #7F8694;
+  padding: 12px 25px 12px 20px;
+  border-left: 5px solid transparent; 
+  &:hover {
+    text-decoration: none;
+    background: #383D46;
+    border-left: 5px solid $blue;
+    color: #ffffff;
+  }
+}
+  .sidebar-pact-menu-item-active {
+    background: #ffffff;
+  }
+.sidebar-pact-menu-item-glyphicon {
+  margin-right: 10px;
+}
 
-    /* MENU ITEMS */
-    ul.nav > li {
-      margin: 0;
-    }
-    ul.nav > li > a{
-        border-radius: 0px;
-        color: #7F8694;
-        padding: 10px 25px 10px 20px;
-        border-left: 5px solid transparent;
-        
-        span.glyphicon {
-          margin-right: 10px;
-        }
 
-        &:hover {
-          background: #383D46;
-          border-left: 5px solid $blue;
-          color: #fff;
-        }
-      }
-    ul.nav > li.active > a{
-      background: transparent;
+/* GROUPS ***************************************/
+  ul.nav > li.active > a{
+    background: transparent;
+    border-left: 5px solid $blue;
+    color: #fff;
+
+    &:hover {
+      background: #383D46;
       border-left: 5px solid $blue;
       color: #fff;
-
-      &:hover {
-        background: #383D46;
-        border-left: 5px solid $blue;
-        color: #fff;
-      }
     }
-  } /*.group-wrapper*/
-  
-
-
-
-} /* #sidebar */
+  }

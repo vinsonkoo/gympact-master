@@ -1,28 +1,33 @@
-#sidebar
-  #logo.text-center
-    = link_to raw("Gym<span>Pact</span>"), root_path
+.sidebar
+  .sidebar-logo.text-center
+    = link_to raw("Gym<span>Pact</span>"), root_path, class: "sidebar-logo-link"
   
 
-  - if @active_pacts
+  .sidebar-pacts
     - @active_pacts.each do |pact|
-      .group-wrapper
-        %span.title= pact.name
-      %ul.nav.nav-pills.nav-stacked
-        %li
-          =link_to chat_week_path(pact, pact.get_current_week), class: 'chat' do
-            %span.glyphicon.glyphicon-comment WhatsApp
-        %li
-          =link_to tracking_path(pact), class: 'tracking' do
-            %span.glyphicon.glyphicon-user Tracking
+      .sidebar-pact{class: @current_pact == pact ? "sidebar-pact-active" : ""}
+        .sidebar-pact-name= pact.name
+        %ul.sidebar-pact-menu
+          %li.sidebar-pact-menu-item{class: ((@current_pact == pact) && (params[:controller] == 'pacts')) ? "sidebar-pact-menu-item-active" : ""} 
+            =link_to pact_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-pact' do
+              %span.glyphicon.glyphicon-home.sidebar-pact-menu-item-glyphicon
+              Overview
+          %li.sidebar-pact-menu-item
+            =link_to tracking_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-tracking' do
+              %span.glyphicon.glyphicon-user.sidebar-pact-menu-item-glyphicon
+              Users
+          %li.sidebar-pact-menu-item{class: ((@current_pact == pact) && (params[:controller] == 'chat')) ? "sidebar-pact-menu-item-active" : ""} 
+            =link_to chat_week_path(pact, pact.get_current_week), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-chat' do
+              %span.glyphicon.glyphicon-comment.sidebar-pact-menu-item-glyphicon
+              WhatsApp
+          %li.sidebar-pact-menu-item
+            = link_to new_admin_chat_path, class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-upload' do
+              %span.glyphicon.glyphicon-plus.sidebar-pact-menu-item-glyphicon
+              Upload Chat
 
-        %li
-          =link_to week_week_path(pact, pact.get_current_week), class: 'week' do
-            %span.glyphicon.glyphicon-calendar Weeks
-        %li
-          = link_to new_admin_chat_path, class: 'upload' do
-            %span.glyphicon.glyphicon-plus Upload Chat
-  - else
-    .group-wrapper
-    %ul.nav.nav-pills.nav-stacked
-      %li
-        = link_to 'New Pact', new_pact_path
+    .sidebar-pact.sidebar-submenu
+      %ul.sidebar-pact-menu
+        %li.sidebar-pact-menu-item
+          = link_to new_pact_path, class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-new-pact' do
+            %span.glyphicon.glyphicon-plus.sidebar-pact-menu-item-glyphicon
+            Create New Pact

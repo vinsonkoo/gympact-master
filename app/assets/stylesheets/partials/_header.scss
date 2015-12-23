@@ -1,6 +1,6 @@
 @import "partials/variables";
 
-#header {
+.header {
   background: #66C4D9;
   width: 100%;
 	height: 100px;
@@ -10,21 +10,14 @@
 	position: fixed;
 	z-index: 1000;
 	overflow: hidden;
-
-	a {
-		color: #408B9D;
-		font-size: 25px;
-		margin: 0 20px;
-		float: right;
-		display: inline-block;
-		&:hover {color: #fff;}
-	}
-
 }
 
-@media (max-width:767px) {
-	#header {
-		margin-left: 0px;
-	}
 
+.header-menu-item {
+	color: #408B9D;
+	font-size: 25px;
+	margin: 0 20px;
+	float: right;
+	display: inline-block;
+	&:hover {color: #fff;}
 }
