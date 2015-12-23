@@ -12,7 +12,7 @@
             %th.summary.owed{:rowspan => "2"} Owed
             %th.week.dates{:colspan => "2"} Week 1 (May 12 - May 18)
             %th.week.dates{:colspan => "2"} Week 2 (May 19 - May 25)
-          / need to put a "for" loop in here, to loop through the weeks once for each user
+          - # need to put another for loop in here, to loop through the weeks once for each user
           %tr
             %th.week.completed
               Worked Out
@@ -33,7 +33,7 @@
             %td.summary.missed
               = user.get_total_missed_days(@current_pact)
             %td.summary.owed= user.get_total_money_owed(@current_pact)
-            / need to put another for loop in here, to loop through the weeks once for each user
+            - # need to put another for loop in here, to loop through the weeks once for each user
             %td.week.completed
             %td.week.owed
             %td.week.completed
@@ -48,10 +48,8 @@
             %td.summary.goal= @current_pact.get_total_goal_days
             %td.summary.missed= @current_pact.get_total_missed_days
             %td.summary.owed= @current_pact.get_total_owed
-            / need to put another for loop in here, to loop through the weeks once for each user
+            - # need to put another for loop in here, to loop through the weeks once for each user
             %td.week.completed
             %td.week.owed
             %td.week.completed
             %td.week.owed
-  / /week
-/ /#week_wrapper

@@ -89,7 +89,6 @@ ActiveRecord::Schema.define(version: 20151219144311) do
     t.string   "time"
     t.string   "sender"
     t.string   "user"
-    t.integer  "week_number"
     t.boolean  "is_workout"
   end
 

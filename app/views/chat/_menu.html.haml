@@ -1,12 +1,12 @@
 #chat_menu.menu
-  / SELECT TIME PERIOD
   #time_period.btn-group
     .btn-group
       %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
         WEEK #{@current_week.week_number}
         %span.smalltext
           = @current_week.start_date.strftime("%b %d")
-          \- #{@current_week.end_date.strftime("%b %d")}
+          to 
+          = @current_week.end_date.strftime("%b %d")
         %span.glyphicon.glyphicon-chevron-down
       %ul.dropdown-menu
         - @current_pact.weeks.each do |week|
@@ -15,7 +15,6 @@
               = link_to raw("WEEK " + week.week_number.to_s + "<span class='smalltext'>" + week.start_date.strftime("%b %d") + " - " + week.end_date.strftime("%b %d") + "</span>"), chat_week_path(@current_pact.id, week.id), class: 'active'
             - else
               = link_to raw("WEEK " + week.week_number.to_s + "<span class='smalltext'>" + week.start_date.strftime("%b %d") + " - " + week.end_date.strftime("%b %d") + "</span>"), chat_week_path(@current_pact.id, week.id)
-    / /btn-group
     .btn-group
       %button.time.btn.btn-default.btn-left-border.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
         ALL DAYS
@@ -41,12 +40,8 @@
           %a{:href => "#"} Saturday
         %li
           %a{:href => "#"} Sunday
-  / /btn-group
-  / DISPLAY
   #display.btn-group.pull-right
     %button.btn.btn-default.pull-right{:type => "button"}
       %span.glyphicon.glyphicon-picture
     %button.btn-active.btn.btn-left-border.btn-default.pull-right{:type => "button"}
       %span.glyphicon.glyphicon-align-justify
-  / /.btn-group
-/ /#chat_menu

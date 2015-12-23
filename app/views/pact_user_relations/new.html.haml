@@ -1,11 +1,11 @@
-- =begin
+
 = form_for @pact_user_relation do |f|
   = select(:pact_user_relation, :pact_id, @pact_user_relation_options)
   - @users.each do |user|
     = check_box_tag "pact_user_relation[user_id]", user.id, false
     = f.label user.username
   %p= f.submit :class => "btn"
-- =end
+
 = form_tag pact_user_relations_path do
   = select(:pact_user_relation, :pact_id, @pact_user_relation_options)
   - @relations.each do |pact_user_relation|

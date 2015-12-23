@@ -1,29 +1,28 @@
 #sidebar
   #logo.text-center
     = link_to raw("Gym<span>Pact</span>"), root_path
-  / /#logo
-  - =begin
-  - @active_pacts.each do |pact|
+  
+
+  - if @active_pacts
+    - @active_pacts.each do |pact|
+      .group-wrapper
+        %span.title= pact.name
+      %ul.nav.nav-pills.nav-stacked
+        %li
+          =link_to chat_week_path(pact, pact.get_current_week), class: 'chat' do
+            %span.glyphicon.glyphicon-comment WhatsApp
+        %li
+          =link_to tracking_path(pact), class: 'tracking' do
+            %span.glyphicon.glyphicon-user Tracking
+
+        %li
+          =link_to week_week_path(pact, pact.get_current_week), class: 'week' do
+            %span.glyphicon.glyphicon-calendar Weeks
+        %li
+          = link_to new_admin_chat_path, class: 'upload' do
+            %span.glyphicon.glyphicon-plus Upload Chat
+  - else
     .group-wrapper
-    - if @current_pact == pact
-      active
-    "&gt;
-    %span.title= pact.name
     %ul.nav.nav-pills.nav-stacked
       %li
-      - if (@current_pact == pact)  (params[:controller] == 'chat')
-        class="active"
-      \&gt;
-      \#{link_to raw(span class='glyphicon glyphicon-comment'/spanWhatsApp), chat_week_path(pact, pact.get_current_week), class: 'chat'}
-    %li
-    - if current_page?(tracking_path(pact))
-      class="active"
-    \&gt;
-    \#{link_to raw(span class='glyphicon glyphicon-user'/spanTracking), tracking_path(pact), class: 'tracking'}
-  %li
-  - if (@current_pact == pact)  (params[:controller] == 'week')
-    class="active"
-  \&gt;
-  \#{link_to raw(span class='glyphicon glyphicon-calendar'/spanWeeks), week_week_path(pact, pact.get_current_week), class: 'week'}
-%li
-  = link_to raw(span class='glyphicon glyphicon-plus'/spanUpload Chat), new_admin_chat_path, class: 'upload'
+        = link_to 'New Pact', new_pact_path
