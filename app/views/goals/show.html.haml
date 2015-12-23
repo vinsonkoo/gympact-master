@@ -1,0 +1,11 @@
+%h1 Goals
+= render 'form'
+%table
+  %thead
+    %td User
+    %td Goals
+  %tbody
+    - @goal.pact.user_ids.each do |pu|
+      %tr
+        %td= User.find_by(id: @pact.user_ids[pu-1]).username
+        %td= @goal.goal

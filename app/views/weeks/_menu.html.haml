@@ -1,0 +1,26 @@
+#week_menu.menu
+  / SELECT TIME PERIOD
+  #time_period.btn-group
+    .btn-group
+      %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+        WEEK #{@current_week.week_number}
+        %span.smalltext
+          = @current_week.start_date.strftime("%b %d")
+          \- #{@current_week.end_date.strftime("%b %d")}
+        %span.glyphicon.glyphicon-chevron-down
+      %ul.dropdown-menu
+        - @current_pact.weeks.each do |week|
+          %li
+            = link_to raw("WEEK " + week.week_number.to_s + "<span class='smalltext'>" + week.start_date.strftime("%b %d") + " - " + week.end_date.strftime("%b %d") + "</span>"), week_week_path(@current_pact.id, week.id)
+    / /btn-group
+  / /time_period
+  / DISPLAY
+  #display.btn-group.pull-right
+    - if current_page?(email_week_path(@current_pact, @current_week))
+      = link_to raw("<span class='glyphicon glyphicon-envelope'></span>"), email_week_path(@current_pact, @current_week), class: 'btn btn-active btn-default pull-right'
+      = link_to raw("<span class='glyphicon glyphicon-calendar'></span>"), week_week_path(@current_pact, @current_week), class: 'btn btn-default btn-left-border pull-right'
+    - else
+      = link_to raw("<span class='glyphicon glyphicon-envelope'></span>"), email_week_path(@current_pact, @current_week), class: 'btn btn-default pull-right'
+      = link_to raw("<span class='glyphicon glyphicon-calendar'></span>"), week_week_path(@current_pact, @current_week), class: 'btn btn-default btn-active btn-left-border pull-right'
+  / /.btn-group
+/ /#week_menu

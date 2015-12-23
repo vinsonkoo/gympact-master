@@ -1,0 +1,12 @@
+#week_wrapper.show
+  = render 'week/menu'
+  #email
+    .box
+      %span.glyphicon.glyphicon-user
+      %textarea.email_addresses
+        Put the emails for #{@current_pact.pact_name}'s users here for easy copy-and-pasting into Gmail! :) You can find this HTML template in /app/views/week/email.html.erb
+    .box
+      %span.glyphicon.glyphicon-envelope
+      %textarea.email_template Put your email template here with all of the current week's stats! :) You can find this HTML template in /app/views/week/email.html.erb
+  / /email
+/ /#week_wrapper

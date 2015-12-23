@@ -1,0 +1,13 @@
+#home_wrapper
+  / "container-fluid", "row", and "col-lg-6" are Bootstrap grid classes: http://getbootstrap.com/css/#grid
+  .container-fluid
+    .row
+      - =begin
+      - # "For each 'pact' in the list of objects '@pacts', do...
+      - @active_pacts.each do |pact|
+        .align-center.col-lg-6
+          = link_to pact.name, chat_week_path(pact, pact.get_current_week), class: 'btn btn-active btn-default'
+      - =end
+    / /.row
+  / /.container-fluid
+/ /#home_wrapper

@@ -1,0 +1,16 @@
+%h1 Goals#index
+%p Find me in app/views/goals/index.html.erb
+%table
+  %thead
+    %tr
+      %th User ID
+      %th Pact ID
+      %th Goal
+      %th Week
+  %tbody
+    - @goals.each do |goal|
+      %tr
+        %td= goal.user_id
+        %td= goal.pact_id
+        %td= goal.goal
+        %td= goal.week

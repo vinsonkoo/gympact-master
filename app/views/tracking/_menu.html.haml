@@ -1,0 +1,18 @@
+#tracking_menu.menu
+  / SELECT TIME PERIOD
+  #time_period.btn-group
+    .btn-group
+      %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+        Show all weeks
+        %span.glyphicon.glyphicon-chevron-down
+      %ul.dropdown-menu
+        %li
+          %a{:href => "#"} Show 5 weeks
+    / /btn-group
+  / /time_period
+  / DISPLAY
+  #display.btn-group.pull-right
+    %button.btn.btn-active.btn-left-border.btn-default.pull-right{:type => "button"}
+      %span.glyphicon.btn-active.glyphicon-calendar
+  / /.btn-group
+/ /#tracking_menu

@@ -1,0 +1,16 @@
+%h1 Here's a list of all the pacts
+%h3= link_to 'New Pact', new_pact_path
+%table
+  %thead
+    %tr
+      %th Pact Name
+      %th Start Dates
+      %th End Dates
+      %th Active?
+  %tbody
+    - @pact.each do |pact|
+      %tr
+        %td= link_to pact.pact_name, pact
+        %td= pact.start_date
+        %td= pact.end_date
+        %td= pact.is_active

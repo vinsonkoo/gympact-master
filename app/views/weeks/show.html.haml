@@ -1,0 +1,99 @@
+#week_wrapper.show
+  = render 'week/menu'
+  #week
+    .table-responsive
+      %table.table
+        %thead
+          %tr
+            %th.name Name
+            %th.day.monday Mon
+            %th.day.tuesday Tue
+            %th.day.wednesday Wed
+            %th.day.thursday Thu
+            %th.day.friday Fri
+            %th.day.saturday Sat
+            %th.day.sunday Sun
+            %th.summary.total Completed
+            %th.summary.goal Goal
+            %th.summary.left Left
+            %th.summary.bonus Bonus
+            %th.summary.charge Owed
+        /
+          Put your "for" loop here
+          "For every user in @current_pact's list of users"
+        %tr
+          %td.name Name
+          %td.day.monday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.tuesday
+            %span.glyphicon.glyphicon-remove-sign
+          %td.day.wednesday
+            %span.glyphicon.glyphicon-question-sign
+          %td.day.thursday
+          %td.day.friday
+          %td.day.saturday
+          %td.day.sunday
+          %td.summary.total -
+          %td.summary.goal
+            \-
+          %td.summary.left -
+          %td.summary.bonus -
+          %td.summary.charge $-.--
+        %tr
+          %td.name (Ex) Cynthia Koo
+          %td.day.monday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.tuesday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.wednesday
+            %span.glyphicon.glyphicon-remove-sign
+          %td.day.thursday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.friday
+            %span.glyphicon.glyphicon-question-sign
+          %td.day.saturday
+            %span.glyphicon.glyphicon-question-sign
+          %td.day.sunday
+          %td.summary.total 5
+          %td.summary.goal
+            6
+          %td.summary.left 4
+          %td.summary.bonus 0
+          %td.summary.charge $5.00
+        %tr
+          %td.name (Ex) Ellen Liu
+          %td.day.monday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.tuesday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.wednesday
+          %td.day.thursday
+            %span.glyphicon.glyphicon-ok-sign
+          %td.day.friday
+            %span.glyphicon.glyphicon-question-sign
+          %td.day.saturday
+            %span.glyphicon.glyphicon-question-sign
+          %td.day.sunday
+          %td.summary.total 2
+          %td.summary.goal
+            4
+          %td.summary.left 4
+          %td.summary.bonus 0
+          %td.summary.charge $5.00
+        %tr.total
+          %td.name Total
+          %td.day.monday 5
+          %td.day.tuesday 12
+          %td.day.wednesday 10
+          %td.day.thursday 3
+          %td.day.friday 7
+          %td.day.saturday 3
+          %td.day.sunday 4
+          %td.summary.total 2
+          %td.summary.goal
+            6
+          %td.summary.left 4
+          %td.summary.bonus 0
+          %td.summary.charged $15.50
+  / /week
+/ /#week_wrapper

@@ -1,0 +1,20 @@
+%h1 Penalties#index
+%p Find me in app/views/penalties/index.html.erb
+%table
+  %thead
+    %tr
+      %th Goal Days
+      %th Penalties
+  %tbody
+    - @penalties.each do |penalty|
+      %tr
+        %td
+          - if penalty.goal_days.nil?
+            nil
+          - else
+            = penalty.goal_days
+        %td
+          - if penalty.penalty.nil?
+            nil
+          - else
+            = penalty.penalty

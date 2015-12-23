@@ -1,0 +1,74 @@
+%h1 Messages#index
+%p Find me in app/views/messages/index.html.erb
+- =begin
+= flash[:notice]
+- =end
+%h3 Import Chat
+= form_tag import_messages_path, multipart: true do
+  %label{:for => "file"} Upload Chat File
+  = file_field_tag :file
+  = submit_tag "Import Chat"
+%table
+  %thead
+    %tr
+      %th Message ID
+      %th Date+Time
+      %th Date
+      %th Time
+      %th User ID
+      %th Sender
+      %th Message
+      %th Week Number
+      %th Workout?
+  %tbody
+    - @messages.each do |message|
+      %tr
+        %td.message-id= message.id
+        %td.message-datetime= message.msg_date_time
+        %td.message-date= message.date.strftime("%-m/%-d/%Y")
+        %td.message-time= message.time
+        %td.message-user-id= message.user_id
+        %td.message-sender= message.sender
+        %td.message-message
+          - if message.media == true
+            - if message.image != nil
+              = image_tag("/media/#{message.image}.jpg", class: "attached-image")
+            - elsif message.video != nil
+              = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
+          - else
+            = message.message
+        %td.message-week-number= message.week_number
+        %td.message-is-workout
+          = message.is_workout
+          - if message.is_workout == true
+            %p= link_to 'Edit', edit_admin_message_path(message)
+%table
+  %thead
+    %tr
+      %th User ID
+      %th First Name
+      %th Last Name
+      %th Username
+      %th Email
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td.user-id= user.id
+        %td.user-first-name= user.first_name
+        %td.user-last-name= user.last_name
+        %td.user-username= user.username
+        %td.user-email= user.email
+%table
+  %thead
+    %tr
+      %th Week ID
+      %th Week Number
+      %th Week Start Date
+      %th Week End Date
+  %tbody
+    - @weeks.each do |week|
+      %tr
+        %td.week-id= week.id
+        %td.week-week-number= week.week_number
+        %td.week-start= week.start_date
+        %td.week-end= week.end_date

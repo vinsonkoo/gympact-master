@@ -1,0 +1,57 @@
+#tracking_wrapper.show
+  = render 'tracking/menu'
+  #tracking
+    .table-responsive
+      %table.table
+        %thead
+          %tr
+            %th.name{:rowspan => "2"} Name
+            %th.summary.total{:rowspan => "2"} Total
+            %th.summary.goal{:rowspan => "2"} Goal
+            %th.summary.missed{:rowspan => "2"} Missed
+            %th.summary.owed{:rowspan => "2"} Owed
+            %th.week.dates{:colspan => "2"} Week 1 (May 12 - May 18)
+            %th.week.dates{:colspan => "2"} Week 2 (May 19 - May 25)
+          / need to put a "for" loop in here, to loop through the weeks once for each user
+          %tr
+            %th.week.completed
+              Worked Out
+            %th.week.owed
+              Owed
+            %th.week.completed
+              Worked Out
+            %th.week.owed
+              Owed
+        - @current_pact.get_users.each do |user|
+          %tr
+            %td.name
+              = user.username
+            %td.summary.total
+              = user.get_total_workout_days(@current_pact)
+            %td.summary.goal
+              = user.get_total_goal_days(@current_pact)
+            %td.summary.missed
+              = user.get_total_missed_days(@current_pact)
+            %td.summary.owed= user.get_total_money_owed(@current_pact)
+            / need to put another for loop in here, to loop through the weeks once for each user
+            %td.week.completed
+            %td.week.owed
+            %td.week.completed
+            %td.week.owed
+        %tfoot
+          %tr.total
+            %td.name
+              = @current_pact.get_users.count
+              total members
+            - # These functions still need to be written. See models/Pact.rb
+            %td.summary.total= @current_pact.get_total_workout_days
+            %td.summary.goal= @current_pact.get_total_goal_days
+            %td.summary.missed= @current_pact.get_total_missed_days
+            %td.summary.owed= @current_pact.get_total_owed
+            / need to put another for loop in here, to loop through the weeks once for each user
+            %td.week.completed
+            %td.week.owed
+            %td.week.completed
+            %td.week.owed
+  / /week
+/ /#week_wrapper

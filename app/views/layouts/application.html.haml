@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title GymPact
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    #wrapper
+      #sidebar-wrapper
+        = render 'layouts/sidebar'
+      / /sidebar-wrapper
+      #page-content-wrapper
+        = render 'layouts/header'
+        .page-content
+          .container-fluid
+            .row
+              .col-md-12
+                / ALERTS per Devise gem for users
+                - if flash.each do |name, msg|
+                = content_tag(:div, msg, class: "alert alert-#{name}")
+                - if flash[:notice]
+                  .notice= flash[:notice]
+                - if flash[:error]
+                  %p.alert= alert
+                = yield
+                / content of page

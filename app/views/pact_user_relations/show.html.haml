@@ -1,0 +1,21 @@
+%table
+  %thead
+    %tr
+      %th Pact ID
+      %th Pact Name
+      %th User ID
+      %th Username
+  %tbody
+    %tr
+      %td.pact-user-relation-id
+        = @pact_user_relation.pact_id
+      %td
+        / pact name logic
+        - for pact in Pact.where(id: @pact_user_relation.pact.id)
+          = pact.pact_name
+      %td
+        / user name logic
+        - if @pact_user_relation.user_id == nil
+        - else
+          = @pact_user_relation.user_id
+      %td

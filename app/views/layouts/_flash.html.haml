@@ -1,0 +1,9 @@
+- =begin
+- Partial for showing flash messages. Used for showing flash messages near the forms or UI elements of interest where there is user action. This snippet does not show the flash messages from the application.html.erb layout
+- =end
+- if not @messages_rendered
+  - if flash[:error]
+    %p.error= h flash[:error]
+  - if flash[:notice]
+    %p.notice= h flash[:notice]
+- @messages_rendered = true

@@ -1,0 +1,80 @@
+- if true
+  - # if in editing mode
+  .form-row.name.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-user
+    %span.input.col-md-10
+      Cynthia Koo
+    %span.input.col-md-1.input
+      %span.edit-workout.glyphicon.glyphicon-pencil
+  .form-row.date.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-calendar
+    %span.input.col-md-11
+      April 2, 2014 at 5:20PM
+  .form-row.workout_tags.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-tags
+    %span.input.col-md-11
+      crossfit, run
+  .form-row.workout.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-file
+    %span.input.col-md-11
+      notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes notes
+  .form-row.buttons
+    %button.btn.btn-default.btn-add.btn-block{:type => "button"}
+      + Copy workout to another person
+    %button.btn.btn-default.btn-block.btn-red{:type => "button"} THIS IS NOT A WORKOUT!
+- else
+  - # clicking the pencil icon should hide the above section and bring up this section
+  .form-row.name.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-user
+    %span.input.col-md-11
+      %select
+        %option Cynthia Koo
+        %option Cindy Guan
+        %option Will Su
+  .form-row.date.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-calendar
+    %span.input.col-md-11
+      %select.date-item.month
+        %option April
+        %option May
+        %option June
+      %select.date-item.day
+        %option 1
+        %option 2
+        %option 3
+      %select.date-item.year
+        %option 2014
+        %option 2015
+        %option 2016
+      %select.date-item.hour
+        %option 5
+        %option 6
+        %option 7
+      %select.date-item.minute
+        %option 01
+        %option 02
+        %option 03
+      %select.date-item.time_of_day
+        %option PM
+        %option AM
+  .form-row.workout_tags.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-tags
+    %span.input.col-md-11
+      %input.tags{:placeholder => "What kind of workout was it?", :type => "text"}/
+  .form-row.workout.container-fluid
+    %label.col-md-1
+      %span.glyphicon.glyphicon-file
+    %span.input.col-md-11
+      %textarea{:placeholder => "Notes"}
+  .form-row.buttons
+    %button.btn.btn-default.btn-add.btn-block{:type => "button"}
+      + Copy workout to another person
+    %button.btn.btn-default.btn-block.btn-blue{:type => "button"} SAVE
+    %button.btn.btn-default.btn-block.btn-red{:type => "button"} THIS IS NOT A WORKOUT!

@@ -1,6 +1,0 @@
-<h3>Import Chat</h3>
-  <%= form_tag import_messages_path, multipart: true do %>
-    <label for="file">Upload Chat File</label>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import Chat" %>
-  <% end %>

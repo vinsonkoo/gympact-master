@@ -1,0 +1,7 @@
+- =begin
+= render 'form'
+- =end
+%h1 Select Pact
+= form_for @goal do |f|
+  = select(:goal, :pact_id, @goal_options)
+  = f.submit "Select Pact", :class => "btn"

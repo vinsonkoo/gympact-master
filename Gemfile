@@ -61,3 +61,6 @@ gem 'rails-observers'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 gem 'activerecord-deprecated_finders'
+
+# HAML
+gem "haml-rails", "~> 0.9"
