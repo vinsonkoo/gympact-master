@@ -41,7 +41,7 @@
           <%= ff.hidden_field :pact_id, :value => @pact.id %>
 
           <% if @pact.is_active == true %>
-            <%= ff.hidden_field :week_id, :value => @pact.get_current_week %>
+            <%= ff.hidden_field :week_id, :value => @pact.get_current_week.id %>
           <% else %>
             <%= ff.hidden_field :week_id, :value => '1' %>
           <% end %>

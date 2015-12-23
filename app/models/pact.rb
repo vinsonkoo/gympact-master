@@ -2,7 +2,7 @@ class Pact < ActiveRecord::Base
   require 'date'
 
   after_create :check_active, :parse_weeks
-  after_update :check_goals
+  after_save :check_goals
 	#######################################################
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
@@ -12,6 +12,10 @@ class Pact < ActiveRecord::Base
   accepts_nested_attributes_for :goals
 
 	has_many :chats
+  accepts_nested_attributes_for :chats
+  has_many :messages, through: :chats
+  accepts_nested_attributes_for :chats
+  accepts_nested_attributes_for :messages
 
 	has_many :penalties, dependent: :destroy
   accepts_nested_attributes_for :penalties
@@ -42,25 +46,17 @@ class Pact < ActiveRecord::Base
 	# 	User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
 	# end
 
-	# Gets the week that the pact is on as of today
-	def get_current_week
+
+  # Gets the week that the pact is on as of today
+  def get_current_week
     @pact = Pact.find_by(id: id)
     today = Date.today
-    # week = Week.where(["pact_id = ? and start_date <= ? and end_date >= ?", self.id, today, today]).first
-    # if !week
-    #   week = Week.where(["pact_id = ?", self.id]).last
-    # end
-    # week
-
-    @pact.weeks.each do |pw|
-      if (pw.start_date..pw.end_date).cover?(Date.today) == true
-        week = pw.week_number
-      else
-
-      end
+    week = Week.where(["pact_id = ? and start_date <= ? and end_date >= ?", self.id, today, today]).first
+    if !week
+      week = Week.where(["pact_id = ?", self.id]).last
     end
+    week
   end
-
 
   # Get total stats for this pact
   def get_total_workout_days
@@ -156,18 +152,26 @@ class Pact < ActiveRecord::Base
             total_goals = @pact.goals.count
             if n < total_goals
               # for each goal, create new goals for user
-              @pact.goals.each do |pg|              
+              @pact.goals.each do |pg|            
                 user = pg.user_id
                 goal = pg.goal
-                new_goal = @pact.goals.new
+                new_goal = @pact.goals.build
                 new_goal.user_id = user
                 new_goal.goal = goal
                 new_goal.week_id = pw.id
-                new_goal.save
+                if (n + 1) < (@pact.weeks.count) * (@pact.users.count)
+                  new_goal.save
+                else
+                  
+                end
+                # debugger
+                n = n + 1
               end
             end
-            n = n + 1
+            # n = n + 1
           else
+            # if the pact's week is not in the future, do nothing
+
           end # @pacts.weeks.each do |pw|
         end
 
@@ -188,7 +192,7 @@ class Pact < ActiveRecord::Base
 
             # for each week, create a new goal
             @pact.weeks.each do |pw|
-              new_goal = @pact.goals.new
+              new_goal = @pact.goals.build
               new_goal.user_id = user
               new_goal.goal = goal
               new_goal.week_id = pw.id
@@ -206,6 +210,6 @@ class Pact < ActiveRecord::Base
 
     end
     
-  end
+  end # def check_goals
 
 end
