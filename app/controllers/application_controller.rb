@@ -12,11 +12,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_pact
-  	if(params.has_key?(:id))
-  		Pact.find(params[:id])
+    if params[:pact_id] || params[:id]
+      current_pact = Pact.find(params[:pact_id] || params[:id])
     else
-      Pact.first
-  	end
+      current_pact = nil
+    end
   end
 
   def current_week

@@ -5,19 +5,18 @@
   .sidebar-pacts
     - @active_pacts.each do |pact|
       .sidebar-pact{class: @current_pact == pact ? "sidebar-pact-active" : ""}
-        .sidebar-pact-name
-          = pact.name
+        .sidebar-pact-name= pact.name
         %ul.sidebar-pact-menu
-          %li.sidebar-pact-menu-item{class: ((@current_pact == pact) && (params[:controller] == 'pacts')) ? "sidebar-pact-menu-item-active" : ""} 
-            =link_to pact_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-pact' do
+          %li.sidebar-pact-menu-item{class: @current_pact == pact && params[:controller] == "pacts" && params[:action] == "show" ? "sidebar-pact-menu-item-active" : ""} 
+            =link_to pact_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-overview' do
               %span.glyphicon.glyphicon-home.sidebar-pact-menu-item-glyphicon
               Overview
-          %li.sidebar-pact-menu-item
-            =link_to tracking_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-tracking' do
+          %li.sidebar-pact-menu-item{class: @current_pact == pact && params[:controller] == "pacts" && params[:action] == "users" ? "sidebar-pact-menu-item-active" : ""} 
+            =link_to pact_users_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-users' do
               %span.glyphicon.glyphicon-user.sidebar-pact-menu-item-glyphicon
               Users
-          %li.sidebar-pact-menu-item{class: ((@current_pact == pact) && (params[:controller] == 'chat')) ? "sidebar-pact-menu-item-active" : ""} 
-            =link_to chat_week_path(pact, pact.get_current_week), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-chat' do
+          %li.sidebar-pact-menu-item{class: @current_pact == pact && params[:controller] == "chat" && params[:action] == "show" ? "sidebar-pact-menu-item-active" : ""} 
+            =link_to pact_chat_path(pact, pact.get_current_week), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-chat' do
               %span.glyphicon.glyphicon-comment.sidebar-pact-menu-item-glyphicon
               WhatsApp
           %li.sidebar-pact-menu-item
@@ -31,3 +30,4 @@
           = link_to new_pact_path, class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-new-pact' do
             %span.glyphicon.glyphicon-plus.sidebar-pact-menu-item-glyphicon
             Create New Pact
+

@@ -1,18 +1,47 @@
 Rails.application.routes.draw do
 
-  get 'pact_users_controller/new'
-
-  get 'pact_users_controller/create'
-
-  get 'pact_users_controller/index'
-
-  get 'pact_users_controller/show'
-
+  # USERS ##########################################################################################
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-
   devise_for :users
   
+
+  # STATIC PAGES ###################################################################################
+  root :to                      => 'pages#home'
+  get 'happybirthday'           => 'pages#happybirthday'
+
+
+  # PACT ###########################################################################################
+  get 'pacts/:id/add_users'       => 'pacts#add_users'
+  get 'pacts/:id/add_penalty'     => 'pacts#add_penalty'
+  get 'pacts/:id/add_goals'       => 'pacts#add_goals'
+  # resources :pacts do
+  #   resources :penalties
+  #   resources :goals
+  #   resources :week
+  #   resources :users
+  #   collection do
+  #     get ':pact_id/import/new', action: :new_import
+  #     post :import
+  #   end
+  # end
+  # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
+  resources :pacts do
+    resources :chat
+    resources :penalties
+    resources :goals
+    resources :weeks
+  end
+  get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
+  get 'pacts/:pact_id/chat/week/:week_id'   => 'chat#show',     as: 'pact_chat_week'
+
+  # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
+  # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
+  # get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
+
+
+
+  # OTHER MODELS ###################################################################################
   resources :messages do
     collection do
       get 'import/new', action: :new_import # import_new_chats_path (?)
@@ -20,62 +49,7 @@ Rails.application.routes.draw do
     end
   end
   
-  # resources :user
-  get 'pacts/:id/add_users'       => 'pacts#add_users'
-  # get 'pacts/pact_users'          => 'pacts#pact_users'
-  get 'pacts/:id/add_penalty'     => 'pacts#add_penalty'
-  get 'pacts/:id/add_goals'       => 'pacts#add_goals'
-  # get 'pacts/:id/import'          => 'pacts#import'
-  resources :pacts do
-    resources :penalties
-    resources :goals
-    resources :users
-    collection do
-      get ':pact_id/import/new', action: :new_import
-      post :import
-      
-    end
-  end
-  # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
-
-  resources :penalties
-  
-  resources :week
-
-  get 'workout_types/index'
-
-  get 'workouts/index'
-
-  resources :pact_user_relations
-  # get ':pact_user_relations(/:new(/:id(.:format)))' => 'pact_user_relations#new'
-  # get 'pact_user_relations/index'
-
-  get 'messages/index'
-
-
-  resources :goals
-
-
-  # STATIC PAGES
-  root :to                      => 'pages#home'
-  get 'happybirthday'           => 'pages#happybirthday'
-
-
-  # PACT PAGES
-  get 'chat/:pact_id'                 => 'chat#show',     as: 'chat'       # Chat for pact_id
-  get 'chat/:pact_id/:week_id'        => 'chat#show',     as: 'chat_week'  # Chat for pact_id
-
-  get 'tracking/:pact_id'             => 'tracking#show', as: 'tracking'   # Tracking for pact_id
-
-  # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
-  # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
-  # get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
-  get 'email/:pact_id/:week_id'       => 'week#email',    as: 'email_week'
-
-
-
-
-
+  resources :users
 
 
 

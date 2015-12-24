@@ -55,22 +55,30 @@ SIDEBAR
   margin: 0;
 }
 .sidebar-pact-menu-item-link,
-.sidebar-pact-menu-item-link:focus,
-.sidebar-pact-menu-item-link:active {
+.sidebar-pact-menu-item-link:visited {
   display: block;
   color: #7F8694;
-  padding: 12px 25px 12px 20px;
+  padding: 15px 25px 15px 20px;
   border-left: 5px solid transparent; 
-  &:hover {
+  &:hover,
+  &:focus {
     text-decoration: none;
     background: #383D46;
     border-left: 5px solid $blue;
     color: #ffffff;
   }
-}
-  .sidebar-pact-menu-item-active {
-    background: #ffffff;
+  &:active {
+    opacity: 0.8;
   }
+}
+.sidebar-pact-menu-item-active {
+  background: #ffffff;
+  .sidebar-pact-menu-item-link:hover {
+    background: #f0f0f0;
+    color: #7F8694;
+    border-left: 5px solid transparent;
+  }
+}
 .sidebar-pact-menu-item-glyphicon {
   margin-right: 10px;
 }
