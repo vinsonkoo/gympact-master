@@ -12,8 +12,5 @@
         = render 'layouts/sidebar'
       #page-content-wrapper
         = render 'layouts/header'
-        .page-content
-          .container-fluid
-            .row
-              .col-md-12
-                = yield
+        #page-content
+          = yield
