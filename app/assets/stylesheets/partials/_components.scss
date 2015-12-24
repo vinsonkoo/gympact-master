@@ -30,38 +30,3 @@ img.avatar {
 }
 
 
-/* TABLE ***************************/
-.table > thead > tr > th {
-		border: 0;
-		vertical-align: middle;
-	}
-table.table {
-	thead th, tr.total td{
-		font-family: $headings-font-family;
-		font-weight: normal;
-		font-size: 16px;
-		color: #A2A5AE;
-		background: $bglightgray;
-	}
-
-	th, td {
-		border-top: 0;
-		border-bottom: 1px solid $grayborder;
-		padding-top: 15px !important;
-		padding-bottom: 15px !important;
-		text-align: center;
-		vertical-align: middle;
-	}
-	td {background: #fff;}
-
-	/*thead:first-child th, tr:last-child td {padding-left: 30px;}
-	thead:last-child th, tr:last-child td {padding-right: 30px;}*/
-
-	.glyphicon {font-size: 16px;}
-	.glyphicon-ok-sign {color: $green;}
-	.glyphicon-question-sign {color: $gray-light;}
-	.glyphicon-remove-sign,
-	.glyphicon-ban-circle {color: $red;}
-
-
-}

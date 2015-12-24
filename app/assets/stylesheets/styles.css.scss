@@ -2,6 +2,7 @@
 @import "partials/variables";
 
 /* VENDORS [using Twitter's Bootstrap for base styles] */
+@import "bootstrap-sprockets";
 @import "bootstrap";
 
 /* PARTIALS [things that are used on more than one page]*/
@@ -10,6 +11,8 @@
 @import "partials/sidebar";
 @import "partials/header";
 @import "partials/components";
+@import "partials/stats";
+@import "partials/table";
 @import "partials/menu";
 
 /* PAGES */

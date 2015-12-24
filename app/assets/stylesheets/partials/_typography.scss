@@ -12,7 +12,20 @@ a, button, input, select, textarea {
 }
 
 
+body {
+  color: #4a4a4a;
+}
+
 a {
   text-decoration: none;
+  color: $blue;
+  &:hover {
+    color: $blue;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
   color: $blue;
 }

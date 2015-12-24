@@ -1,7 +1,15 @@
 #chat_menu.menu
-  #time_period.btn-group
+  #back.btn-group
+    %button.btn.btn-default
+      Pact Name
+  #display.btn-group.pull-right
+    %button.btn.btn-default.pull-right{:type => "button"}
+      %span.glyphicon.glyphicon-picture
+    %button.btn-active.btn.btn-left-border.btn-default.pull-right{:type => "button"}
+      %span.glyphicon.glyphicon-align-justify
+  #time_period.btn-group.pull-right
     .btn-group
-      %button.btn.btn-default.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+      %button.btn.btn-default.btn-left-border.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
         WEEK #{@current_week.week_number}
         %span.smalltext
           = @current_week.start_date.strftime("%b %d")
@@ -40,8 +48,3 @@
           %a{:href => "#"} Saturday
         %li
           %a{:href => "#"} Sunday
-  #display.btn-group.pull-right
-    %button.btn.btn-default.pull-right{:type => "button"}
-      %span.glyphicon.glyphicon-picture
-    %button.btn-active.btn.btn-left-border.btn-default.pull-right{:type => "button"}
-      %span.glyphicon.glyphicon-align-justify
