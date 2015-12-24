@@ -69,8 +69,8 @@ Rails.application.routes.draw do
 
   # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
   # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
-  get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
-  get 'email/:pact_id/:week_id'       => 'week#email',    as: 'email_week' # week_id for pact_id
+  # get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
+  get 'email/:pact_id/:week_id'       => 'week#email',    as: 'email_week'
 
 
 

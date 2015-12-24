@@ -4,6 +4,6 @@
       - if @active_pacts
         - @active_pacts.each do |pact|
           .align-center.col-lg-6
-            = link_to pact.name, chat_week_path(pact, pact.get_current_week), class: 'btn btn-active btn-default'
+            = link_to pact.name, pact_path(pact), class: 'btn btn-active btn-default'
       - else
         Create pact

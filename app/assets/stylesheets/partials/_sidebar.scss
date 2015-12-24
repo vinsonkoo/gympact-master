@@ -9,16 +9,22 @@ SIDEBAR
 }
 .sidebar-logo {
 	height: 100px;
-  padding-top: 27px;
+  padding-top: 29px;
 	background: $blue;
 }
-.sidebar-logo-link {
+.sidebar-logo-link,
+.sidebar-logo-link:active,
+.sidebar-logo-link:focus {
   display: block;
   color: #DAF8FF;
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
   font-size: 25px;
-  &:hover {text-decoration: none;}
+  &:hover {
+    color: #DAF8FF;
+    text-decoration: none;
+    opacity: 0.5;
+  }
   span {color: #fff;}
 }
 
@@ -35,7 +41,7 @@ SIDEBAR
   font-size: 11px;
   color: #7F8694;
   display: block;
-  padding: 0px 25px 15px 25px;
+  padding: 10px 25px 15px 25px;
   text-transform: uppercase;
   font-weight: bold;
 }

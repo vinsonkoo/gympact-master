@@ -1,12 +1,12 @@
 .sidebar
   .sidebar-logo.text-center
     = link_to raw("Gym<span>Pact</span>"), root_path, class: "sidebar-logo-link"
-  
 
   .sidebar-pacts
     - @active_pacts.each do |pact|
       .sidebar-pact{class: @current_pact == pact ? "sidebar-pact-active" : ""}
-        .sidebar-pact-name= pact.name
+        .sidebar-pact-name
+          = pact.name
         %ul.sidebar-pact-menu
           %li.sidebar-pact-menu-item{class: ((@current_pact == pact) && (params[:controller] == 'pacts')) ? "sidebar-pact-menu-item-active" : ""} 
             =link_to pact_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-pact' do

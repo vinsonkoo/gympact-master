@@ -22,7 +22,7 @@
               Worked Out
             %th.week.owed
               Owed
-        - @current_pact.get_users.each do |user|
+        - @current_pact.users.each do |user|
           %tr
             %td.name
               = user.username
@@ -41,7 +41,7 @@
         %tfoot
           %tr.total
             %td.name
-              = @current_pact.get_users.count
+              = @current_pact.users.count
               total members
             - # These functions still need to be written. See models/Pact.rb
             %td.summary.total= @current_pact.get_total_workout_days
