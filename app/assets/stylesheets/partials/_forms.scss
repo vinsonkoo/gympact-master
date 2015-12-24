@@ -1,0 +1,209 @@
+@import "partials/variables";
+
+/************************************************* 
+FORM
+**************************************************/
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number] {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  padding: 8px 10px;
+  width: 100%;
+  opacity: 0.7;
+}
+input:focus {
+  outline: 0;
+  border: 1px solid $blue;
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.50);
+}
+
+.form {
+  width: 700px;
+  margin: auto;
+  overflow: auto;
+  clear: both;
+}
+.form-row {
+  display: block;
+  padding: 10px 0;
+  overflow: auto;
+  clear: both;
+}
+.form-row-label {
+  float: left;
+  width: 25%;
+  display: inline-block;
+}
+.form-row-field {
+  float: left;
+  width: 75%;
+  display: inline-block;
+}
+
+.form-row-note {
+  color: $gray-light;
+  font-style: italic;
+  text-align: center;
+}
+/************************************************* 
+FORM FOR PACT: DATEPICKER
+**************************************************/
+
+.ui-datepicker {
+  background: #ffffff;
+  margin-top: 5px;
+  border: 1px solid $blue;
+}
+.ui-datepicker-header {
+  width: 100%;
+  text-align: center;
+}
+.ui-datepicker-prev {
+  float: left;
+}
+.ui-datepicker-next {
+  float: right;
+  border-left: 1px solid $border-gray;
+}
+.ui-datepicker-prev,
+.ui-datepicker-next {
+  width: 50%;
+  cursor: pointer;
+  padding: 5px 0;
+  border-bottom: 1px solid $border-gray;
+  font-weight: bold;
+  &:hover {
+    background: $bg-light-gray-hover;
+    text-decoration: none;
+  }
+  &:active {
+    box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+  }
+}
+.ui-datepicker-title {
+  display: block;
+  background-color: $bg-light-gray;
+  border-top: 1px solid $border-gray;
+  font-weight: bold;
+  padding: 40px 0 5px;
+}
+.ui-datepicker-calendar th {
+  font-size: 13px;
+}
+.ui-datepicker-calendar th {
+  padding: 5px 8px;
+  border-right: 1px solid $border-gray;
+  border-top: 1px solid $border-gray;
+}
+.ui-datepicker-calendar td {
+  padding: 0;
+  border-right: 1px solid $border-gray;
+  &:last-child {
+    border-right: 0;
+  }
+}
+.ui-datepicker-calendar td:hover {
+  background: $bg-light-gray;
+}
+.ui-datepicker-calendar td.ui-datepicker-unselectable {
+  background: $border-gray;
+}
+.ui-state-default {
+  padding: 3px 0;
+  color: $text-color;
+  display: block;
+  height: 100%;
+  width: 100%;
+  &:hover {
+    text-decoration: none;
+    color: $text-color;
+  }
+}
+
+/************************************************* 
+FORM FOR PENALTIES
+**************************************************/
+.form-penalties {
+  display: block;
+  overflow: auto;
+  clear: both;
+  margin-bottom: 30px;
+}
+.form-penalties-penalty {
+  display: block;
+  padding: 10px 0;
+  overflow: auto;
+  clear: both;
+}
+.form-penalties-penalty-goal {
+  display: inline-block;
+  float: left;
+  width: 25%;
+  padding-top: 8px;
+}
+.form-penalties-penalty-goal input[type=number]{
+  margin-right: 10px;
+  text-align: center;
+  border: 0;
+}
+.form-penalties-penalty-amount {
+  text-align: center;
+  float: left;
+  display: inline-block;
+  width: 75%;
+}
+
+/************************************************* 
+FORM FOR USERS
+**************************************************/
+.form-users {
+  display: block;
+  overflow: auto;
+  clear: both;
+  margin-bottom: 30px;
+}
+.form-users-user {
+  width: 25%;
+  padding: 10px 20px;
+  margin: 0 0 5px 0;
+  background: $bg-light-gray;
+  display: inline-block;
+  float: left;
+  border-right: 5px solid #ffffff;
+  &:nth-child(4n+4) {
+    border-right: 5px solid $bg-light-gray;
+  }
+}
+.form-users-user-checkbox {
+  width: 20px;
+  display: inline-block;
+}
+/************************************************* 
+FORM FOR GOALS
+**************************************************/
+.form-goals {
+  display: block;
+  overflow: auto;
+  clear: both;
+  margin-bottom: 30px;
+}
+.form-goals-goal {
+  display: block;
+  padding: 10px 0;
+  overflow: auto;
+  clear: both;
+}
+.form-goals-goal-user {
+  display: inline-block;
+  float: left;
+  width: 25%;
+  padding-top: 8px;
+}
+.form-goals-goal-days {
+  text-align: center;
+  float: left;
+  display: inline-block;
+  width: 75%;
+}

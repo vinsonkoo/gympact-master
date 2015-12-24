@@ -1,23 +1,37 @@
-%h3
-  Add Penalties To #{@pact.pact_name}
-= form_for setup_pact_penalties(@pact) do |f|
-  - if @pact.errors.any?
-    .error_explanation
-      %h2
-        = pluralize(@pact.errors.count, "error")
-        prohibited this pact from being saved.
-      %ul
-        - @pact.errors.full_messages.each do |msg|
-          %li= msg
-  .col-md-6
-    %h3 Goal Days
-  .col-md-6
-    %h3 Penalty
-  = f.fields_for :penalties do |ff|
-    .col-md-6
-      = ff.number_field :goal_days, :value => ff.index, :placeholder => ff.index, :readonly => true
-    .col-md-6
-      = ff.number_field :penalty, :step => 0.01
-    = ff.hidden_field :pact_id, :value => @pact.id
-    %br/
-  = f.submit :class => "btn"
+.content
+  .content-box
+    = render :partial => 'partials/create_pact_progress', :locals => {step: 2}
+
+    .form
+      %h2 Add Penalties To #{@pact.pact_name}
+      = form_for setup_pact_penalties(@pact) do |f|
+        - if @pact.errors.any?
+          .error_explanation
+            %h2
+              = pluralize(@pact.errors.count, "error")
+              prohibited this pact from being saved.
+            %ul
+              - @pact.errors.full_messages.each do |msg|
+                %li= msg
+        
+        .form-penalties
+          .form-penalties-penalty
+            .form-penalties-penalty-goal 
+              %strong If this is the goal...
+            .form-penalties-penalty-amount 
+              %strong ... this is the penalty for every missed day
+          = f.fields_for :penalties do |ff|
+            .form-penalties-penalty
+              .form-penalties-penalty-goal
+                = ff.index
+                days per week
+                = ff.hidden_field :goal_days, :value => ff.index, :placeholder => ff.index, :readonly => true
+              .form-penalties-penalty-amount
+                = ff.number_field :penalty, :step => 0.01
+                = ff.hidden_field :pact_id, :value => @pact.id
+        .form-row
+          = f.submit :class => "button button-full"
+
+        .form-row
+          .form-row-note 
+            Next Step: Add users

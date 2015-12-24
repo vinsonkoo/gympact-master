@@ -1,3 +1,7 @@
-.text-center
-  %h1 New Pact
-  = render 'form'
+.content
+  .content-box
+    = render :partial => 'partials/create_pact_progress', :locals => {step: 1}
+
+    .form
+      %h2 Create New Pact
+      = render 'form'

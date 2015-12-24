@@ -1,0 +1,72 @@
+.steps
+  - if step == 1
+    .steps-step.steps-step-active
+      .steps-step-number Step 1
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Create a new pact
+  - elsif step > 1
+    .steps-step.steps-step-done
+      .steps-step-number Step 1
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Pact created
+  - else
+    .steps-step.steps-step
+      .steps-step-number Step 1
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Create a new pact
+
+  - if step == 2
+    .steps-step.steps-step-active
+      .steps-step-number Step 2
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add penalties
+  - elsif step > 2
+    .steps-step.steps-step-done
+      .steps-step-number Step 2
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add penalties
+  - else
+    .steps-step
+      .steps-step-number Step 2
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add penalties
+
+
+  - if step == 3
+    .steps-step.steps-step-active
+      .steps-step-number Step 3
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add users
+  - elsif step > 3
+    .steps-step.steps-step-done
+      .steps-step-number Step 3
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add users
+  - else
+    .steps-step
+      .steps-step-number Step 3
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add users
+
+
+  - if step == 4
+    .steps-step.steps-step-active
+      .steps-step-number Step 4
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add goals
+  - else
+    .steps-step
+      .steps-step-number Step 4
+      .steps-step-circle
+        .steps-step-circle-img
+      .steps-step-label Add goals

@@ -1,18 +1,36 @@
-%h3
-  Add Users To #{@pact.pact_name}
-= link_to 'Create New Users', new_admin_user_path, :target => "_blank"
-%p Refresh page after creating new users
-= form_for @pact do |f|
-  - if @pact.errors.any?
-    .error_explanation
-      %h2
-        = pluralize(@pact.errors.count, "error")
-        prohibited this pact from being saved.
-      %ul
-        - @pact.errors.full_messages.each do |msg|
-          %li= msg
-  .col-md-12
-    = f.collection_check_boxes :user_ids, User.all, :id, :username do |b|
-      = b.check_box
-      = b.label
-  = f.submit "Add Users", :class => "btn"
+.content
+  .content-box
+    = render :partial => 'partials/create_pact_progress', :locals => {step: 3}
+
+    .form
+      %h2 Add users to #{@pact.pact_name}
+      
+      = form_for @pact do |f|
+        - if @pact.errors.any?
+          .error_explanation
+            %h2
+              = pluralize(@pact.errors.count, "error")
+              prohibited this pact from being saved.
+            %ul
+              - @pact.errors.full_messages.each do |msg|
+                %li= msg
+
+        .form-users
+          = f.collection_check_boxes :user_ids, User.all, :id, :username do |b|
+            .form-users-user
+              %span.form-users-user-checkbox
+                = b.check_box
+              %span.form-users-user-name
+                = b.label
+
+        %p
+          = link_to 'Create new users.', new_admin_user_path, :target => "_blank"
+          Remember to refresh page after creating new users.
+
+        .form-row
+          = f.submit "Add Users", :class => "button button-full"
+
+    
+        .form-row
+          .form-row-note 
+            Next Step: Add goals

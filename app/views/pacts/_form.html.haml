@@ -7,14 +7,25 @@
       %ul
         - @pact.errors.full_messages.each do |msg|
           %li= msg
-  .col-md-3
-    = f.label :pact_name, 'Pact Name'
-    = f.text_field :pact_name
-  .col-md-3
-    = f.label :start_date, 'Select Start Date'
-    = f.text_field :start_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
-  .col-md-3
-    = f.label :end_date, 'Select End Date'
-    = f.text_field :end_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
-  .col-md-3
-    = f.submit :class => "btn"
+
+  .form-row
+    = f.label :pact_name, 'Pact Name', class: 'form-row-label'
+    .form-row-field
+      = f.text_field :pact_name
+  .form-row
+    = f.label :start_date, 'Select Start Date', class: 'form-row-label'
+    .form-row-field
+      = f.text_field :start_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
+  .form-row
+    = f.label :end_date, 'Select End Date', class: 'form-row-label'
+    .form-row-field
+      = f.text_field :end_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
+  .form-row
+    %label.form-row-label &nbsp;
+    .form-row-field
+      = f.submit :class => "button button-full"
+
+  .form-row
+    %label.form-row-label &nbsp;
+    .form-row-field
+      .form-row-note Next Step: Add penalties

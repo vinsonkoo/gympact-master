@@ -39,3 +39,11 @@ body {
 .content {
   padding: 50px;
 }
+
+.content-box {
+  overflow: auto;
+  clear: both;
+  background: #ffffff;
+  padding: 50px;
+  border-radius: 5px;
+}

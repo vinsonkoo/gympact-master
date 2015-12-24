@@ -9,7 +9,7 @@
 					text-align: left; padding-left: 30px;
 				}
 			.name, .total, .missed, .goal, .charge, .paid {
-				border-right: 1px solid $grayborder;
+				border-right: 1px solid $border-gray;
 			}
 
 			thead th.week {
@@ -18,9 +18,9 @@
 			}
 
 			th.dates {
-				border-bottom: 1px solid $grayborder;}
+				border-bottom: 1px solid $border-gray;}
 			.owed, .completed, .dates 
-			{border-right: 1px solid $grayborder;}
+			{border-right: 1px solid $border-gray;}
 
 		}/*.table*/
 

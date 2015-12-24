@@ -3,13 +3,13 @@
 .menu {
 	margin: 0;
 	width: 100%;
-	background: $bglightgray;
-	border-bottom: 1px solid $grayborder;
+	background: $bg-light-gray;
+	border-bottom: 1px solid $border-gray;
 
 
 
 	.btn-group {
-		background: $bglightgray;
+		background: $bg-light-gray;
 	
 
 		/* BUTTON STYLE */
@@ -23,7 +23,7 @@
 			border-left: 0;
 			border-bottom: 0;
 			color: #A2A5AE;
-			background: $bglightgray;
+			background: $bg-light-gray;
 			text-transform: uppercase;
 			-webkit-border-radius: 0px;
 			-moz-border-radius: 0px;
@@ -32,7 +32,7 @@
 			font-weight: 600;	
 		}
 		.btn-left-border {
-			border-left: 1px solid $grayborder;}
+			border-left: 1px solid $border-gray;}
 
 		/* BUTTON HOVER AND ACTIVE STATES */
 		.btn-default:hover,
@@ -48,7 +48,7 @@
 		 {
 			color: #A2A5AE;
 			background: #fff;
-			border-color: $grayborder;
+			border-color: $border-gray;
 		}
 
 		/* SMALLTEXT WITHIN BUTTON */
@@ -74,9 +74,9 @@
 			font-family: $headings-font-family;
 			margin: 0;
 			padding: 0;
-			border: 1px solid $grayborder;
+			border: 1px solid $border-gray;
 			color: #A2A5AE;
-			background: $bglightgray;
+			background: $bg-light-gray;
 			-webkit-border-radius: 0px;
 			-moz-border-radius: 0px;
 			border-radius: 0px;
@@ -84,7 +84,7 @@
 			overflow: auto;
 
 			li {
-				border-bottom: 1px solid $grayborder;
+				border-bottom: 1px solid $border-gray;
 				a{
 					color: #A2A5AE;
 					padding: 10px 30px;

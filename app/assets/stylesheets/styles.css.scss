@@ -6,14 +6,16 @@
 @import "bootstrap";
 
 /* PARTIALS [things that are used on more than one page]*/
-@import "partials/typography";
 @import "partials/layout";
+@import "partials/typography";
 @import "partials/sidebar";
 @import "partials/header";
 @import "partials/components";
 @import "partials/stats";
 @import "partials/table";
 @import "partials/menu";
+@import "partials/forms";
+@import "partials/buttons";
 
 /* PAGES */
 @import "home";

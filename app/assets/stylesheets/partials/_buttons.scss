@@ -1,0 +1,37 @@
+@import "partials/variables";
+
+/************************************************* 
+BUTTONS
+**************************************************/
+
+.button {
+  border: 0;
+  color: #fff;
+  background: $blue;
+  border-radius: 3px;
+  padding: 10px 50px;
+  font-size: 15px;
+  &:hover {
+    background: #66C4D9; 
+    color: #fff;
+  }
+  &:active {
+    box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+  }
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+}
+.button-full {
+  width: 100%;
+}
+
+.btn-red {
+  background: #BB5A5A;
+  &:hover {
+    background: #A54343; 
+  }
+}
+
+

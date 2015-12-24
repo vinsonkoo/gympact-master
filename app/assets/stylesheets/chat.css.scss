@@ -56,7 +56,7 @@
 				.message {
 					margin: 25px 0;
 					padding: 0 25px;
-					border-right: 1px solid $grayborder;
+					border-right: 1px solid $border-gray;
 					-webkit-border-top-right-radius: 0px;
 					-webkit-border-bottom-right-radius: 0px;
 					-moz-border-radius-topright: 0px;
@@ -111,17 +111,17 @@
 					.btn-gray {
 						border: 0;
 						color: #A2A5AE;
-						background: $bglightgray;
+						background: $bg-light-gray;
 					}
 					.btn-add {
-						border: 1px dashed $grayborder;
+						border: 1px dashed $border-gray;
 						color: #AEAEAE;
 						font-family: $font-family-sans-serif;
 						font-size: $font-size-base;
 						&:hover {
 							background: none;
 							color: #AEAEAE;
-							background: $bglightgray;
+							background: $bg-light-gray;
 							border: 1px dashed #B8B8B8;
 						}
 					}/*btn-add*/
@@ -139,7 +139,7 @@
 						border-radius: 5px;
 
 						&:focus, &:active, &:hover {
-							border: 1px solid $grayborder;
+							border: 1px solid $border-gray;
 							padding: 5px 8px;
 						}
 					}

@@ -8,25 +8,3 @@ img.avatar {
 	border-radius: 1000px;
 }
 
-/**** BUTTONS ***************************/
-.btn-blue {
-	border: 0;
-	color: #fff;
-	background: $blue;
-	&:hover {
-		background: #66C4D9; 
-		color: #fff;
-	}
-}
-
-.btn-red {
-	border: 0;
-	color: #fff;
-	background: #BB5A5A;
-	&:hover {
-		background: #A54343; 
-		color: #fff;
-	}
-}
-
-

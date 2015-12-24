@@ -1,12 +1,4 @@
-/* Defining colors */
-$blue: #5CB1C4;
-$lightblue: #DAF8FF;
-$bglightgray: #F7F7F7;
-$grayborder: #DCDEDD;
-$gray-light: #A2A5AE;
-$green: #4D9666;
-$red: #BB5A5A;
-$orange: #ED966F;
+/******* TYPOGRAPHY ******************/
 
 /* Importing Google Fonts */
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Lato:300,400,700,900|Open+Sans:400,300);
@@ -20,15 +12,36 @@ $font-size-base: 14px;
 $font-size-h1: 3em;
 
 
-/* Changing the color of link text
-See: http://getbootstrap.com/customize */
-$brand-primary: $blue;
-
 /* Changing the color of header text
 See: http://getbootstrap.com/customize */
 $headings-font-family: 'Source Sans Pro';
 $headings-font-weight: 300;
 
 
+/******* LAYOUT ******************/
 /* Padding between columns in grid */
 $grid-gutter-width: 0px;
+
+
+/******* COLORS ******************/
+$blue: #5CB1C4;
+$lightblue: #DAF8FF;
+$gray-light: #A2A5AE;
+$green: #4D9666;
+$red: #BB5A5A;
+$orange: #ED966F;
+
+
+/******* LINKS ******************/
+$brand-primary: $blue; /* Changing the color of link text. 
+                      See: http://getbootstrap.com/customize */
+
+
+/******* BORDERS ******************/
+$border-gray: #dddddd;
+
+
+
+/******* BACKGROUND ******************/
+$bg-light-gray: #F7F7F7;
+$bg-light-gray-hover: #eeeeee;

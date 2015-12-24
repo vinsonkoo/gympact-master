@@ -5,157 +5,155 @@
 
 
 
-%h1= @pact.pact_name
-%table
-  %thead
-    %tr
-      %th Pact ID
-      %th Pact Name
-      %th Start Date
-      %th End Date
-      %th Is Active?
-    %tr
-      %td= @pact.id
-      %td= @pact.pact_name
-      %td= @pact.start_date
-      %td= @pact.end_date
-      %td= @pact.is_active
-
-
-
-
-%h1 Weeks
-
-%table
-  %thead
-    %tr
-      %th Week ID
-      %th Week Number
-      %th Week Start Date
-      %th Week End Date
-      %th Pact ID
-    %tbody
-      -@pact.weeks.each do |week|
-        %tr
-          %td= week.id
-          %td= week.week_number
-          %td= week.start_date
-          %td= week.end_date
-          %td= week.pact_id
-
-
-
-%h1 Users
-
-- if @users.present?
   %table
     %thead
       %tr
-        %th User ID
-        %th First Name
-        %th Last Name
-        %th Username
-    %tbody
-      -@users.each do |user|
-        %tr
-          %td= user.id
-          %td= user.first_name
-          %td= user.last_name
-          %td= user.username
-  %p= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact
-
-%p= link_to "Create Users", new_admin_user_path, :target => '_blank'
-
-
-%h1 Penalties
-
-
--if @pact.penalties.present?
-  %table
-    %thead
-      %tr
-        %th Goal Days
-        %th Penalty
-    %tbody
-      -@pact.penalties.each do |penalty|
-        %tr
-          %td= penalty.goal_days
-          %td= number_to_currency(penalty.penalty)
-  %p= link_to "Edit penalties for #{@pact.pact_name}", controller: "pacts", action: "add_penalty", id: @pact
--else
-  %p 
-    Penalties do not exist yet. 
-    = link_to "Add Penalty", controller: "pacts", action: "add_penalty", id: @pact
-
-
-%h1 Goals
-
-- if @pact.goals.present?
-  %table
-    %thead
-      %tr
-        %th User ID
         %th Pact ID
-        %th Goal
-        %th Goal ID
-        %th Week ID / Week #
+        %th Pact Name
+        %th Start Date
+        %th End Date
+        %th Is Active?
+      %tr
+        %td= @pact.id
+        %td= @pact.pact_name
+        %td= @pact.start_date
+        %td= @pact.end_date
+        %td= @pact.is_active
+
+
+
+
+  %h1 Weeks
+
+  %table
+    %thead
+      %tr
+        %th Week ID
+        %th Week Number
+        %th Week Start Date
+        %th Week End Date
+        %th Pact ID
+      %tbody
+        -@pact.weeks.each do |week|
+          %tr
+            %td= week.id
+            %td= week.week_number
+            %td= week.start_date
+            %td= week.end_date
+            %td= week.pact_id
+
+
+
+  %h1 Users
+
+  - if @users.present?
+    %table
+      %thead
+        %tr
+          %th User ID
+          %th First Name
+          %th Last Name
+          %th Username
+      %tbody
+        -@users.each do |user|
+          %tr
+            %td= user.id
+            %td= user.first_name
+            %td= user.last_name
+            %td= user.username
+  
+  %p= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact
+  %p= link_to "Create Users", new_admin_user_path, :target => '_blank'
+
+
+  %h1 Penalties
+
+
+  -if @pact.penalties.present?
+    %table
+      %thead
+        %tr
+          %th Goal Days
+          %th Penalty
+      %tbody
+        -@pact.penalties.each do |penalty|
+          %tr
+            %td= penalty.goal_days
+            %td= number_to_currency(penalty.penalty)
+    %p= link_to "Edit penalties for #{@pact.pact_name}", controller: "pacts", action: "add_penalty", id: @pact
+  -else
+    %p 
+      Penalties do not exist yet. 
+      = link_to "Add Penalty", controller: "pacts", action: "add_penalty", id: @pact
+
+
+  %h1 Goals
+
+  - if @pact.goals.present?
+    %table
+      %thead
+        %tr
+          %th User ID
+          %th Pact ID
+          %th Goal
+          %th Goal ID
+          %th Week ID
+      %tbody
+        -@pact.goals.each do |pg|
+          %tr
+            %td
+              = pg.user_id
+              = pg.get_user(pg.user_id).username
+            %td= pg.pact_id
+            %td= pg.goal
+            %td= pg.id
+            %td= pg.week_id
+
+
+  %p= link_to 'Edit Goals', controller: "pacts", action: "add_goals", id: @pact
+
+
+
+
+  %h1 Dashboard
+
+
+  %table
+    %thead
+      %tr
+        %th User ID
+        %th Full Name
+        %th Week
+        %th Goal Days
+        %th Penalty  Per Missed Day
+        %th Weekly Total Workout
+        %th Bonus Days
+        %th Total Missed Days at Beginning of Week
+        %th Total Missed Days At End of Week
+        %th Weekly Penalty Total
+        %th Penalty Total At Beginning of Week
+        %th Amount Paid
     %tbody
-      -@pact.goals.each do |pg|
-        %tr
-          %td= pg.user_id
-          %td= pg.pact_id
-          %td= pg.goal
-          %td= pg.id
-          %td
-            = pg.week_id
-            = pg.week.week_number
-
-
-%p= link_to 'Edit Goals', controller: "pacts", action: "add_goals", id: @pact
-
-
-
-
-%h1 Dashboard
-
-
-%table
-  %thead
-    %tr
-      %th User ID
-      %th Full Name
-      %th Week
-      %th Goal Days
-      %th Penalty  Per Missed Day
-      %th Weekly Total Workout
-      %th Bonus Days
-      %th Total Missed Days at Beginning of Week
-      %th Total Missed Days At End of Week
-      %th Weekly Penalty Total
-      %th Penalty Total At Beginning of Week
-      %th Amount Paid
-  %tbody
-    -@pact.weeks.each do |pw|
-      -@pact.users.each do |pu|
-        %tr
-          %td= pu.id
-          %td
-            = pu.first_name
-            = pu.last_name
-            (#{pu.username})
-          %td= pw.week_number
-          %td
-            -if !pu.goals.find_by(week_id: pw.id).nil?
-              = pu.goals.find_by(week_id: pw.id).goal
-          %td
-            -if !@pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id))).nil?
-              = number_to_currency(@pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id).goal) ).goal_days)
-          %td
-          %td
-          %td
-          %td
-          %td
-          %td
-          %td
+      -@pact.weeks.each do |pw|
+        -@pact.users.each do |pu|
+          %tr
+            %td= pu.id
+            %td
+              = pu.first_name
+              = pu.last_name
+            %td= pw.week_number
+            %td
+              -if !pu.goals.find_by(week_id: pw.id).nil?
+                = pu.goals.find_by(week_id: pw.id).goal
+            %td
+              -if !@pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id))).nil?
+                = number_to_currency(@pact.penalties.find_by(goal_days: (pu.goals.find_by(week_id: pw.id).goal) ).goal_days)
+            %td
+            %td
+            %td
+            %td
+            %td
+            %td
+            %td
 
 

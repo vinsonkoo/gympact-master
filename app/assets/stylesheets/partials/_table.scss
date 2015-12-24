@@ -14,14 +14,13 @@ table {
     font-weight: normal;
     font-size: 16px;
     color: #A2A5AE;
-    background: $bglightgray;
+    background: $bg-light-gray;
   }
 
   th, td {
     border-top: 0;
-    border-bottom: 1px solid $grayborder;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    border-bottom: 1px solid $border-gray;
+    padding: 5px 8px;
     text-align: center;
     vertical-align: middle;
   }
