@@ -6,7 +6,7 @@
 /* Changing the styling of the body text
 See: http://getbootstrap.com/customize */
 $text-color: #636A7A;
-$line-height-base: 1.8;
+$line-height-base: 1.2;
 $font-family-sans-serif: "Source Sans Pro";
 $font-size-base: 14px;
 $font-size-h1: 3em;
@@ -43,5 +43,6 @@ $border-gray: #dddddd;
 
 
 /******* BACKGROUND ******************/
+$bg-body: #F0F0F0;
 $bg-light-gray: #F7F7F7;
 $bg-light-gray-hover: #eeeeee;

@@ -22,6 +22,11 @@
     background-repeat: no-repeat;
     background-position: left center;
   }
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
 }
 
 /******* CIRCLE ******************/
@@ -49,15 +54,14 @@
 /******* ACTIVE ******************/
 .steps-step-active {
   background-image: image-url('background/bg-blue-gray.png');
-  &:first-child {
-    background-image: image-url('background/bg-gray.png');
-  }
-  &:last-child {
-    background-image: image-url('background/bg-blue.png');
-  }
+}
+.steps-step:first-child.steps-step-active {
+  background-image: image-url('background/bg-gray.png');
+}
+.steps-step:last-child.steps-step-active {
+  background-image: image-url('background/bg-blue.png');
 }
 .steps-step-active .steps-step-circle-img {
-  /*background: $border-gray;*/
   border: 5px solid $blue;
 }
 .steps-step-active .steps-step-number,

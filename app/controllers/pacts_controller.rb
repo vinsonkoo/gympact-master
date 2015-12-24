@@ -45,14 +45,19 @@ class PactsController < ApplicationController
     @pact = Pact.find(params[:id])
     @weeks = Week.all
     @users = @pact.users
-    # @goals = @pact.user.goals
+    @goals = @pact.goals
 	end
+
+  def users
+    @pact = Pact.find(params[:pact_id])
+    @users = @pact.users
+  end
 
   def add_users 
     @pact = Pact.find(params[:id])
   end
 
-  def add_penalty 
+  def add_penalties
     @pact = Pact.find(params[:id])
   end
 

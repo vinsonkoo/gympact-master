@@ -1,4 +1,85 @@
+@import "partials/variables";
+
 /***********************************
 STATS
 ************************************/
-.stats-container {}
+.summary-stats {
+  display: block;
+  overflow: auto;
+  clear: both;
+  margin-bottom: 20px;
+}
+
+.summary-stats-stat-container {
+  padding-right: 5px;
+  width: 25%;
+  float: left;
+  display: inline-block;
+  &:nth-child(4n+4) {
+    padding-right: 0;
+  }
+}
+
+/***************** STAT *******************/
+
+.summary-stats-stat {
+  display: block;
+  color: $text-color;
+  padding: 20px;
+  background: #ffffff;
+  height: 120px;
+  border: 1px solid #ffffff;
+  border-top: 5px solid #ffffff;
+}
+.summary-stats-stat:hover,
+.summary-stats-stat:active,
+.summary-stats-stat:focus {
+  color: $text-color;
+  border-top: 5px solid $blue;
+  cursor: pointer;
+  text-decoration: none;
+}
+.summary-stats-stat:active {
+  opacity: 0.9;
+  box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+}
+
+.summary-stats-stat-label {
+  color: #9d9d9d;
+  margin-bottom: 5px;
+}
+.summary-stats-stat-number {
+  font-size: 2.4rem;
+  margin-bottom: 4px;
+}
+.summary-stats-stat-link:hover {
+  text-decoration: none;
+}
+.summary-stats-stat-link .summary-stats-stat-number {
+  color: $text-color;
+}
+
+/***************** EMPTY *******************/
+
+.summary-stats-stat-empty {
+  text-align: center;
+  padding-top: 25px;
+  color: #C7C8CB;
+  background: transparent;
+  border: 1px dashed #C7C8CB;
+}
+a.summary-stats-stat-empty:hover,
+a.summary-stats-stat-empty:active,
+a.summary-stats-stat-empty:focus {
+  border: 1px dashed $gray-light;
+  color: $gray-light;
+}
+a.summary-stats-stat-empty:active {
+  box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+}
+.summary-stats-stat-glyphicon {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: normal;
+}

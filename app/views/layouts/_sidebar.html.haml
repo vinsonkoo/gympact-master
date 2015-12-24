@@ -10,7 +10,7 @@
           %li.sidebar-pact-menu-item{class: @current_pact == pact && params[:controller] == "pacts" && params[:action] == "show" ? "sidebar-pact-menu-item-active" : ""} 
             =link_to pact_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-overview' do
               %span.glyphicon.glyphicon-home.sidebar-pact-menu-item-glyphicon
-              Overview
+              = pact.name
           %li.sidebar-pact-menu-item{class: @current_pact == pact && params[:controller] == "pacts" && params[:action] == "users" ? "sidebar-pact-menu-item-active" : ""} 
             =link_to pact_users_path(pact), class: 'sidebar-pact-menu-item-link sidebar-pact-menu-item-users' do
               %span.glyphicon.glyphicon-user.sidebar-pact-menu-item-glyphicon

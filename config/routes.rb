@@ -12,9 +12,9 @@ Rails.application.routes.draw do
 
 
   # PACT ###########################################################################################
-  get 'pacts/:id/add_users'       => 'pacts#add_users'
-  get 'pacts/:id/add_penalty'     => 'pacts#add_penalty'
-  get 'pacts/:id/add_goals'       => 'pacts#add_goals'
+  get 'pacts/:id/add_users'       => 'pacts#add_users',     as: "add_users"
+  get 'pacts/:id/add_goals'       => 'pacts#add_goals',     as: "add_goals"
+  get 'pacts/:id/add_penalties'     => 'pacts#add_penalties',   as: "add_penalties"
   # resources :pacts do
   #   resources :penalties
   #   resources :goals

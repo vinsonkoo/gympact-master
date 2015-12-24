@@ -11,20 +11,28 @@ BUTTONS
   border-radius: 3px;
   padding: 10px 50px;
   font-size: 15px;
+  text-align: center;
   &:hover {
     background: #66C4D9; 
     color: #fff;
+    text-decoration: none;
   }
   &:active {
+    box-shadow: none;
     box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+    text-decoration: none;
+    color: #ffffff;
   }
   &:focus,
   &:active {
+    text-decoration: none;
+    color: #ffffff;
     outline: 0;
   }
 }
 .button-full {
   width: 100%;
+  display: block;
 }
 
 .btn-red {

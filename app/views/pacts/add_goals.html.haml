@@ -1,46 +1,51 @@
 .content
   .content-box
-    = render :partial => 'partials/create_pact_progress', :locals => {step: 4}
+    = render :partial => 'partials/create_pact_progress'
 
     .form
-      %h2 Add goals for users in #{@pact.pact_name}
-      = form_for setup_pact_goals(@pact) do |f|
-        - if @pact.errors.any?
-          .error_explanation
-            %h2
-              = pluralize(@pact.errors.count, "error")
-              prohibited this goal from being saved.
-            %ul
-              - @pact.errors.full_messages.each do |msg|
-                %li= msg
-
-        .form-goals
-          .form-goals-goal
-            .form-goals-goal-user
-              %strong Users
-            .form-goals-goal-days
-              %strong Weekly Goal Days
-
-          - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-          - else
-            - @pact.users.each do |pu|
-              = f.fields_for :goals do |ff|
-                .form-goals-goal
-                  .form-goals-goal-user
-                    = pu.first_name
-                    = pu.last_name
-                    \#{ff.hidden_field :user_id, :value => pu.id}
-                  .form-goals-goal-days
-                    = ff.number_field :goal, min: 0, max: 7, :step => '1'
-                  = ff.hidden_field :pact_id, :value => @pact.id
-                  - if @pact.is_active == true
-                    = ff.hidden_field :week_id, :value => @pact.get_current_week.id
-                  - else
-                    = ff.hidden_field :week_id, :value => '1'
-          
+      - if !@pact.users.present?
         .form-row
-          = f.submit "Add Goals", :class => "button button-full"
+          =link_to add_users_path(@pact.id), class: "button button-full" do
+            &laquo; &nbsp; Add users before adding goals
+      - else
+        %h2 Add goals for users in #{@pact.pact_name}
+        = form_for setup_pact_goals(@pact) do |f|
+          - if @pact.errors.any?
+            .error_explanation
+              %h2
+                = pluralize(@pact.errors.count, "error")
+                prohibited this goal from being saved.
+              %ul
+                - @pact.errors.full_messages.each do |msg|
+                  %li= msg
 
-        .form-row
-          .form-row-note 
-            You're done!
+          .form-goals
+            .form-goals-goal
+              .form-goals-goal-user
+                %strong Users
+              .form-goals-goal-days
+                %strong Weekly Goal Days
+
+            - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
+            - else
+              - @pact.users.each do |pu|
+                = f.fields_for :goals do |ff|
+                  .form-goals-goal
+                    .form-goals-goal-user
+                      = pu.first_name
+                      = pu.last_name
+                      \#{ff.hidden_field :user_id, :value => pu.id}
+                    .form-goals-goal-days
+                      = ff.number_field :goal, min: 0, max: 7, :step => '1'
+                    = ff.hidden_field :pact_id, :value => @pact.id
+                    - if @pact.is_active == true
+                      = ff.hidden_field :week_id, :value => @pact.get_current_week.id
+                    - else
+                      = ff.hidden_field :week_id, :value => '1'
+            
+          .form-row
+            = f.submit "Add Goals", :class => "button button-full"
+
+          .form-row
+            .form-row-note 
+              You're done!

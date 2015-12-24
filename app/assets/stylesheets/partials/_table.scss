@@ -3,37 +3,31 @@
 /* TABLE ***************************/
 table {
   width: 100%;
+  border: 1px solid $border-gray;
+  margin-bottom: 30px;
 }
-table > thead > tr > th,
-table > thead > tr > td {
+table thead th,
+table tfoot td{
+  font-family: $headings-font-family;
+  font-weight: normal;
+  font-size: 15px;
+  color: #888C96;
+  background: $bg-light-gray;
   vertical-align: middle;
 }
-table {
-  thead th, tr.total td{
-    font-family: $headings-font-family;
-    font-weight: normal;
-    font-size: 16px;
-    color: #A2A5AE;
-    background: $bg-light-gray;
-  }
-
-  th, td {
-    border-top: 0;
-    border-bottom: 1px solid $border-gray;
-    padding: 5px 8px;
-    text-align: center;
-    vertical-align: middle;
-  }
-  td {background: #fff;}
-
-  /*thead:first-child th, tr:last-child td {padding-left: 30px;}
-  thead:last-child th, tr:last-child td {padding-right: 30px;}*/
-
-  .glyphicon {font-size: 16px;}
-  .glyphicon-ok-sign {color: $green;}
-  .glyphicon-question-sign {color: $gray-light;}
-  .glyphicon-remove-sign,
-  .glyphicon-ban-circle {color: $red;}
-
-
+th, td {
+  border-top: 0;
+  border-bottom: 1px solid $border-gray;
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.1em;
+  &.border-left {border-left: 1px solid $border-gray;}
+  &.border-right {border-right: 1px solid $border-gray;}
+}
+td {
+  background: #ffffff;
+}
+tr:last-child {
+  border-bottom: 0;
 }
