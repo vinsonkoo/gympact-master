@@ -1,13 +1,6 @@
+= render partial: 'menu'
 .content
   .content-section
-    %h1
-      = @pact.pact_name
-      %span.secondary
-        &nbsp;&nbsp;
-        = @pact.start_date.strftime("%b %e")
-        to
-        = @pact.end_date.strftime("%b %e")
-
     .summary-stats
       .summary-stats-stat-container
         .summary-stats-stat
