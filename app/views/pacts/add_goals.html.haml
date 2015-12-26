@@ -27,6 +27,7 @@
                 %strong Weekly Goal Days
 
             - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
+              / = render 'goals_form'
             - else
               - @pact.users.each do |pu|
                 = f.fields_for :goals do |ff|

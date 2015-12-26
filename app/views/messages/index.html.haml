@@ -1,8 +1,8 @@
 %h1 Messages#index
 %p Find me in app/views/messages/index.html.erb
-- =begin
-= flash[:notice]
-- =end
+/ - =begin
+/ = flash[:notice]
+/ - =end
 %h3 Import Chat
 = form_tag import_messages_path, multipart: true do
   %label{:for => "file"} Upload Chat File

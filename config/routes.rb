@@ -27,6 +27,10 @@ Rails.application.routes.draw do
   # end
   # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
   resources :pacts do
+    collection do
+      get ':pact_id/import/new', action: :new_import
+      post :import
+    end
     resources :chat
     resources :penalties
     resources :goals
