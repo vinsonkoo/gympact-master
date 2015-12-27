@@ -1,0 +1,12 @@
+.menu
+  .menu-left
+    = link_to pact_path(@pact), class: "menu-button" do
+      %span.menu-button-text
+        %strong= @pact.pact_name
+  .menu-right
+    =link_to new_pact_chat_path(@pact), class: "menu-button" do
+      %span.menu-button-glyphicon.glyphicon.glyphicon-pencil
+      %span.menu-button-text Edit chat
+    =link_to new_pact_chat_path(@pact), class: "menu-button" do
+      %span.menu-button-glyphicon.glyphicon.glyphicon-plus
+      %span.menu-button-text Upload chat

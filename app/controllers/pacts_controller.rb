@@ -43,7 +43,7 @@ class PactsController < ApplicationController
 
   def show
     @pact = Pact.find(params[:id])
-    @weeks = Week.all
+    @weeks = @pact.weeks
     @users = @pact.users
     @goals = @pact.goals
 	end

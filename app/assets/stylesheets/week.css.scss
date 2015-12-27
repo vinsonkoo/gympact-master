@@ -1,5 +1,38 @@
 @import "partials/variables";
 
+.week-button-previous {
+	float: left;
+	text-align: left;
+	padding-left: 10px;
+}
+.week-button-next {
+	float: left;
+	text-align: right;
+	padding-right: 10px;
+}
+.week-button-previous,
+.week-button-next {
+	display: inline-block;
+	width: 20%;
+	height: 100%;
+	padding-top: 9px;
+	color: $text-color;
+	opacity: 0.5;
+	overflow: auto;
+	&:hover {
+		opacity: 1.0;
+		text-decoration: none;
+		color: $text-color;
+	}
+}
+.week-button-number {
+	float: left;
+	display: inline-block;
+	width: 60%;
+	height: 100%;
+}
+
+
 #week_wrapper {
 
 	/* WEEK ***************************/
