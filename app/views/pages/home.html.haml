@@ -1,9 +1,15 @@
-#home_wrapper
-  .container-fluid
-    .row
-      - if @active_pacts
-        - @active_pacts.each do |pact|
-          .align-center.col-lg-6
-            = link_to pact.name, pact_path(pact), class: 'btn btn-active btn-default'
-      - else
-        Create pact
+.content
+
+  - if @active_pacts
+    - @active_pacts.each do |pact|
+      .home-pact
+        = link_to pact_path(pact), class: 'home-button home-button-pact' do
+          %span.glyphicon.glyphicon-home.home-button-glyphicon
+          =pact.name
+
+
+  .home-pact
+    = link_to new_pact_path, class: 'home-button home-button-add' do
+      %span.glyphicon.glyphicon-plus.home-button-glyphicon
+      Add Pact
+

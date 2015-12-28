@@ -1,48 +1,62 @@
 @import "partials/variables";
 
-
-#home_wrapper {
-	padding: 100px 100px 0px 100px;
-
-	/* [USING SASS] Responsive: When screen gets to be below 950px and 600px respectively,
-	set the padding to 100px 50px and 100px 25px 
-	Read more: http://thesassway.com/intermediate/responsive-web-design-in-sass-using-media-queries-in-sass-32 */
-	@media screen and (max-width: 950px) {
-		padding: 100px 50px;
+.home-pact {
+	display: inline-block;
+	border-radius: 5px;
+	float: left;
+	width: 50%;
+	overflow: auto;
+	padding-bottom: 5px;
+	padding-right: 5px;
+	&:nth-child(2n+2) {
+		padding-right: 0;
 	}
-	@media screen and (max-width: 600px) {
-		padding: 100px 0;
+}
+.home-button {
+	display: block;
+	text-align: center;
+	border-radius: 5px;
+	width: 100%;
+	padding: 70px 50px 60px 50px;
+	font-family: $headings-font-family;
+	font-weight: $headings-font-weight;
+	font-size: $font-size-h1;
+	&:hover, &:active, &:focus {
+		text-decoration: none;
 	}
+	&:hover {
+		opacity: 0.85;
+	}
+}
+.home-button-glyphicon {
+	display: block;
+	margin-bottom: 20px;
+}
+.home-button-pact {
+	color: #fff;
+	background-color: $blue;
+	background-repeat: no-repeat;
+	background-position: center 60px;
+	&:hover, &:active, &:focus {
+		color: #ffffff;
+	}
+	&:active {
+		box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
+	}
+}
+.home-button-add {
+	color: #C7C8CB;
+  background: transparent;
+  border: 1px dashed #C7C8CB;
 
-
-	.btn{
-		padding: 130px 25px 40px 25px;
-		font-family: $headings-font-family; /* [USING SASS] these variables can be set in assets/stylesheets/partials/_variables.scss */
-		font-weight: $headings-font-weight;
-		font-size: $font-size-h1;
-		border: 0;
-		overflow: auto;
-		margin: 2px auto;
-		width: 99%;
-		color: #fff;
-		background-color: $blue;
-		background-image: image-url('icons/users.png');
-		background-repeat: no-repeat;
-		background-position: center 60px;
-
-
-		
-		/* [USING SASS] This compiles to a:hover {...}. 
-		Using & means to refer to the parent selector, in this case the 'a' */
-		&:hover {text-decoration: none;} 
-
-		/* [USING SASS] This compiles to button:hover {...} */
-		&:hover {
-			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
-  		filter: alpha(opacity=85);/* IE 5-7 */
-  		-moz-opacity: 0.85; /* Netscape */
-  		-khtml-opacity: 0.85;/* Safari 1.x */
-  	  opacity: 0.85;/* Good browsers */
-		}
+  font-family: $headings-font-family;
+	font-weight: $headings-font-weight;
+	font-size: $font-size-h1;
+	&:hover, &:active, &:focus {
+		border: 1px dashed $gray-light;
+  	color: $gray-light;
+	}
+	&:active {
+		box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.15);
 	}
 }
