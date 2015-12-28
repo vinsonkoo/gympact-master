@@ -1,5 +1,5 @@
 #chat_wrapper.show
-  = render 'chat/menu'
+  = render partial: 'partials/pact_menu'
   #chat
     - @messages.each do |message|
       %div{:class => "container-fluid chat-row photo-row", :id => "message-row-#{message.id}"}

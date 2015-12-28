@@ -2,6 +2,7 @@ class ChatController < ApplicationController
 
   def show
   	@messages = Message.where(pact_id: params[:pact_id]).order(:date_sent)
+    @pact = Pact.find_by(params[:id]) 
   end
 
   def index
