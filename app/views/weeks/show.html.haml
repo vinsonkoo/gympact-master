@@ -67,3 +67,20 @@
           %td
           %td
           %td
+
+  .content-box
+    .week-email
+      %span.glyphicon.glyphicon-envelope.week-email-icon
+      %h3.week-email-title 
+        Week
+        = @week.week_number
+        Email Template
+      %textarea.week-email-textarea.week-email-textarea-addresses
+        -@users.each_with_index do |user, index|
+          -if index == @users.size - 1
+            #{user.email}
+          -else
+            #{user.email},&nbsp;
+      %textarea.week-email-textarea.week-email-textarea-email
+        Hi everyone!&#10;&#10;Congrats on completing Week #{@week.week_number} of #{@week.pact.pact_name}! This week, we had 5 people fall short of their goals. As a group, we worked out 75 times, with 3 people achieving bonus days (congrats to Justin, Sam, and Zeus!). As of now, we have $52.25 in the GymPact Bank for HotPot/Korean BBQ! As always, feel free to check out the tracking sheet here.
+

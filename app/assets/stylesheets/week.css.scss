@@ -1,5 +1,8 @@
 @import "partials/variables";
 
+/************************************************* 
+MENU
+**************************************************/
 .week-button-previous {
 	float: left;
 	text-align: left;
@@ -33,68 +36,27 @@
 }
 
 
-#week_wrapper {
-
-	/* WEEK ***************************/
-	#week {
-		
-		/* TABLE COLUMNS */
-		.table {
-			.status {padding-left: 20px; }
-			.name {text-align: left; padding-left: 30px;}
-			.monday, .total, .charge, .goal, .left, .bonus{
-				border-left: 1px solid $border-gray;}
-
-			.paid {
-				.btn {
-					margin-top: -5px;
-					margin-bottom: -5px;
-				}
-			}
-		}/*.table*/
-	}/*#week*/
-
-
-	#email {
-		padding: 25px;
-
-		.box {
-			width: 100%;
-			padding: 25px;
-			margin-bottom: 25px;
-			background: #fff;
-			-webkit-border-radius: 5px;
-			-moz-border-radius: 5px;
-			border-radius: 5px;}
-
-		span.glyphicon {
-			color: #B9E5F0;
-			font-size: 20px;
-			display: block;
-		}
-
-		textarea {
-			margin-top: 20px;
-			width: 100%;
-			height: auto;
-			border: 0;
-			-webkit-border-radius: 5px;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-			border: 1px solid $border-gray;
-			padding: 10px;
-			text-align: left;
-
-
-			&.email_addresses {}
-			&.email_template {
-				height: 300px;
-			}
-		}
-
-
-	}/*#email*/
-
-
-
-} /*week_wrapper*/
+/************************************************* 
+EMAIL TEMPLATE
+**************************************************/
+.week-email {
+	text-align: center;
+}
+.week-email-icon {
+	font-size: 50px;
+	display: block;
+	color: $gray-light;
+	margin-bottom: 25px;
+}
+.week-email-textarea {
+	font-size: 2.0rem;
+	line-height: 1.4em;
+	margin-bottom: 5px;
+}
+.week-email-textarea-addresses {
+	margin-top: 10px;
+	height: 75px;
+}
+.week-email-textarea-email {
+	height: 200px;
+}
