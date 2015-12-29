@@ -77,7 +77,7 @@ class PactsController < ApplicationController
   end
 
   def import
-    @pact = Pact.find(params[:id])
+    @pact = Pact.find_by(params[:id])
     uploaded_file = Pact.import(params[:file])
     redirect_to pact_path, notice: 'Chat imported.'
   end

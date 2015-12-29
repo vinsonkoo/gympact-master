@@ -15,22 +15,13 @@ Rails.application.routes.draw do
   get 'pacts/:id/add_users'       => 'pacts#add_users',     as: "add_users"
   get 'pacts/:id/add_goals'       => 'pacts#add_goals',     as: "add_goals"
   get 'pacts/:id/add_penalties'     => 'pacts#add_penalties',   as: "add_penalties"
-  # resources :pacts do
-  #   resources :penalties
-  #   resources :goals
-  #   resources :week
-  #   resources :users
-  #   collection do
-  #     get ':pact_id/import/new', action: :new_import
-  #     post :import
-  #   end
-  # end
-  # resources :pacts, param: :pact_name # will want to eventually have path/to/pact_name instead of path/to/pact_id
+  
   resources :pacts do
     collection do
-      get ':pact_id/import/new', action: :new_import
+      get ':pact_id/import/', action: :import
       post :import
     end
+    # resources :chat
     resources :penalties
     resources :goals
     resources :weeks
@@ -38,6 +29,11 @@ Rails.application.routes.draw do
   get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
   get 'pacts/:pact_id/chat'                 => 'pacts#chat',     as: 'pact_chat'
   get 'pacts/:pact_id/chat/week/:week_id'   => 'pacts#chat',     as: 'pact_chat_week'
+
+  # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
+  # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
+  # get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
+
 
 
   # OTHER MODELS ###################################################################################
