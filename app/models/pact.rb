@@ -11,15 +11,11 @@ class Pact < ActiveRecord::Base
   has_many :goals, dependent: :destroy
   accepts_nested_attributes_for :goals
 
-	has_many :chats
-  accepts_nested_attributes_for :chats
-  has_many :messages, through: :chats
-  accepts_nested_attributes_for :chats
+  has_many :messages
   accepts_nested_attributes_for :messages
 
 	has_many :penalties, dependent: :destroy
   accepts_nested_attributes_for :penalties
-  
 
 	has_many :weeks, dependent: :destroy
 

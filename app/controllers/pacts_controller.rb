@@ -53,6 +53,17 @@ class PactsController < ApplicationController
     @users = @pact.users
   end
 
+  def chat
+    @pact = Pact.find(params[:pact_id])
+    if params[:week_id]
+      @week = Week.find(params[:week_id])
+      @messages = @week.messages
+    else
+      @messages = @pact.messages
+    end
+
+  end
+
   def add_users 
     @pact = Pact.find(params[:id])
   end

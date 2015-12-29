@@ -31,18 +31,13 @@ Rails.application.routes.draw do
       get ':pact_id/import/new', action: :new_import
       post :import
     end
-    resources :chat
     resources :penalties
     resources :goals
     resources :weeks
   end
   get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
-  get 'pacts/:pact_id/chat/week/:week_id'   => 'chat#show',     as: 'pact_chat_week'
-
-  # get 'week/:pact_id'                 => 'week#show',     as: 'week'       # week_id for pact_id
-  # get 'week/:pact_id/:week_id'        => 'week#show',     as: 'week_week'       # week_id for pact_id
-  # get 'email/:pact_id/'               => 'week#email',    as: 'email' # week_id for pact_id
-
+  get 'pacts/:pact_id/chat'                 => 'pacts#chat',     as: 'pact_chat'
+  get 'pacts/:pact_id/chat/week/:week_id'   => 'pacts#chat',     as: 'pact_chat_week'
 
 
   # OTHER MODELS ###################################################################################
