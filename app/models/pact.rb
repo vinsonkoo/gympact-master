@@ -199,8 +199,7 @@ class Pact < ActiveRecord::Base
     
   end # def check_goals
 
-  def self.import(file)
-    # @pact = Pact.find_by(params[:id])
+  def self.import(file, pact)
     n = 1
     # open the file
     message_file = File.open(file.path, "r")
@@ -266,92 +265,9 @@ class Pact < ActiveRecord::Base
         end
         ####### USER LOGIC #######
 
-        ####### WEEK LOGIC #######
-        # # week logic has to be under here due to formatting of date string right under if @message.date != "" && @message.time != "" && @message.sender != "" && @message.message != "" 
-        # # check if date is a monday
-        # if @message.date.monday? == true
-        #   @week = Week.new
-        #   puts 'Week.new'
-        #   if Message.all.exists? # check if Messages table exists to check against previous message's date. this if statement may not be necessary since message params are already parsed above
-        #     # check if current message's date is the same as previous message's date
-        #     puts 'Messages table exists'
-        #     if @message.date == Message.last.date
-        #       # if it's the same date, do not save. which means it's still the same week
-        #       puts "current message's date same as previous date"
-        #       # assign current message a week number
-        #       # raise
-        #       @message.week_number = Week.last.week_number
-        #     else
-        #       # if the dates are not the same (which means that this current monday is checked against the previous day, a sunday), save
-        #       @week.week_number = n # n starts off as 1
-        #       print "n = ", n
-        #       print ' week #', @week.week_number
-        #       # set start date to current date, since it's a monday
-        #       @week.start_date = @message.date
-        #       # end date has to be nil because there is no data to put in here yet
-        #       @week.end_date = nil 
-        #         @week.save
-        #         puts 'week saved 1'
-        #       # assign @week.week_number to @message.week_number
-        #       @message.week_number = @week.week_number
-        #       puts "current message's date not same as previous date"
-        #       # set n = n + 1 to set up the next week's week number
-        #       n = n + 1
-        #       print "n = ", n
-        #     end
-        #   else # if Messages table doesn't exist, then this is the first message of the chat that lands on a monday. does not seem to run into this condition so far
-        #     @week.week_number = n
-        #     @week.start_date = @message.date
-        #     @week.end_date = nil
-        #       @week.save
-        #       puts "first message of the chat"
-        #     # assign @week.week_number to @message.week_number
-        #     @message.week_number = Week.last.week_number
-        #     n = n + 1
-        #   end
-        # elsif @message.date.sunday? == true
-        #   # check if there is a previous week - if no previous week (nil), there is no start_date for this first week(?) message
-        #   puts "it's sunday"
-        #   if Week.last.nil?
-        #     # do nothing
-        #   else
-        #     if @message.date == Message.last.date
-        #       # if it's the same date, do not save. which means it's still the same week
-        #       puts "current message's date same as previous date"
-        #       # assign current message a week number
-        #       # raise
-        #       @message.week_number = Week.last.week_number
-        #     else
-        #       # if @week is not nil, @week will be Week.last because a monday should already exist for this current week.
-        #       # set @week to be Week.last to update database
-        #       @week = Week.last
-        #       # raise
-        #       # check if @week.start_date + 6 days later is equal to current sunday
-        #       if @week.start_date + 6 == @message.date
-        #         @week.end_date = @message.date
-        #           @week.save
-        #           puts 'week saved 1'
-        #         # assign @week.week_number to @message.week_number
-        #         @message.week_number = @week.week_number
-        #       end
-        #     end
-        #   end
-        #   print 'sunday ', n
-        # else # if not monday or sunday
-        #   # check if there is a previous week - if no previous week (nil), there is no start_date for this first week(?) message
-        #   if Week.last.nil?
-        #     # do nothing
-        #   else
-        #     @message.week_number = Message.last.week_number
-        #   end
-        # end
-
-        # # there is redundant week logic going on because first few messages are system messages, so it's parsed differently. week logic is copy+pasted between the different if cases for week parsing
-
-        ####### WEEK LOGIC #######
-
         # if matching attributes do not exist in db, create
         Message.find_or_create_by(
+          :pact_id => pact.id,
           :msg_date_time => @message.msg_date_time,
           :date => @message.date,
           :time => @message.time,
@@ -385,94 +301,9 @@ class Pact < ActiveRecord::Base
 
         @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
 
-        ####### WEEK LOGIC #######
-        # # week logic has to be under here due to formatting of date string right under if @message.date != "" && @message.time != "" && @message.sender != "" && @message.message != "" 
-        # # check if date is a monday
-        # if @message.date.monday? == true
-        #   @week = Week.new
-        #   puts '2Week.new'
-        #   if Message.all.exists? # check if Messages table exists to check against previous message's date. this if statement may not be necessary since message params are already parsed above
-        #     # check if current message's date is the same as previous message's date
-        #     puts '2Messages table exists'
-        #     if @message.date == Message.last.date
-        #       # if it's the same date, do not save. which means it's still the same week
-        #       puts "2current message's date same as previous date"
-        #       # assign current message a week number
-        #       # raise
-        #       @message.week_number = Week.last.week_number
-        #     else
-        #       # if the dates are not the same (which means that this current monday is checked against the previous day, a sunday), save
-        #       @week.week_number = n # n starts off as 1
-        #       print "n = ", n
-        #       print ' week #', @week.week_number
-        #       # set start date to current date, since it's a monday
-        #       @week.start_date = @message.date
-        #       # end date has to be nil because there is no data to put in here yet
-        #       @week.end_date = nil 
-        #         @week.save
-        #         puts '2week saved'
-        #       # assign @week.week_number to @message.week_number
-        #       @message.week_number = @week.week_number
-        #       puts "2current message's date not same as previous date"
-        #       # set n = n + 1 to set up the next week's week number
-        #       n = n + 1
-        #       print "n = ", n
-        #     end
-        #   else # if Messages table doesn't exist, then this is the first message of the chat that lands on a monday. does not seem to run into this condition so far
-        #     @week.week_number = n
-        #     @week.start_date = @message.date
-        #     @week.end_date = nil
-        #       @week.save
-        #       puts "2first message of the chat"
-        #     # assign @week.week_number to @message.week_number
-        #     @message.week_number = Week.last.week_number
-        #     n = n + 1
-        #   end
-        # elsif @message.date.sunday? == true
-        #   # check if there is a previous week - if no previous week (nil), there is no start_date for this first week(?) message
-        #   puts "2it's sunday"
-        #   if Week.last.nil?
-        #     # do nothing
-        #   else
-        #     if @message.date == Message.last.date
-        #       # if it's the same date, do not save. which means it's still the same week
-        #       puts "2current message's date same as previous date"
-        #       # assign current message a week number
-        #       # raise
-        #       @message.week_number = Week.last.week_number
-        #     else
-        #       # if @week is not nil, @week will be Week.last because a monday should already exist for this current week.
-        #       # set @week to be Week.last to update database
-        #       @week = Week.last
-        #       # raise
-        #       # check if @week.start_date + 6 days later is equal to current sunday
-        #       if @week.start_date + 6 == @message.date
-        #         @week.end_date = @message.date
-        #           @week.save
-        #           puts '2week saved'
-        #         # assign @week.week_number to @message.week_number
-        #         @message.week_number = @week.week_number
-        #       end
-        #     end
-        #   end
-        #   print '2sunday ', n
-        # else # if not monday or sunday
-        #   # check if there is a previous week - if no previous week (nil), there is no start_date for this first week(?) message
-        #   if Week.last.nil?
-        #     # do nothing
-        #   else
-        #     @message.week_number = Message.last.week_number
-        #   end
-        # end
-
-        # # there is redundant week logic going on because first few messages are system messages, so it's parsed differently. week logic is copy+pasted between the different if cases for week parsing
-
-        ####### WEEK LOGIC #######
-
-
         # find in db the following attributes, if they do not exist, create the db entry. @message.user is the "system message", so replace @message.user with @message.message and change @message.user to "System Message"
-
         Message.find_or_create_by(
+          :pact_id => pact.id,
           :msg_date_time => @message.msg_date_time,
           :date => @message.date,
           :time => @message.time,
@@ -503,6 +334,7 @@ class Pact < ActiveRecord::Base
           # @message.save
 
           Message.find_or_create_by(
+            :pact_id => pact.id,
             :msg_date_time => @message.msg_date_time,
             :date => @message.date,
             :time => @message.time,

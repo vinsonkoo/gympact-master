@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   # PACT ###########################################################################################
   get 'pacts/:id/add_users'       => 'pacts#add_users',     as: "add_users"
   get 'pacts/:id/add_goals'       => 'pacts#add_goals',     as: "add_goals"
-  get 'pacts/:id/add_penalties'     => 'pacts#add_penalties',   as: "add_penalties"
-  
+  get 'pacts/:id/add_penalties'   => 'pacts#add_penalties', as: "add_penalties"
+  post 'pacts/:id/import'          => 'pacts#import',        as: "import"
   resources :pacts do
     collection do
       get ':pact_id/import/', action: :import
