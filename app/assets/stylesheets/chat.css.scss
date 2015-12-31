@@ -1,5 +1,82 @@
 @import "partials/variables";
 
+.chat-row {
+	display: block;
+	overflow: hidden;
+	margin-bottom: 10px;
+	clear: both;
+	overflow: hidden;
+	opacity: 0.7;
+}
+.chat-row-photo {
+	opacity: 1.0;
+}
+.chat-message {
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	display: inline-block;
+	width: 50%;
+	clear: both;
+	overflow: hidden;
+}
+
+.chat-message-header {
+	display: block;
+	margin-bottom: 15px;
+	overflow: hidden;
+	clear: both;
+}
+.chat-message-header-username {
+	color: $blue;
+	font-weight: bold;
+	display: inline-block;
+	margin-right: 10px;
+}
+.chat-message-header-timestamp {
+	color: $gray-light;
+	font-size: 11px;
+}
+
+/* WORKOUTS ***************************/
+
+.chat-row-photo .chat-message {
+	width: 100%;
+}
+.chat-row-photo .chat-message-content {
+	float: left;
+	display: inline-block;
+	width: 50%;
+	border-right: 1px solid #dddddd;
+}
+.chat-row-photo .chat-message-content-photo {
+	max-height: 250px;
+	max-width: 50%;
+}
+.chat-row-photo .chat-message-workout {
+	width: 50%;
+	float: left;
+	display: inline-block;
+	padding: 20px 0 0 30px;
+}
+.chat-row-photo .chat-message-workout-detail {
+	margin-bottom: 10px;
+	display: block;
+}
+.chat-row-photo .chat-message-workout-detail-glyphicon {
+	color: $blue;
+	opacity: 0.5;
+	margin-right: 15px;
+}
+.chat-row-photo .chat-message-workout-actions {
+	margin-top: 20px;
+}
+.chat-row-photo .chat-message-workout-actions-link {
+	display: block;
+	padding-bottom: 5px;
+}
+
+
 #chat_wrapper {
 
 	/* CHAT ***************************/

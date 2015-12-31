@@ -6,7 +6,6 @@ class Workout < ActiveRecord::Base
 	has_many :workout_types
 	belongs_to :user
 	belongs_to :photo
-	belongs_to :weeks
 
 	# Makes it so that when you print the "Workout" object, you print the workout description instead of the "#<ActiveRecord>blahblah" object name
 	alias_attribute :name, :workout_description

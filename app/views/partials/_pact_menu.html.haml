@@ -7,6 +7,6 @@
     =link_to pact_chat_path(@pact), class: "menu-button" do
       %span.menu-button-glyphicon.glyphicon.glyphicon-pencil
       %span.menu-button-text Edit workouts
-    =link_to pact_path(@pact), class: "menu-button" do
+    =link_to pact_path(@pact, anchor: "upload-chat"), class: "menu-button" do
       %span.menu-button-glyphicon.glyphicon.glyphicon-plus
       %span.menu-button-text Upload chat

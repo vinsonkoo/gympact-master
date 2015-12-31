@@ -1,32 +1,14 @@
 = render partial: 'partials/pact_menu'
 .content
-  #chat
-    - if @messages
-      - @messages.each do |message|
-        %div{:class => "container-fluid chat-row photo-row", :id => "message-row-#{message.id}"}
-          .avatar.col-md-1.text-center
-            - if message.user.avatar_url != ""
-              = image_tag ("avatars/" + message.user.avatar_url), class: 'avatar'
-            - else
-              = image_tag ("avatars/default.png"), class: 'avatar'
-          %div{:class => "col-md-11 chat_content_container photo_container"}
-            .container-fluid
-              .row
-                - if message.photo_url.to_s != ''
-                  .message.col-md-6
-                    %span.name
-                      = message.user
-                    %span.datetime
-                      = message.date_sent.strftime("%A, %B %d, %Y %I:%M%p")
-                    %span.content
-                      = image_tag ("photos/" + message.photo_url), class: 'photo'
-                  .edit_photo.col-md-6
-                    = render 'chat/edit_photo'
-                - else
-                  .message.col-md-6
-                    %span.name
-                      = message.user
-                    %span.datetime
-                      = message.date_sent.strftime("%A, %B %d, %Y %I:%M%p")
-                    %span.content
-                      = message.message
+  - if @messages
+    - previous_message = nil
+    - last_message = false
+    
+    - @messages.each_with_index do |message, index|
+      
+      - if index == @messages.size - 1
+        - last_message = true
+
+      - if message.user
+        = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
+        - previous_message = message

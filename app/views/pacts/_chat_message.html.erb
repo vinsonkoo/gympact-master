@@ -1,0 +1,61 @@
+<% if previous_message %>
+  <!-- If this is not the first message -->
+
+  <!-- If previous message has a photo or the user is different or current message is a photo, end the div and start the next one -->
+  <% if previous_message.media || previous_message.user != message.user || message.media %>
+        </div>
+      </div>
+    </div>
+    <div class="chat-row <% if message.image != nil %>chat-row-photo<% end %>" id="message-row-#{message.id}">
+      <div class="chat-message">
+        <div class="chat-message-header">
+          <span class="chat-message-header-username"><%= message.user.username %></span>
+          <span class="chat-message-header-timestamp"><%= message.date.strftime("%B %-d, %Y") %> <%= message.time.to_time.strftime("%l:%M %p") %></span>
+        </div>
+        <div class="chat-message-content">
+  <% end %>
+
+<% else %>
+  <div class="chat-row" id="message-row-#{message.id}">
+    <div class="chat-message">
+      <div class="chat-message-header">
+        <span class="chat-message-header-username"><%= message.user.username %></span>
+        <span class="chat-message-header-timestamp"><%= message.date.strftime("%B %-d, %Y") %> <%= message.time.to_time.strftime("%l:%M %p") %></span>
+      </div>
+      <div class="chat-message-content">
+<% end %>
+
+<% if !message.media %>
+  <p><%= message.message %></p>
+<% else %>
+  <% if message.image != nil %>
+    <%= image_tag("/media/#{message.image}.jpg", class: "chat-message-content-photo") %>
+    </div>
+
+    <div class="chat-message-workout">
+      <div class="chat-message-workout-detail"><h4>Workout Details</h4></div>
+      <div class="chat-message-workout-detail">
+        <span class="glyphicon glyphicon-user chat-message-workout-detail-glyphicon"></span> <%= message.user.username %>
+      </div>
+      <div class="chat-message-workout-detail">
+        <span class="glyphicon glyphicon-calendar chat-message-workout-detail-glyphicon"></span><%= message.date.strftime("%a, %B %-d, %Y") %>
+      </div>
+      <div class="chat-message-workout-actions">
+        <a class="chat-message-workout-actions-link">edit details of workout</a> <!-- Link to activeadmin -->
+        <a class="chat-message-workout-actions-link">duplicate workout</a> <!-- Form for creating new workout with fields prepopulated -->
+        <a class="chat-message-workout-actions-link red">this is not a workout</a> <!-- Delete workout -->
+      </div>
+
+  <% elsif message.video != nil %>
+    <%= video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true) %>
+  <% end %>
+
+<% end %>
+
+
+
+<% if last_message %>
+      </div>
+    </div>
+  </div>
+<% end %>
