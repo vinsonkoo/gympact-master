@@ -4,6 +4,7 @@ class Workout < ActiveRecord::Base
 	# Specifies Associations
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
 	has_many :workout_types
+	belongs_to :pact
 	belongs_to :user
 	belongs_to :photo
 

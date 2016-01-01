@@ -1,5 +1,5 @@
 class PactsController < ApplicationController
-	
+  
   def new
     @pact = Pact.new
   end
@@ -46,7 +46,7 @@ class PactsController < ApplicationController
     @weeks = @pact.weeks
     @users = @pact.users
     @goals = @pact.goals
-	end
+  end
 
   def users
     @pact = Pact.find(params[:pact_id])
@@ -77,9 +77,16 @@ class PactsController < ApplicationController
   end
 
   def import
-    @pact = Pact.find_by(params[:id])
-    uploaded_file = Pact.import(params[:file], @pact)
-    redirect_to pact_path(@pact.id), notice: 'Chat imported.'
+    begin
+      @pact = Pact.find_by(params[:id])
+      uploaded_file = Pact.import(params[:file], @pact)
+      flash[:notice] = "Import successful"
+      redirect_to pact_path(@pact.id)
+    # uncomment below along with user logic in chat import in order to throw an error when user has not been created yet
+    # rescue => exception
+    #   flash[:notice] = "There was a problem uploading the chat. Not all users were added to the Pact, please add them."
+    #   redirect_to pact_path(@pact.id)
+    end
   end
 
   private
@@ -97,7 +104,7 @@ class PactsController < ApplicationController
       chats_attributs:[:id, :pact_id, :chat],
       messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_number]
       )
-  end	
+  end 
 
   def week_params
     params.require(:week).permit(:start_date, :end_date, :pact_id, :week_number)

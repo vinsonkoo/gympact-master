@@ -3,34 +3,38 @@ class Pact < ActiveRecord::Base
 
   after_create :check_active, :parse_weeks
   after_save :check_goals
-	#######################################################
-	# Specifies Associations
-	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
-	has_and_belongs_to_many :users
-	
+  #######################################################
+  # Specifies Associations
+  # Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
+  has_and_belongs_to_many :users
+  
   has_many :goals, dependent: :destroy
   accepts_nested_attributes_for :goals
 
   has_many :messages
   accepts_nested_attributes_for :messages
 
-	has_many :penalties, dependent: :destroy
+  has_many :penalties, dependent: :destroy
   accepts_nested_attributes_for :penalties
 
-	has_many :weeks, dependent: :destroy
+  has_many :weeks, dependent: :destroy
 
-	#######################################################
-	# Makes it so that when you print the "Pact" object, you print the pact_name instead of the "#<ActiveRecord>blahblah" object name
-	alias_attribute :name, :pact_name
+  has_many :workouts, dependent: :destroy
+  accepts_nested_attributes_for :workouts
 
-	#######################################################
+
+  #######################################################
+  # Makes it so that when you print the "Pact" object, you print the pact_name instead of the "#<ActiveRecord>blahblah" object name
+  alias_attribute :name, :pact_name
+
+  #######################################################
   # deprecated in rails 4
-	# Makes it so that you can edit these database columns via ActiveAdmin and forms
+  # Makes it so that you can edit these database columns via ActiveAdmin and forms
   # attr_accessible :end_date, :is_active, :pact_name, :start_date
 
 
 
-	#######################################################
+  #######################################################
   # OBJECT ACTIONS
   # Actions you'd want to do on a Pact object
   # Example: The way you would use these would be if in your HTML file, you want to get a list of all the pact's users. You will write <%= pact.get_users %> which would return an array (list) of user objects.
@@ -38,9 +42,9 @@ class Pact < ActiveRecord::Base
 
 
   # Gets users who are in this pact
-	# def get_users
-	# 	User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
-	# end
+  # def get_users
+  #   User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
+  # end
 
 
   # Gets the week that the pact is on as of today
@@ -68,20 +72,20 @@ class Pact < ActiveRecord::Base
   end
 
   # Get weekly stats for this pact
- 	def get_week_workout_days(current_week)
- 	end
+  def get_week_workout_days(current_week)
+  end
 
- 	def get_week_goal_days(current_week)
- 	end
+  def get_week_goal_days(current_week)
+  end
 
- 	def get_week_missed_days(current_week)
- 	end
+  def get_week_missed_days(current_week)
+  end
 
-	def get_week_bonus_days(current_week)
- 	end
+  def get_week_bonus_days(current_week)
+  end
 
- 	def get_week_money_owed(current_week)
- 	end
+  def get_week_money_owed(current_week)
+  end
 
   private
 
@@ -212,15 +216,20 @@ class Pact < ActiveRecord::Base
       # separate date/time from the rest of the message (sender, message)
       @message.msg_date_time, sep, @message.message = line.partition(": ")
       # separate date and time
-      @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
+      # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+      # @message.time = @message.msg_date_time.partition(", ")[2]
+      #the following line partitions/parses the date in the incorrect format
+      # @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
       # separate sender/user and message
       @message.sender, sep, @message.message = @message.message.partition(": ")
-
       # if fields are not blank, save. logic to check if any fields are blank before saving. date and time will most likely never be blank due to the constant format unlike users and messages, but will be checked anyway.
 ############################################################
       if @message.date != "" && @message.time != "" && @message.sender != "" && @message.message != "" 
         # format date
+        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+
         @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        @message.time = @message.msg_date_time.partition(", ")[2]
         
         # logic that checks if message contains either an image or video, and if so media is set to true (boolean) and the other is set to nil in order to render the media in the view with an if statement
         if @message.message.include? ".jpg <attached>" 
@@ -244,25 +253,22 @@ class Pact < ActiveRecord::Base
         end
 
         ####### USER LOGIC #######
-        @user = User.new
-        @user.first_name, sep, @user.last_name = @message.sender.partition(" ")
-        @user.username = @message.sender
-        @user.email = @user.first_name.downcase + @user.last_name.downcase + '@example.com'
-          
-        if User.find_by(last_name: @user.last_name, first_name: @user.first_name) == nil
-          # user not found, do not save
-          # raise
-          puts 'username ' + @user.username
-          @user.save
-          @message.user_id = @user.id
-          puts 'user not found'
-        else
-          puts 'user found'
-          # raise
-          found_user = User.find_by(username: @user.username, first_name: @user.first_name)
-          @user = User.find_by(username: found_user.username)
-          @message.user_id = @user.id
-        end
+        # check if a user's first and last name exists in database, if it doesn't exist, end chat upload and redirect to create user. ignore "System Message"
+
+        # partition user's first and last name to find in database
+        first_name, sep, last_name = @message.sender.partition(" ")
+
+        # if User.find_by_first_name_and_last_name(first_name, last_name).present?
+        #   # true
+        #   # do nothing and continue chat upload
+        # else
+        #   # false
+        #   # throw error and notice telling user to create users
+        #   raise "Error Message"
+        #   # return false
+        #   # debugger
+        # end
+
         ####### USER LOGIC #######
 
         # if matching attributes do not exist in db, create
@@ -298,9 +304,10 @@ class Pact < ActiveRecord::Base
 ############################################################
       elsif @message.date != "" && @message.time != "" && @message.sender != "" && @message.message = ""
         # if message is blank, it's a system message
-
         @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
-
+        @message.time = @message.msg_date_time.partition(", ")[2]
+        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        @message.is_workout = false
         # find in db the following attributes, if they do not exist, create the db entry. @message.user is the "system message", so replace @message.user with @message.message and change @message.user to "System Message"
         Message.find_or_create_by(
           :pact_id => pact.id,
