@@ -46,6 +46,7 @@ class PactsController < ApplicationController
     @weeks = @pact.weeks
     @users = @pact.users
     @goals = @pact.goals
+    @workouts = @pact.workouts
   end
 
   def users

@@ -176,8 +176,6 @@ class Pact < ActiveRecord::Base
       end
     else
       if @pact.is_active?
-        # n = 1
-
         @pact.weeks.each do |pw|
           if pw.start_date.future?
             @pact.users.each do |pu|
@@ -186,7 +184,6 @@ class Pact < ActiveRecord::Base
 
               # if goal already exists for the week, do not create any new goals for that week
               if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-                # debugger
               else
                 new_goal = @pact.goals.build
                 new_goal.user_id = pu.id
@@ -194,7 +191,6 @@ class Pact < ActiveRecord::Base
                 new_goal.week_id = pw.id
                 new_goal.save
               end
-              # debugger
             end
           end
         end
@@ -208,7 +204,6 @@ class Pact < ActiveRecord::Base
           
             # if goal already exists for the week, do not create any new goals for that week
             if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-              # debugger
             else
               new_goal = @pact.goals.build
               new_goal.user_id = pu.id
@@ -227,7 +222,6 @@ class Pact < ActiveRecord::Base
   end # def check_goals
 
   def self.import(file, pact)
-    n = 1
     # open the file
     message_file = File.open(file.path, "r")
     # begin reading each line
@@ -256,32 +250,16 @@ class Pact < ActiveRecord::Base
         
         # logic that checks if message contains either an image or video, and if so media is set to true (boolean) and the other is set to nil in order to render the media in the view with an if statement
         if @message.message.include? ".jpg <attached>" 
-          pact.workouts.build(
-            :id => nil,
-            :distance => nil,
-            :pace => nil,
-            :duration => nil,
-            :video1 => nil,
-            :video2 => nil,
-            :workout_name => nil,
-            :workout_description => nil,
-            :is_makeup_workout => nil,
-            :user_id => User.find_by_first_name_and_last_name(first_name, last_name),
-            :week_id => nil,
-            :pact_id => pact.id
-          )
-          debugger
           @message.image = @message.message.partition(".jpg")[0]
           @message.media = true
           @message.video = nil
           @message.is_workout = true
-          puts 'has jpg'
         elsif @message.message.include? ".mp4 <attached>"
           @message.video = @message.message.partition(".mp4")[0]
           @message.media = true
           @message.image = nil
           @message.is_workout = true
-          puts 'has mp4'
+          
         else
           @message.media = false
           @message.image = nil
@@ -323,9 +301,51 @@ class Pact < ActiveRecord::Base
           :video => @message.video,
           :user_id => @message.user_id,
           :is_workout => @message.is_workout,
+          # this attribute needs to be updated following the workout creation
           :workout_id => @message.workout_id
         )
 
+        # if message contains media, create a new workout. cannot be placed in logic above that searches for media because the message hasn't been created/saved yet, so there is no corresponding @message.id
+        if @message.message.include? ".jpg <attached>" 
+          if @message.is_workout == true
+            new_workout = pact.workouts.build(
+              :distance => nil,
+              :pace => nil,
+              :duration => nil,
+              :video1 => nil,
+              :video2 => nil,
+              :workout_name => nil,
+              :workout_description => nil,
+              :is_makeup_workout => nil,
+              # find user based on @message.sender
+              :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
+              :week_id => nil,
+              :pact_id => pact.id,
+              :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
+            )
+            new_workout.save
+          end
+        elsif @message.message.include? ".mp4 <attached>"
+          if @message.is_workout == true
+            new_workout = pact.workouts.build(
+              :distance => nil,
+              :pace => nil,
+              :duration => nil,
+              :video1 => nil,
+              :video2 => nil,
+              :workout_name => nil,
+              :workout_description => nil,
+              :is_makeup_workout => nil,
+              # find user based on @message.sender
+              :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
+              :week_id => nil,
+              :pact_id => pact.id,
+              :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
+            )
+            new_workout.save
+          end
+        end
+        
 
         # check if @message.time exists more than once, if @message.date exists more than once, and if @message.message is "<message omitted>"
         # if all true, delete @message because it's a duplicate media message that no longer has the image/video
@@ -338,8 +358,7 @@ class Pact < ActiveRecord::Base
           @message.delete
         end
 
-        # puts @message.all
-        # currently, this does not check for media. it will create a new row in the db with "<image omitted>", if a new chat file is uploaded
+
 ############################################################
       elsif @message.date != "" && @message.time != "" && @message.sender != "" && @message.message = ""
         # if message is blank, it's a system message

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102000629) do
+ActiveRecord::Schema.define(version: 20160102210343) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -197,10 +197,9 @@ ActiveRecord::Schema.define(version: 20160102000629) do
     t.integer  "week_id"
     t.datetime "sent"
     t.integer  "pact_id"
+    t.integer  "message_id"
   end
 
-  add_index "workouts", ["user_id"], name: "index_user_id_3"
-  add_index "workouts", ["user_id"], name: "index_workouts_on_user_id_and_photo_id", unique: true
   add_index "workouts", ["week_id"], name: "index_week_id"
 
 end

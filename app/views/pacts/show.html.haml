@@ -320,6 +320,13 @@
             - else
               = message.message
           %td.message-is-workout
-            = message.is_workout
+            %p= message.is_workout
             - if message.is_workout == true
-              %p= link_to 'Edit', edit_admin_message_path(message)
+              %p= link_to 'Is this a workout?', edit_admin_message_path(message)
+            - if @pact.workouts.find_by(message_id: message.id) == nil
+              %p Not a workout
+            - elsif @pact.workouts.find_by(message_id: message.id).workout_name == nil
+              %p= link_to 'Edit workout', edit_admin_workout_path(@pact.workouts.find_by(message_id: message.id))
+            - else
+              = @pact.workouts.find_by(message_id: message.id).workout_name
+              = @pact.workouts.find_by(message_id: message.id).workout_description
