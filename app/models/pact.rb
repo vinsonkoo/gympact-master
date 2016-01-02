@@ -76,6 +76,10 @@ class Pact < ActiveRecord::Base
     week
   end
 
+  def get_week_id
+    # week = @pact.weeks.where()
+  end
+
   # Get total stats for this pact
   def get_total_workout_days
   end
@@ -197,21 +201,26 @@ class Pact < ActiveRecord::Base
 
       else
 
-        @pact.weeks.each do |pw|
-          @pact.users.each do |pu|
-          # get last updated goal for user
-          last_goal = pu.goals.last.goal
-          
-            # if goal already exists for the week, do not create any new goals for that week
-            if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-            else
-              new_goal = @pact.goals.build
-              new_goal.user_id = pu.id
-              new_goal.goal = last_goal
-              new_goal.week_id = pw.id
-              new_goal.save
+        # needs fixing. duplicates week 1 goals
+        if @pact.goals.empty?
+          # do nothing
+        else
+          @pact.weeks.each do |pw|
+            @pact.users.each do |pu|
+            # get last updated goal for user
+            last_goal = pu.goals.last.goal
+            
+              # if goal already exists for the week, do not create any new goals for that week
+              if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+              else
+                new_goal = @pact.goals.build
+                new_goal.user_id = pu.id
+                new_goal.goal = last_goal
+                new_goal.week_id = pw.id
+                new_goal.save
+              end
+              # debugger
             end
-            # debugger
           end
         end
 
@@ -221,7 +230,7 @@ class Pact < ActiveRecord::Base
     
   end # def check_goals
 
-  def self.import(file, pact)
+  def self.import(file, pact) 
     # open the file
     message_file = File.open(file.path, "r")
     # begin reading each line
@@ -301,6 +310,7 @@ class Pact < ActiveRecord::Base
           :video => @message.video,
           :user_id => @message.user_id,
           :is_workout => @message.is_workout,
+          :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
           # this attribute needs to be updated following the workout creation
           :workout_id => @message.workout_id
         )
@@ -319,7 +329,7 @@ class Pact < ActiveRecord::Base
               :is_makeup_workout => nil,
               # find user based on @message.sender
               :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
-              :week_id => nil,
+              :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
@@ -338,7 +348,7 @@ class Pact < ActiveRecord::Base
               :is_makeup_workout => nil,
               # find user based on @message.sender
               :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
-              :week_id => nil,
+              :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
