@@ -79,7 +79,7 @@ class PactsController < ApplicationController
 
   def import
     begin
-      @pact = Pact.find_by(params[:id])
+      @pact = Pact.find(params[:id])
       uploaded_file = Pact.import(params[:file], @pact)
       flash[:notice] = "Import successful"
       redirect_to pact_path(@pact.id)
@@ -102,8 +102,7 @@ class PactsController < ApplicationController
       penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
       user_ids:[], 
       goals_attributes:[:id, :pact_id, :goal, :user_id, :week_id],
-      chats_attributs:[:id, :pact_id, :chat],
-      messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_number]
+      messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id]
       )
   end 
 

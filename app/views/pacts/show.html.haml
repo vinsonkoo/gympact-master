@@ -142,13 +142,6 @@
         %td= @pact.end_date
         %td= @pact.is_active
 
-
-  .content-section
-    %h3 Import Chat
-    = form_tag import_path, multipart: true do
-      = file_field_tag :file
-      = submit_tag "Import Chat"
-
   %h1 Weeks
 
   %table
@@ -187,7 +180,7 @@
             %td= user.first_name
             %td= user.last_name
             %td= user.username
-    %p= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact
+  %p= link_to "Edit users for #{@pact.pact_name}", controller: "pacts", action: "add_users", id: @pact
 
   %p= link_to "Create Users", new_admin_user_path, :target => '_blank'
 
@@ -210,7 +203,7 @@
   -else
     %p 
       Penalties do not exist yet. 
-      = link_to "Add Penalty", controller: "pacts", action: "add_penalty", id: @pact
+      = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
 
 
   %h1 Goals
@@ -330,3 +323,4 @@
             - else
               = @pact.workouts.find_by(message_id: message.id).workout_name
               = @pact.workouts.find_by(message_id: message.id).workout_description
+

@@ -50,7 +50,8 @@
                     - if @pact.is_active == true
                       = ff.hidden_field :week_id, :value => @pact.get_current_week.id
                     - else
-                      = ff.hidden_field :week_id, :value => '1'
+                      / if pact is not active, these goals are for the first week
+                      = ff.hidden_field :week_id, :value => @pact.weeks.first.id
             
           .form-row
             = f.submit "Add Goals", :class => "button button-full"
