@@ -51,10 +51,28 @@ class Pact < ActiveRecord::Base
   def get_current_week
     @pact = Pact.find_by(id: id)
     today = Date.today
-    week = Week.where(["pact_id = ? and start_date <= ? and end_date >= ?", self.id, today, today]).first
-    if !week
-      week = Week.where(["pact_id = ?", self.id]).last
+    week = @pact.weeks.where(["end_date >= ? and start_date <= ?", today, today])
+    if week.empty?
+      # if week is before pact start_date, then week should be the first week
+      if today <= @pact.start_date
+        week = @pact.weeks.first
+      # if week is after pact end_date, then week should be the last week
+      else today >= @pact.end_date
+        week = @pact.weeks.last
+      end
+    else
+      week = week.last
+      week_range = week.start_date..week.end_date
+      if week_range.cover?(today)
+        week
+      end
     end
+    
+    # @pact.weeks already includes the search for pact_id in the below statement
+    # week = Week.where(["pact_id = ? and start_date <= ? or end_date >= ?", self.id, today, today]).first
+    # if !week
+    #   week = Week.where(["pact_id = ?", self.id]).last
+    # end
     week
   end
 
@@ -133,71 +151,104 @@ class Pact < ActiveRecord::Base
 
   def check_goals
     @pact = Pact.find_by(id: id)
+    current_week = @pact.get_current_week
 
     if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-      # break
-
-    else
-      if @pact.is_active?
-        puts 'abcde'
-        n = 1
-
-        # the following logic only creates goals for weeks that haven't passed yet, so any weeks before the current week will not have any goals created. goals not created for past weeks can be created through activeadmin (?)
-        @pact.weeks.each do |pw|
-          start_date = pw.start_date
-          # if start_date is in the future
-          if start_date.future?
-            total_weeks = @pact.weeks.count
-            total_goals = @pact.goals.count
-            if n < total_goals
-              # for each goal, create new goals for user
-              @pact.goals.each do |pg|            
-                user = pg.user_id
-                goal = pg.goal
-                new_goal = @pact.goals.build
-                new_goal.user_id = user
-                new_goal.goal = goal
-                new_goal.week_id = pw.id
-                if (n + 1) < (@pact.weeks.count) * (@pact.users.count)
-                  new_goal.save
-                else
-                end
-                # debugger
-                n = n + 1
-              end
-            end
-          else
-            # if the pact's week is not in the future, do nothing
-          end # @pacts.weeks.each do |pw|
-        end
-
-      else
-
-        # LOGIC IS INCOMPLETE. GOALS ARE CREATED FOR 1 USER AND NOT ALL, SO LOOP ENDS WHEN ENOUGH GOALS ARE CREATED FOR 1 USER
-        puts 'hello'
-        # if pact is not active, update all goals for all weeks for each user
-        total_weeks = @pact.weeks.count
-        @pact.weeks.each do |pw|
-          n = 1
-          @pact.goals.each do |pg|            
-            user = pg.user_id
-            goal = pg.goal
-            new_goal = @pact.goals.build
-            new_goal.user_id = user
-            new_goal.goal = goal
-            new_goal.week_id = pw.id + 1
-            if (n + 1) < total_weeks # * (@pact.users.count)
-              if @pact.weeks.count < new_goal.week_id
+      @pact.weeks.each do |pw|
+        if pw.start_date >= current_week.start_date
+          @pact.users.each do |pu|
+            # get most recently updated goal for user. most recently updated goal is obtained from get_current_week
+            last_goal = pu.goals("updated_at").last
+            # update goals for user for every week after current week
+            pu.goals.each do |pg|
+              # if goal's week is before most recently updated goal, do not update it
+              if pg.week_id <= last_goal.week_id
               else
-              new_goal.save
+                # update the goal to match most recently updated goal
+                pg = last_goal
+                pg.save
               end
-            else
             end
-            # debugger
-            n = n + 1
+
+            
           end
         end
       end
+    else
+      if @pact.is_active?
+        puts 'abcde'
+        # n = 1
+
+        @pact.weeks.each do |pw|
+          if pw.start_date.future?
+            @pact.users.each do |pu|
+            # get last updated goal for user
+            last_goal_day = pu.goals.last.goal
+
+              # if goal already exists for the week, do not create any new goals for that week
+              if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                # debugger
+              else
+                new_goal = @pact.goals.build
+                new_goal.user_id = pu.id
+                new_goal.goal = last_goal_day
+                new_goal.week_id = pw.id
+                new_goal.save
+              end
+              # debugger
+            end
+          end
+        end
+        # the following logic only creates goals for weeks that haven't passed yet, so any weeks before the current week will not have any goals created. goals not created for past weeks can be created through activeadmin (?)
+        # @pact.weeks.each do |pw|
+        #   start_date = pw.start_date
+        #   # if week's start_date is in the future
+        #   if start_date.future?
+        #     total_goals = @pact.goals.count
+        #     if n < total_goals
+        #       # for each goal, create new goals for user
+        #       @pact.goals.each do |pg|            
+        #         user = pg.user_id
+        #         goal = pg.goal
+        #         new_goal = @pact.goals.build
+        #         new_goal.user_id = user
+        #         new_goal.goal = goal
+        #         new_goal.week_id = pw.id
+        #         if (n + 1) < (@pact.weeks.count) * (@pact.users.count)
+        #           new_goal.save
+        #         else
+        #         end
+        #         # debugger
+        #         n = n + 1
+        #       end
+        #     end
+        #   else
+        #     # if the pact's week is not in the future, do nothing
+        #   end # @pacts.weeks.each do |pw|
+        # end
+
+      else
+
+        @pact.weeks.each do |pw|
+          @pact.users.each do |pu|
+          # get last updated goal for user
+          last_goal = pu.goals.last.goal
+          
+            # if goal already exists for the week, do not create any new goals for that week
+            if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+              # debugger
+            else
+              new_goal = @pact.goals.build
+              new_goal.user_id = pu.id
+              new_goal.goal = last_goal
+              new_goal.week_id = pw.id
+              new_goal.save
+            end
+            # debugger
+          end
+        end
+
+      end # if pact.is_active?
 
     end
     
@@ -233,6 +284,21 @@ class Pact < ActiveRecord::Base
         
         # logic that checks if message contains either an image or video, and if so media is set to true (boolean) and the other is set to nil in order to render the media in the view with an if statement
         if @message.message.include? ".jpg <attached>" 
+          pact.workouts.build(
+            :id => nil,
+            :distance => nil,
+            :pace => nil,
+            :duration => nil,
+            :video1 => nil,
+            :video2 => nil,
+            :workout_name => nil,
+            :workout_description => nil,
+            :is_makeup_workout => nil,
+            :user_id => User.find_by_first_name_and_last_name(first_name, last_name),
+            :week_id => nil,
+            :pact_id => pact.id
+          )
+          debugger
           @message.image = @message.message.partition(".jpg")[0]
           @message.media = true
           @message.video = nil
@@ -249,6 +315,7 @@ class Pact < ActiveRecord::Base
           @message.image = nil
           @message.video = nil
           @message.is_workout = false
+          @message.workout_id = nil
           puts 'no media'
         end
 
@@ -283,8 +350,8 @@ class Pact < ActiveRecord::Base
           :image => @message.image,
           :video => @message.video,
           :user_id => @message.user_id,
-          # :week_number => @message.week_number,
-          :is_workout => @message.is_workout
+          :is_workout => @message.is_workout,
+          :workout_id => @message.workout_id
         )
 
 
@@ -320,8 +387,8 @@ class Pact < ActiveRecord::Base
           :image => @message.image,
           :video => @message.video,
           :user_id => nil,
-          # :week_number => @message.week_number,
-          :is_workout => @message.is_workout
+          :is_workout => @message.is_workout,
+          :workout_id => @message.workout_id
         )
 ############################################################
       else
@@ -351,8 +418,8 @@ class Pact < ActiveRecord::Base
             :image => @message.image,
             :video => @message.video,
             :user_id => @message.user_id,
-            # :week_number => @message.week_number,
-            :is_workout => @message.is_workout
+            :is_workout => @message.is_workout,
+            :workout_id => @message.workout_id
           )
           # the above creates a duplicate for multiline messages. the above needs to happen in order to check for the duplicate due to the nature of multiline messages
 

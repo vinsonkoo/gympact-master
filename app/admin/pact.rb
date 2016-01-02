@@ -1,5 +1,5 @@
 ActiveAdmin.register Pact do
-
+  permit_params [:id, :end_date, :is_active, :pact_name, :start_date,]
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #

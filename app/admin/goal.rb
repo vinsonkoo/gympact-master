@@ -1,4 +1,5 @@
 ActiveAdmin.register Goal do
+    permit_params [:email, :password, :password_confirmation, :first_name, :last_name, :username]
 	index do
 		selectable_column
     column :id

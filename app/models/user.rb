@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_and_belongs_to_many :pacts
+
   has_many :goals, dependent: :destroy
   accepts_nested_attributes_for :goals
+
+  has_many :workouts, dependent: :destroy
 end

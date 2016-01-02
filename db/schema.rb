@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151229002412) do
+ActiveRecord::Schema.define(version: 20160102000629) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(version: 20151229002412) do
     t.integer  "user_id"
     t.integer  "pact_id"
     t.datetime "date_sent"
-    t.string   "photo_url"
     t.boolean  "media"
     t.string   "image"
     t.string   "video"
@@ -79,12 +78,18 @@ ActiveRecord::Schema.define(version: 20151229002412) do
     t.string   "msg_date_time"
     t.string   "time"
     t.string   "sender"
-    t.string   "user"
     t.boolean  "is_workout"
+    t.integer  "workout_id"
+    t.integer  "week_id"
   end
 
   add_index "messages", ["pact_id"], name: "index_pact_id_4"
   add_index "messages", ["user_id"], name: "index_user_id"
+
+  create_table "messages_workouts", id: false, force: :cascade do |t|
+    t.integer "message_id"
+    t.integer "workout_id"
+  end
 
   create_table "pact_user_relations", force: :cascade do |t|
     t.datetime "created_at"
@@ -122,6 +127,11 @@ ActiveRecord::Schema.define(version: 20151229002412) do
     t.integer "user_id"
   end
 
+  create_table "pacts_workouts", id: false, force: :cascade do |t|
+    t.integer "pact_id"
+    t.integer "workout_id"
+  end
+
   create_table "penalties", force: :cascade do |t|
     t.integer  "goal_days"
     t.float    "penalty"
@@ -129,17 +139,6 @@ ActiveRecord::Schema.define(version: 20151229002412) do
     t.datetime "updated_at"
     t.integer  "pact_id"
   end
-
-  create_table "photos", force: :cascade do |t|
-    t.string   "photo_url"
-    t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "message_id"
-  end
-
-  add_index "photos", ["message_id", "photo_url"], name: "index_photos_on_message_id_and_photo_url", unique: true
-  add_index "photos", ["message_id"], name: "index_message_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -195,14 +194,13 @@ ActiveRecord::Schema.define(version: 20151229002412) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.integer  "photo_id"
     t.integer  "week_id"
     t.datetime "sent"
+    t.integer  "pact_id"
   end
 
-  add_index "workouts", ["photo_id"], name: "index_photo_id"
-  add_index "workouts", ["user_id", "photo_id"], name: "index_workouts_on_user_id_and_photo_id", unique: true
   add_index "workouts", ["user_id"], name: "index_user_id_3"
+  add_index "workouts", ["user_id"], name: "index_workouts_on_user_id_and_photo_id", unique: true
   add_index "workouts", ["week_id"], name: "index_week_id"
 
 end
