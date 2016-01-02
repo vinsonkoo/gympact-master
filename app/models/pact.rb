@@ -176,7 +176,6 @@ class Pact < ActiveRecord::Base
       end
     else
       if @pact.is_active?
-        puts 'abcde'
         # n = 1
 
         @pact.weeks.each do |pw|
@@ -199,33 +198,6 @@ class Pact < ActiveRecord::Base
             end
           end
         end
-        # the following logic only creates goals for weeks that haven't passed yet, so any weeks before the current week will not have any goals created. goals not created for past weeks can be created through activeadmin (?)
-        # @pact.weeks.each do |pw|
-        #   start_date = pw.start_date
-        #   # if week's start_date is in the future
-        #   if start_date.future?
-        #     total_goals = @pact.goals.count
-        #     if n < total_goals
-        #       # for each goal, create new goals for user
-        #       @pact.goals.each do |pg|            
-        #         user = pg.user_id
-        #         goal = pg.goal
-        #         new_goal = @pact.goals.build
-        #         new_goal.user_id = user
-        #         new_goal.goal = goal
-        #         new_goal.week_id = pw.id
-        #         if (n + 1) < (@pact.weeks.count) * (@pact.users.count)
-        #           new_goal.save
-        #         else
-        #         end
-        #         # debugger
-        #         n = n + 1
-        #       end
-        #     end
-        #   else
-        #     # if the pact's week is not in the future, do nothing
-        #   end # @pacts.weeks.each do |pw|
-        # end
 
       else
 
