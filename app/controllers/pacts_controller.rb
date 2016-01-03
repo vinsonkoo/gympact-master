@@ -102,7 +102,8 @@ class PactsController < ApplicationController
       penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
       user_ids:[], 
       goals_attributes:[:id, :pact_id, :goal, :user_id, :week_id],
-      messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id]
+      messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id],
+      workouts_attributes:[:id, :distance, :duration, :is_makeup_workout, :pace, :video1, :video2, :workout_description, :workout_name, :sent, :photo_id, :user_id, :week_id, :message_id]
       )
   end 
 
