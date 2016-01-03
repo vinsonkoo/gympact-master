@@ -116,11 +116,9 @@ class Pact < ActiveRecord::Base
     if (@pact.start_date..@pact.end_date).cover?(Date.today)
       @pact.is_active = true
       @pact.save
-      # redirect_to @pact
     else
       @pact.is_active = false
       @pact.save
-      # redirect_to @pact
     end
   end
 
@@ -159,6 +157,7 @@ class Pact < ActiveRecord::Base
 
     if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
       @pact.weeks.each do |pw|
+        # if pact week is after current_week's start date, then update the goals for the following weeks
         if pw.start_date >= current_week.start_date
           @pact.users.each do |pu|
             # get most recently updated goal for user. most recently updated goal is obtained from get_current_week
@@ -173,8 +172,6 @@ class Pact < ActiveRecord::Base
                 pg.save
               end
             end
-
-            
           end
         end
       end
@@ -207,9 +204,8 @@ class Pact < ActiveRecord::Base
         else
           @pact.weeks.each do |pw|
             @pact.users.each do |pu|
-            # get last updated goal for user
-            last_goal = pu.goals.last.goal
-            
+              # get last updated goal for user
+              last_goal = pu.goals.last.goal
               # if goal already exists for the week, do not create any new goals for that week
               if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
               else
@@ -219,7 +215,26 @@ class Pact < ActiveRecord::Base
                 new_goal.week_id = pw.id
                 new_goal.save
               end
-              # debugger
+
+              # ignore first week, since first week will have been created from the initial form
+              if pw == @pact.weeks.first 
+                # do nothing
+              else
+                @pact.users.each do |pu|
+                # get last updated goal for user
+                last_goal = pu.goals.last.goal
+                
+                  # if goal already exists for the week, do not create any new goals for that week
+                  if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                  else
+                    new_goal = @pact.goals.build
+                    new_goal.user_id = pu.id
+                    new_goal.goal = last_goal
+                    new_goal.week_id = pw.id
+                    new_goal.save
+                  end
+                end
+              end
             end
           end
         end
@@ -236,11 +251,11 @@ class Pact < ActiveRecord::Base
     # begin reading each line
     message_file.each_line { |line|
 
-
-      # @message = Message.new
       @message = Message.new
       # separate date/time from the rest of the message (sender, message)
       @message.msg_date_time, sep, @message.message = line.partition(": ")
+      # date and time are partitioned below, given the type of message (regular message, system message, multiline)
+
       # separate date and time
       # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
       # @message.time = @message.msg_date_time.partition(", ")[2]
@@ -314,6 +329,7 @@ class Pact < ActiveRecord::Base
           # this attribute needs to be updated following the workout creation
           :workout_id => @message.workout_id
         )
+        debugger
 
         # if message contains media, create a new workout. cannot be placed in logic above that searches for media because the message hasn't been created/saved yet, so there is no corresponding @message.id
         if @message.message.include? ".jpg <attached>" 
@@ -333,6 +349,7 @@ class Pact < ActiveRecord::Base
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
+            debugger
             new_workout.save
           end
         elsif @message.message.include? ".mp4 <attached>"
@@ -352,6 +369,7 @@ class Pact < ActiveRecord::Base
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
+            debugger
             new_workout.save
           end
         end
@@ -371,7 +389,7 @@ class Pact < ActiveRecord::Base
 
 ############################################################
       elsif @message.date != "" && @message.time != "" && @message.sender != "" && @message.message = ""
-        # if message is blank, it's a system message
+        # if message is blank, it's a SYSTEM MESSAGE
         @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         @message.time = @message.msg_date_time.partition(", ")[2]
         # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
@@ -389,6 +407,8 @@ class Pact < ActiveRecord::Base
           :video => @message.video,
           :user_id => nil,
           :is_workout => @message.is_workout,
+          :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
+          # this attribute needs to be updated following the workout creation
           :workout_id => @message.workout_id
         )
 ############################################################
@@ -420,6 +440,8 @@ class Pact < ActiveRecord::Base
             :video => @message.video,
             :user_id => @message.user_id,
             :is_workout => @message.is_workout,
+            :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
+            # this attribute needs to be updated following the workout creation
             :workout_id => @message.workout_id
           )
           # the above creates a duplicate for multiline messages. the above needs to happen in order to check for the duplicate due to the nature of multiline messages
