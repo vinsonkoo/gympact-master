@@ -76,11 +76,11 @@ class Pact < ActiveRecord::Base
     week
   end
 
-  def penalty_for_goal(week_id, user)
+  def penalty_for_goal(week_number, user)
     self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal ) )
   end
 
-  def get_bonus_days_for_week(week_id, user)
+  def get_bonus_days_for_week(week_number, user)
     # get the pact's week based on week number
     week = self.weeks.find_by(week_number: week_number)
 

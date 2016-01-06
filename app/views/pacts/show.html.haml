@@ -291,16 +291,16 @@
               = @pact.get_bonus_days_for_week(pw.week_number, pu)
             %td
               / Total missed days at beginning of week
-              /= @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
+              = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
             %td
               / Total missed days at end of week
-              /= @pact.get_missed_days_end_of_week(pw.week_number, pu)
+              = @pact.get_missed_days_end_of_week(pw.week_number, pu)
             %td
               / Weekly penalty total
               = number_to_currency(@pact.get_user_weekly_penalty(pw.week_number, pu))
             %td
               / Penalty total at beginning of week
-              /= number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
+              = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
             %td
               / Amount paid
 
