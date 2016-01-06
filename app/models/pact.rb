@@ -76,8 +76,243 @@ class Pact < ActiveRecord::Base
     week
   end
 
-  def get_week_id
-    # week = @pact.weeks.where()
+  def penalty_for_goal(week_id, user)
+    self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal ) )
+  end
+
+  def get_bonus_days_for_week(week_id, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+
+    for i in 1 .. week_number 
+      # get user's goal days for the week for the pact
+      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+      # get user's workout count for the week
+      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+      # if you have bonus days
+      if week_workouts > week_goal_days 
+        week_missed_days = 0
+        week_bonus_days = week_workouts - week_goal_days
+        if total_missed_days_at_beginning_of_week < week_bonus_days
+          bonus_days_that_count = total_missed_days_at_beginning_of_week
+        else
+          bonus_days_that_count = week_bonus_days
+        end
+        # if you have missed days to be made up
+        if total_missed_days_at_beginning_of_week > 0
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+        end
+      # if you don’t have bonus days
+      else
+        week_bonus_days = 0
+        week_missed_days = week_goal_days - week_workouts
+        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+      end
+    end
+      week_bonus_days
+  end
+
+  def get_missed_days_beginning_of_week(week_number, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+
+    # to figure out if total_missed_days at beginning of week i > 0
+    for i in 1 .. week_number 
+      # get user's goal days for the week for the pact
+      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+      # get user's workout count for the week
+      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+      # if you have bonus days
+      if week_workouts > week_goal_days 
+        week_missed_days = 0
+        week_bonus_days = week_workouts - week_goal_days
+        if total_missed_days_at_beginning_of_week < week_bonus_days
+          bonus_days_that_count = total_missed_days_at_beginning_of_week
+        else
+          bonus_days_that_count = week_bonus_days
+        end
+        # if you have missed days to be made up
+        if total_missed_days_at_beginning_of_week > 0
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+        end
+      # if you don’t have bonus days
+      else
+        week_bonus_days = 0
+        week_missed_days = week_goal_days - week_workouts
+        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+      end
+    end 
+    if i == 1
+      total_missed_days_at_beginning_of_week = 0
+      total_missed_days_at_beginning_of_week
+    else
+      total_missed_days_at_beginning_of_week
+    end
+  end
+
+  def get_missed_days_end_of_week(week_number, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+
+    # to figure out if total_missed_days at beginning of week i > 0
+    for i in 1 .. week_number 
+      # get user's goal days for the week for the pact
+      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+      # get user's workout count for the week
+      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+      # if you have bonus days
+      if week_workouts > week_goal_days 
+        week_missed_days = 0
+        week_bonus_days = week_workouts - week_goal_days
+        if total_missed_days_at_beginning_of_week < week_bonus_days
+          bonus_days_that_count = total_missed_days_at_beginning_of_week
+        else
+          bonus_days_that_count = week_bonus_days
+        end
+        # if you have missed days to be made up
+        if total_missed_days_at_beginning_of_week > 0
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+        end
+      # if you don’t have bonus days
+      else
+        week_bonus_days = 0
+        week_missed_days = week_goal_days - week_workouts
+        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+      end
+    end 
+    total_missed_days_at_end_of_week
+  end
+
+# original business logic
+  def get_user_weekly_penalty(week_number, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+    total_penalty_at_beginning_of_week = 0
+    total_penalty_at_end_of_week = 0
+
+    # to figure out if total_missed_days at beginning of week i > 0
+    for i in 1 .. week_number 
+      # get user's goal days for the week for the pact
+      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+      # get user's workout count for the week
+      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+      # get penalty for goal days
+      penalty = penalty_for_goal(week.id, user)
+      # if you have bonus days
+      if week_workouts > week_goal_days 
+        week_missed_days = 0
+        week_bonus_days = week_workouts - week_goal_days
+        if total_missed_days_at_beginning_of_week < week_bonus_days
+          bonus_days_that_count = total_missed_days_at_beginning_of_week
+        else
+          bonus_days_that_count = week_bonus_days
+        end
+        # if you have missed days to be made up
+        if total_missed_days_at_beginning_of_week > 0
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+        end
+      # if you don’t have bonus days
+      else
+      week_bonus_days = 0
+      week_missed_days = week_goal_days - week_workouts
+      total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+      total_penalty_at_end_of_week = total_penalty_at_beginning_of_week + (week_missed_days * penalty.penalty)
+      end
+    end 
+    total_penalty_at_end_of_week
+  end
+
+  def get_user_penalty_beginning_of_week(week_number, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+    total_penalty_at_beginning_of_week = 0
+    total_penalty_at_end_of_week = 0
+
+    # to figure out if total_missed_days at beginning of week i > 0
+    for i in 1 .. week_number 
+      # get user's goal days for the week for the pact
+      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+      # get user's workout count for the week
+      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+      # penalty = get_penalty_by_goaldays(goaldays)
+      # get penalty for goal days
+      penalty = penalty_for_goal(week.id, user)
+      # if you have bonus days
+      if week_workouts > week_goal_days 
+        week_missed_days = 0
+        week_bonus_days = week_workouts - week_goal_days
+        if total_missed_days_at_beginning_of_week < week_bonus_days
+          bonus_days_that_count = total_missed_days_at_beginning_of_week
+        else
+          bonus_days_that_count = week_bonus_days
+        end
+        # if you have missed days to be made up
+        if total_missed_days_at_beginning_of_week > 0
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+        end
+      # if you don’t have bonus days
+      else
+      week_bonus_days = 0
+      week_missed_days = week_goal_days - week_workouts
+      total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+      total_penalty_at_end_of_week = total_penalty_at_beginning_of_week + (week_missed_days * penalty.penalty)
+      end
+    end 
+    if i == 1
+      total_penalty_at_beginning_of_week = 0
+      total_penalty_at_beginning_of_week
+    else
+      total_penalty_at_beginning_of_week
+    end
+    total_penalty_at_beginning_of_week
   end
 
   # Get total stats for this pact
@@ -307,7 +542,6 @@ class Pact < ActiveRecord::Base
         #   # throw error and notice telling user to create users
         #   raise "Error Message"
         #   # return false
-        #   # debugger
         # end
 
         ####### USER LOGIC #######
@@ -329,7 +563,7 @@ class Pact < ActiveRecord::Base
           # this attribute needs to be updated following the workout creation
           :workout_id => @message.workout_id
         )
-        debugger
+
 
         # if message contains media, create a new workout. cannot be placed in logic above that searches for media because the message hasn't been created/saved yet, so there is no corresponding @message.id
         if @message.message.include? ".jpg <attached>" 
@@ -349,7 +583,6 @@ class Pact < ActiveRecord::Base
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
-            debugger
             new_workout.save
           end
         elsif @message.message.include? ".mp4 <attached>"
@@ -369,7 +602,6 @@ class Pact < ActiveRecord::Base
               :pact_id => pact.id,
               :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
             )
-            debugger
             new_workout.save
           end
         end

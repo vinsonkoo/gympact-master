@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160102210343) do
+ActiveRecord::Schema.define(version: 20160103230443) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -90,17 +90,6 @@ ActiveRecord::Schema.define(version: 20160102210343) do
     t.integer "message_id"
     t.integer "workout_id"
   end
-
-  create_table "pact_user_relations", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "pact_id"
-    t.text     "user_id"
-  end
-
-  add_index "pact_user_relations", ["pact_id", "user_id"], name: "index_pact_user_relations_on_pact_id_and_user_id", unique: true
-  add_index "pact_user_relations", ["pact_id"], name: "index_pact_user_relations_on_pact_id"
-  add_index "pact_user_relations", ["user_id"], name: "index_pact_user_relations_on_user_id"
 
   create_table "pacts", force: :cascade do |t|
     t.string   "pact_name"
