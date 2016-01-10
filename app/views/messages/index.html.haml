@@ -61,22 +61,22 @@
         %td.user-email= user.email
 
 / following table is unneeded since message dates can be used to check which week the message belongs to        
-%table
-  %thead
-    %tr
-      %th Week ID
-      %th Pact ID Week Belongs To / Pact Name
-      %th Week Number
-      %th Week Start Date
-      %th Week End Date
-  %tbody
-    - @weeks.each do |week|
-      %tr
-        %td.week-id= week.id
-        %td.week-id
-          = week.pact_id
-          \/ 
-          = Pact.find(week.pact_id).pact_name
-        %td.week-week-number= week.week_number
-        %td.week-start= week.start_date
-        %td.week-end= week.end_date
+/ %table
+/   %thead
+/     %tr
+/       %th Week ID
+/       %th Pact ID Week Belongs To / Pact Name
+/       %th Week Number
+/       %th Week Start Date
+/       %th Week End Date
+/   %tbody
+/     - @weeks.each do |week|
+/       %tr
+/         %td.week-id= week.id
+/         %td.week-id
+/           = week.pact_id
+/           \/ 
+/           = Pact.find(week.pact_id).pact_name
+/         %td.week-week-number= week.week_number
+/         %td.week-start= week.start_date
+/         %td.week-end= week.end_date

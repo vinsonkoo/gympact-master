@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     collection do
       get ':pact_id/import/', action: :import
       post :import
+
     end
     # resources :chat
     resources :penalties
@@ -43,8 +44,10 @@ Rails.application.routes.draw do
 
 
   # OTHER MODELS ###################################################################################
+  # get 'messages/:id/is_workout'   => 'messages#is_workout', as: "is_workout"
   resources :messages do
     collection do
+      get ':id/is_workout', action: :is_workout
       get 'import/new', action: :new_import # import_new_chats_path (?)
       post :import
     end
@@ -52,7 +55,8 @@ Rails.application.routes.draw do
   
   resources :users
 
-
+  get 'workouts/:id/copy'   => 'workouts#copy', as: "copy"
+  resources :workouts
 
 
   # get "pages/home"
