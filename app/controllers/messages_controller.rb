@@ -38,27 +38,37 @@ class MessagesController < ApplicationController
 
 
 
-  # def is_workout?(message)
-  #   @message = Message.find(params[:id])
-  #   if @message.is_workout.true?
-  #     @mesage.is_workout = false
-  #     @message.save
-  #   else
-  #     @message.is_workout = true
-  #     @message.save
-  #   end
-  #   redirect_to pact_path(@message.pact_id)
-  # end
+  def is_workout
+    @message = Message.find(params[:id])
+    if @message.is_workout == true
+      @message.is_workout = false
+      @message.save
+      @workouts = Workout.where(message_id: @message.id)
+      @workouts.destroy_all
+    else
+      @message.is_workout = true
+      @message.save
+      @pact = Pact.find_by(id: @message.pact_id)
+      @workout = @pact.workouts.build(
+        :distance => nil,
+        :pace => nil,
+        :duration => nil,
+        :video1 => nil,
+        :video2 => nil,
+        :workout_name => nil,
+        :workout_description => nil,
+        :is_makeup_workout => nil,
+        :user_id => @message.user_id,
+        :week_id => @message.week_id,
+        :pact_id => @pact.id,
+        :message_id => @message.id
+      )
+      @workout.save
+    end
+    redirect_to pact_path(@message.pact_id)
+  end
 
   def import
-    # begin
-    #   Message.import( params[:message][:import_file])
-    #   flash[:notice] = "Import successful"
-    #   redirect_to messages_path
-    # rescue => exception
-    #   flash[:notice] = "There was a problem importing. #{exception.message}"
-    #   redirect_to import_new_messages_path
-    # end
     uploaded_file = Message.import(params[:file])
     redirect_to messages_path, notice: 'Chat imported.'
   end

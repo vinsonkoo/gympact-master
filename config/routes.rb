@@ -38,8 +38,10 @@ Rails.application.routes.draw do
 
 
   # OTHER MODELS ###################################################################################
+  # get 'messages/:id/is_workout'   => 'messages#is_workout', as: "is_workout"
   resources :messages do
     collection do
+      get ':id/is_workout', action: :is_workout
       get 'import/new', action: :new_import # import_new_chats_path (?)
       post :import
     end
