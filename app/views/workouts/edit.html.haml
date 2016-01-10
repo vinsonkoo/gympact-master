@@ -1,0 +1,42 @@
+.content
+  .content-section
+    = form_for @workout do |f|
+      - if @workout.errors.any?
+        .error_explanation
+          %h2
+            = pluralize(@workout.errors.count, "error")
+            prohibited this pact from being saved.
+          %ul
+            - @workout.errors.full_workouts.each do |msg|
+              %li= msg
+
+      .form-row
+        = f.label :workout_name, 'Workout Name'
+        = f.text_field :workout_name
+      .form-row
+        = f.label :workout_description, 'Workout Description'
+        = f.text_field :workout_description
+      .form-row
+        = f.label :distance, 'Distance'
+        = f.number_field :distance, min: 0, :step => 'any'
+      .form-row
+        = f.label :pace, 'Pace'
+        = f.text_field :pace
+      .form-row
+        = f.label :duration, 'Duration'
+        = f.text_field :duration
+      .form-row
+        = f.label :video1, 'Video 1'
+        = f.text_field :video1
+      .form-row
+        = f.label :video2, 'Video 2'
+        = f.text_field :video2
+      .form-row
+        = f.label :is_makeup_workout, 'Is Makeup Workout'
+        = f.check_box :is_makeup_workout
+      .form-row
+        = f.label :user_id, 'User'
+        = f.collection_select :user_id, @users, :id, :username, include_blank: true
+      
+
+      = f.submit "Update workout", :class => "button button-full"

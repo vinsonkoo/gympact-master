@@ -7,7 +7,8 @@ class MessagesController < ApplicationController
   end
 
   def show
-    @messages = Message.all
+    @message = Message.find(params[:id])
+    @pact = Pact.find_by(id: @message.pact_id)
   end
 
   def new
@@ -23,6 +24,31 @@ class MessagesController < ApplicationController
       render 'new'
     end
   end
+
+  def update
+    @message = Message.find(params[:id])
+    if @message.is_workout == true
+      @message.is_workout = false
+    else
+      @message.is_workout = true
+    end
+    @message.update(message_params)
+    redirect_to pact_path(@message.pact_id)
+  end
+
+
+
+  # def is_workout?(message)
+  #   @message = Message.find(params[:id])
+  #   if @message.is_workout.true?
+  #     @mesage.is_workout = false
+  #     @message.save
+  #   else
+  #     @message.is_workout = true
+  #     @message.save
+  #   end
+  #   redirect_to pact_path(@message.pact_id)
+  # end
 
   def import
     # begin

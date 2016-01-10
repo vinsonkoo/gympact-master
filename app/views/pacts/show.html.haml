@@ -285,64 +285,83 @@
                 = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
             %td
               / Weekly total workout
-              = pu.workouts.where(week_id: pw.id).count
+              / = pu.workouts.where(week_id: pw.id).count
             %td
               / Bonus days for user
-              = @pact.get_bonus_days_for_week(pw.week_number, pu)
+              / = @pact.get_bonus_days_for_week(pw.week_number, pu)
             %td
               / Total missed days at beginning of week
-              = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
+              / = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
             %td
               / Total missed days at end of week
-              = @pact.get_missed_days_end_of_week(pw.week_number, pu)
+              / = @pact.get_missed_days_end_of_week(pw.week_number, pu)
             %td
               / Weekly penalty total
-              = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
+              / = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
             %td
               / Penalty total at beginning of week
-              = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
+              / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
             %td
               / Amount paid
 
-  / %h1 Pact's Chat/Messages
+  %h1 Pact's Chat/Messages
 
-  / %table
-  /   %thead
-  /     %tr
-  /       %th Message ID
-  /       %th Date+Time
-  /       %th Date
-  /       %th Time
-  /       %th User ID
-  /       %th Sender
-  /       %th Message
-  /       %th Workout?
-  /   %tbody
-  /     - @pact.messages.each do |message|
-  /       %tr
-  /         %td.message-id= message.id
-  /         %td.message-datetime= message.msg_date_time
-  /         %td.message-date= message.date.strftime("%-m/%-d/%Y")
-  /         %td.message-time= message.time
-  /         %td.message-user-id= message.user_id
-  /         %td.message-sender= message.sender
-  /         %td.message-message
-  /           - if message.media == true
-  /             - if message.image != nil
-  /               = image_tag("/media/#{message.image}.jpg", class: "attached-image")
-  /             - elsif message.video != nil
-  /               = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
-  /           - else
-  /             = message.message
-  /         %td.message-is-workout
-  /           %p= message.is_workout
-  /           - if message.is_workout == true
-  /             %p= link_to 'Is this a workout?', edit_admin_message_path(message)
-  /           - if @pact.workouts.find_by(message_id: message.id) == nil
-  /             %p Not a workout
-  /           - elsif @pact.workouts.find_by(message_id: message.id).workout_name == nil
-  /             %p= link_to 'Edit workout', edit_admin_workout_path(@pact.workouts.find_by(message_id: message.id))
-  /           - else
-  /             = @pact.workouts.find_by(message_id: message.id).workout_name
-  /             = @pact.workouts.find_by(message_id: message.id).workout_description
+  %table
+    %thead
+      %tr
+        %th Message ID
+        %th Date+Time
+        %th Date
+        %th Time
+        %th User ID
+        %th Sender
+        %th Message
+        %th Workout?
+    %tbody
+      - @pact.messages.each do |message|
+        %tr
+          %td.message-id= message.id
+          %td.message-datetime= message.msg_date_time
+          %td.message-date= message.date.strftime("%-m/%-d/%Y")
+          %td.message-time= message.time
+          %td.message-user-id= message.user_id
+          %td.message-sender= message.sender
+          %td.message-message
+            - if message.media == true
+              - if message.image != nil
+                = image_tag("/media/#{message.image}.jpg", class: "attached-image")
+              - elsif message.video != nil
+                = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
+            - else
+              = message.message
+          %td.message-is-workout
+            %p= message.is_workout
+            - if message.media == true
+              = form_for message do |f|
+                - if message.errors.any?
+                  .error_explanation
+                    %h2
+                      = pluralize(message.errors.count, "error")
+                      prohibited this pact from being saved.
+                    %ul
+                      - message.errors.full_messages.each do |msg|
+                        %li= msg
 
+                .form-row
+                  -if message.is_workout == true
+                    = f.hidden_field :is_workout, :value => false, :id => message.id
+                    = f.submit "Is not a workout", :class => "button button-full"
+                  -else
+                    = f.hidden_field :is_workout, :value => true, :id => message.id
+                    = f.submit "Is a workout", :class => "button button-full"
+            - if message.is_workout == true
+              -if @pact.workouts.find_by(message_id: message.id) == nil
+              -else
+                %p= link_to 'Copy workout', controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id)
+            - if !@pact.workouts.find_by(message_id: message.id).nil?
+              - if @pact.workouts.find_by(message_id: message.id).workout_name == nil
+                %p= link_to 'Give this workout a name', edit_workout_path(@pact.workouts.find_by(message_id: message.id))
+              - else
+                = @pact.workouts.find_by(message_id: message.id).workout_name
+                = @pact.workouts.find_by(message_id: message.id).workout_description
+                %p= link_to 'Edit workout', edit_workout_path(@pact.workouts.find_by(message_id: message.id))

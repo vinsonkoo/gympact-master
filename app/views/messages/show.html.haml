@@ -1,0 +1,49 @@
+%h1 Messages
+
+%table
+  %thead
+    %tr
+      %th Message ID
+      %th Date+Time
+      %th Date
+      %th Time
+      %th User ID
+      %th Sender
+      %th Message
+      %th Workout?
+  %tbody
+    %tr
+      %td.message-id= @message.id
+      %td.message-datetime= @message.msg_date_time
+      %td.message-date= @message.date.strftime("%-m/%-d/%Y")
+      %td.message-time= @message.time
+      %td.message-user-id= @message.user_id
+      %td.message-sender= @message.sender
+      %td.message-message
+        - if @message.media == true
+          - if @message.image != nil
+            = image_tag("/media/#{@message.image}.jpg", class: "attached-image")
+          - elsif @message.video != nil
+            = video_tag("/media/#{@message.video}.mp4", :size => "320x240", :controls => true)
+        - else
+          = @message.message
+      %td.message-is-workout
+        %p= message.is_workout
+          - if message.media == true
+            = form_for message do |f|
+              - if message.errors.any?
+                .error_explanation
+                  %h2
+                    = pluralize(message.errors.count, "error")
+                    prohibited this pact from being saved.
+                  %ul
+                    - message.errors.full_messages.each do |msg|
+                      %li= msg
+
+              .form-row
+                -if message.is_workout == true
+                  = f.hidden_field :is_workout, :value => false, :id => message.id
+                  = f.submit "Is not a workout", :class => "button button-full"
+                -else
+                  = f.hidden_field :is_workout, :value => true, :id => message.id
+                  = f.submit "Is a workout", :class => "button button-full"

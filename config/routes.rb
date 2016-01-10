@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     collection do
       get ':pact_id/import/', action: :import
       post :import
+
     end
     # resources :chat
     resources :penalties
@@ -46,7 +47,8 @@ Rails.application.routes.draw do
   
   resources :users
 
-
+  get 'workouts/:id/copy'   => 'workouts#copy', as: "copy"
+  resources :workouts
 
 
   # get "pages/home"

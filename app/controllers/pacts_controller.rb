@@ -77,6 +77,7 @@ class PactsController < ApplicationController
     @pact = Pact.find(params[:id])
   end
 
+
   def import
     begin
       @pact = Pact.find(params[:id])

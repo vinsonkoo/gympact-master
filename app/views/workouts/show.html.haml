@@ -1,0 +1,44 @@
+%h1 Workout
+
+/ %p= link_to 'Edit workout', edit_workout_path
+
+%table
+  %thead
+    %tr
+      %th Workout ID
+      %th Workout Name
+      %th Workout Description
+      %th Distance
+      %th Pace
+      %th Duration
+      %th Video 1
+      %th Video 2
+      %th Is Makeup Workout
+      %th User ID
+      %th Week ID
+      %th Sent
+      %th Pact ID
+      %th Message ID / Associated Message (Image/Video)
+      / note: some of these are not needed
+  %tobdy
+    %tr
+      %td= @workout.id
+      %td= @workout.workout_name
+      %td= @workout.workout_description
+      %td= @workout.distance
+      %td= @workout.pace
+      %td= @workout.duration
+      %td= @workout.video1
+      %td= @workout.video2
+      %td= @workout.is_makeup_workout
+      %td= @workout.user_id
+      %td= @workout.week_id
+      %td= @workout.sent
+      %td= @workout.pact_id
+      %td
+        = @workout.message_id
+        \/
+        - if @message.image != nil
+          = image_tag("/media/#{@message.image}.jpg", class: "attached-image")
+        - elsif @message.video != nil
+          = video_tag("/media/#{@message.video}.mp4", :size => "320x240", :controls => true)
