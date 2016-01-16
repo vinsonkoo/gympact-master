@@ -1,8 +1,8 @@
 class Pact < ActiveRecord::Base
   require 'date'
 
-  after_create :check_active, :parse_weeks, :create_payments
-  after_save :check_goals
+  after_create :check_active, :parse_weeks
+  after_update :check_goals, :create_payments
   #######################################################
   # Specifies Associations
   # Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
@@ -22,6 +22,8 @@ class Pact < ActiveRecord::Base
   has_many :workouts, dependent: :destroy
   accepts_nested_attributes_for :workouts
 
+  has_many :payments, dependent: :destroy
+  accepts_nested_attributes_for :payments
 
   #######################################################
   # Makes it so that when you print the "Pact" object, you print the pact_name instead of the "#<ActiveRecord>blahblah" object name
@@ -79,7 +81,14 @@ class Pact < ActiveRecord::Base
   def penalty_for_goal(week_id, user)
     # get the pact's week based on week number
     # week = self.weeks.find_by(week_number: week_number)
-    self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal ) )
+    if self.penalties.empty?
+    else
+      if  user.goals.find_by( week_id: week_id ) == nil
+        # debugger
+      else
+        self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal ) )
+      end
+    end
   end
 
   def get_bonus_days_for_week(week_number, user)
@@ -93,34 +102,36 @@ class Pact < ActiveRecord::Base
     total_missed_days_at_beginning_of_week = 0
     total_missed_days_at_end_of_week = 0
     bonus_days_that_count = 0
-
-    for i in 1 .. week_number 
-      # get user's goal days for the week for the pact
-      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
-      # get user's workout count for the week
-      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
-      # if you have bonus days
-      if week_workouts > week_goal_days 
-        week_missed_days = 0
-        week_bonus_days = week_workouts - week_goal_days
-        if total_missed_days_at_beginning_of_week < week_bonus_days
-          bonus_days_that_count = total_missed_days_at_beginning_of_week
+    if self.goals.empty?
+    else
+      for i in 1 .. week_number 
+        # get user's goal days for the week for the pact
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        # get user's workout count for the week
+        week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+        # if you have bonus days
+        if week_workouts > week_goal_days 
+          week_missed_days = 0
+          week_bonus_days = week_workouts - week_goal_days
+          if total_missed_days_at_beginning_of_week < week_bonus_days
+            bonus_days_that_count = total_missed_days_at_beginning_of_week
+          else
+            bonus_days_that_count = week_bonus_days
+          end
+          # if you have missed days to be made up
+          if total_missed_days_at_beginning_of_week > 0
+            total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+            weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+          end
+        # if you don’t have bonus days
         else
-          bonus_days_that_count = week_bonus_days
+          week_bonus_days = 0
+          week_missed_days = week_goal_days - week_workouts
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
         end
-        # if you have missed days to be made up
-        if total_missed_days_at_beginning_of_week > 0
-          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
-          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
-        end
-      # if you don’t have bonus days
-      else
-        week_bonus_days = 0
-        week_missed_days = week_goal_days - week_workouts
-        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
       end
+        week_bonus_days
     end
-      week_bonus_days
   end
 
   def get_missed_days_beginning_of_week(week_number, user)
@@ -134,39 +145,43 @@ class Pact < ActiveRecord::Base
     total_missed_days_at_beginning_of_week = 0
     total_missed_days_at_end_of_week = 0
     bonus_days_that_count = 0
-
-    # to figure out if total_missed_days at beginning of week i > 0
-    for i in 1 .. week_number 
-      # get user's goal days for the week for the pact
-      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
-      # get user's workout count for the week
-      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
-      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
-      # if you have bonus days
-      if week_workouts > week_goal_days 
-        week_missed_days = 0
-        week_bonus_days = week_workouts - week_goal_days
-        if total_missed_days_at_beginning_of_week < week_bonus_days
-          bonus_days_that_count = total_missed_days_at_beginning_of_week
-        else
-          bonus_days_that_count = week_bonus_days
-        end
-        # if you have missed days to be made up
-        if total_missed_days_at_beginning_of_week > 0
-          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
-          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
-        end
-      # if you don’t have bonus days
-      else
-        week_bonus_days = 0
-        week_missed_days = week_goal_days - week_workouts
-        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
-      end
-    end 
-    if i == 1
-      total_missed_days_at_beginning_of_week = 0
-      total_missed_days_at_beginning_of_week
+    if self.goals.empty?
     else
+      # to figure out if total_missed_days at beginning of week i > 0
+      for i in 1 .. week_number 
+        # get user's goal days for the week for the pact
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        # get user's workout count for the week
+        week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+        total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+        # if you have bonus days
+        if week_workouts > week_goal_days 
+          week_missed_days = 0
+          week_bonus_days = week_workouts - week_goal_days
+          if total_missed_days_at_beginning_of_week < week_bonus_days
+            bonus_days_that_count = total_missed_days_at_beginning_of_week
+          else
+            bonus_days_that_count = week_bonus_days
+          end
+          # if you have missed days to be made up
+          if total_missed_days_at_beginning_of_week > 0
+            total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+            weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+          end
+        # if you don’t have bonus days
+        else
+          week_bonus_days = 0
+          week_missed_days = week_goal_days - week_workouts
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+        end
+      end 
+
+      if i == 1
+        total_missed_days_at_beginning_of_week = 0
+        total_missed_days_at_beginning_of_week
+      else
+        total_missed_days_at_beginning_of_week
+      end
       total_missed_days_at_beginning_of_week
     end
   end
@@ -182,34 +197,36 @@ class Pact < ActiveRecord::Base
     total_missed_days_at_beginning_of_week = 0
     total_missed_days_at_end_of_week = 0
     bonus_days_that_count = 0
-
-    # to figure out if total_missed_days at beginning of week i > 0
-    for i in 1 .. week_number 
-      # get user's goal days for the week for the pact
-      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
-      # get user's workout count for the week
-      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
-      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
-      # if you have bonus days
-      if week_workouts > week_goal_days 
-        week_missed_days = 0
-        week_bonus_days = week_workouts - week_goal_days
-        if total_missed_days_at_beginning_of_week < week_bonus_days
-          bonus_days_that_count = total_missed_days_at_beginning_of_week
+    if self.goals.empty?
+    else
+      # to figure out if total_missed_days at beginning of week i > 0
+      for i in 1 .. week_number 
+        # get user's goal days for the week for the pact
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        # get user's workout count for the week
+        week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+        total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+        # if you have bonus days
+        if week_workouts > week_goal_days 
+          week_missed_days = 0
+          week_bonus_days = week_workouts - week_goal_days
+          if total_missed_days_at_beginning_of_week < week_bonus_days
+            bonus_days_that_count = total_missed_days_at_beginning_of_week
+          else
+            bonus_days_that_count = week_bonus_days
+          end
+          # if you have missed days to be made up
+          if total_missed_days_at_beginning_of_week > 0
+            total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+          end
+        # if you don’t have bonus days
         else
-          bonus_days_that_count = week_bonus_days
+          week_bonus_days = 0
+          week_missed_days = week_goal_days - week_workouts
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
         end
-        # if you have missed days to be made up
-        if total_missed_days_at_beginning_of_week > 0
-          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
-        end
-      # if you don’t have bonus days
-      else
-        week_bonus_days = 0
-        week_missed_days = week_goal_days - week_workouts
-        total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
-      end
-    end 
+      end 
+    end
     total_missed_days_at_end_of_week
   end
 
@@ -227,17 +244,71 @@ class Pact < ActiveRecord::Base
     bonus_days_that_count = 0
     total_penalty_at_beginning_of_week = 0
     total_penalty_at_end_of_week = 0
+    if self.goals.empty?
+    else
+      # to figure out if total_missed_days at beginning of week i > 0
+      for i in 1 .. week_number 
+        if week_number > weeks.last.week_number
 
-    # to figure out if total_missed_days at beginning of week i > 0
-    for i in 1 .. week_number 
-      if week_number > weeks.last.week_number
+        else
+          # get user's goal days for the week for the pact
+          week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+          # get user's workout count for the week
+          week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
+          total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+          # get penalty for goal days
+          penalty = penalty_for_goal(week.id, user)
+          # if you have bonus days
+          if week_workouts > week_goal_days 
+            week_missed_days = 0
+            week_bonus_days = week_workouts - week_goal_days
+            if total_missed_days_at_beginning_of_week < week_bonus_days
+              bonus_days_that_count = total_missed_days_at_beginning_of_week
+            else
+              bonus_days_that_count = week_bonus_days
+            end
+            # if you have missed days to be made up
+            if total_missed_days_at_beginning_of_week > 0
+              total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
+              weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
+            end
+          # if you don’t have bonus days
+          else
+          week_bonus_days = 0
+          week_missed_days = week_goal_days - week_workouts
+          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
+          total_penalty_at_end_of_week = total_penalty_at_beginning_of_week + (week_missed_days * penalty.penalty)
+          end
+        end 
+      end
+    end
+    total_penalty_at_end_of_week
+  end
 
-      else
+  def get_user_penalty_beginning_of_week(week_number, user)
+    # get the pact's week based on week number
+    week = self.weeks.find_by(week_number: week_number)
+
+    week_goal_days = 0
+    week_workouts = 0
+    week_missed_days = 0
+    week_bonus_days = 0
+    total_missed_days_at_beginning_of_week = 0
+    total_missed_days_at_end_of_week = 0
+    bonus_days_that_count = 0
+    total_penalty_at_beginning_of_week = 0
+    total_penalty_at_end_of_week = 0
+
+    if self.goals.empty?
+    else
+      # to figure out if total_missed_days at beginning of week i > 0
+      for i in 1 .. week_number 
         # get user's goal days for the week for the pact
         week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
         # get user's workout count for the week
         week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
         total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
+        # penalty = get_penalty_by_goaldays(goaldays)
         # get penalty for goal days
         penalty = penalty_for_goal(week.id, user)
         # if you have bonus days
@@ -262,61 +333,12 @@ class Pact < ActiveRecord::Base
         total_penalty_at_end_of_week = total_penalty_at_beginning_of_week + (week_missed_days * penalty.penalty)
         end
       end 
-    end 
-    total_penalty_at_end_of_week
-  end
-
-  def get_user_penalty_beginning_of_week(week_number, user)
-    # get the pact's week based on week number
-    week = self.weeks.find_by(week_number: week_number)
-
-    week_goal_days = 0
-    week_workouts = 0
-    week_missed_days = 0
-    week_bonus_days = 0
-    total_missed_days_at_beginning_of_week = 0
-    total_missed_days_at_end_of_week = 0
-    bonus_days_that_count = 0
-    total_penalty_at_beginning_of_week = 0
-    total_penalty_at_end_of_week = 0
-
-    # to figure out if total_missed_days at beginning of week i > 0
-    for i in 1 .. week_number 
-      # get user's goal days for the week for the pact
-      week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
-      # get user's workout count for the week
-      week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
-      total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
-      # penalty = get_penalty_by_goaldays(goaldays)
-      # get penalty for goal days
-      penalty = penalty_for_goal(week.id, user)
-      # if you have bonus days
-      if week_workouts > week_goal_days 
-        week_missed_days = 0
-        week_bonus_days = week_workouts - week_goal_days
-        if total_missed_days_at_beginning_of_week < week_bonus_days
-          bonus_days_that_count = total_missed_days_at_beginning_of_week
-        else
-          bonus_days_that_count = week_bonus_days
-        end
-        # if you have missed days to be made up
-        if total_missed_days_at_beginning_of_week > 0
-          total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week - week_bonus_days
-          weekly_penalty = (total_penalty_at_beginning_of_week / total_missed_days_at_beginning_of_week) * bonus_days_that_count
-        end
-      # if you don’t have bonus days
+      if i == 1
+        total_penalty_at_beginning_of_week = 0
+        total_penalty_at_beginning_of_week
       else
-      week_bonus_days = 0
-      week_missed_days = week_goal_days - week_workouts
-      total_missed_days_at_end_of_week = total_missed_days_at_beginning_of_week + week_missed_days
-      total_penalty_at_end_of_week = total_penalty_at_beginning_of_week + (week_missed_days * penalty.penalty)
+        total_penalty_at_beginning_of_week
       end
-    end 
-    if i == 1
-      total_penalty_at_beginning_of_week = 0
-      total_penalty_at_beginning_of_week
-    else
-      total_penalty_at_beginning_of_week
     end
     total_penalty_at_beginning_of_week
   end
@@ -353,6 +375,7 @@ class Pact < ActiveRecord::Base
   private
 
   def check_active
+    # @pact = Pact.last because this is done immediately after a pact is created
     @pact = Pact.last
     if (@pact.start_date..@pact.end_date).cover?(Date.today)
       @pact.is_active = true
@@ -364,6 +387,7 @@ class Pact < ActiveRecord::Base
   end
 
   def parse_weeks
+    # @pact = Pact.last because this is done immediately after a pact is created
     @pact = Pact.last
     start_date  = @pact.start_date
     end_date = @pact.end_date
@@ -396,99 +420,116 @@ class Pact < ActiveRecord::Base
     @pact = Pact.find_by(id: id)
     current_week = @pact.get_current_week
 
-    if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-      @pact.weeks.each do |pw|
-        # if pact week is after current_week's start date, then update the goals for the following weeks
-        if pw.start_date >= current_week.start_date
-          @pact.users.each do |pu|
-            # get most recently updated goal for user. most recently updated goal is obtained from get_current_week
-            last_goal = pu.goals("updated_at").last
-            # update goals for user for every week after current week
-            pu.goals.each do |pg|
-              # if goal's week is before most recently updated goal, do not update it
-              if pg.week_id <= last_goal.week_id
-              else
-                # update the goal to match most recently updated goal
-                pg = last_goal
-                pg.save
-              end
-            end
-          end
-        end
-      end
-    else
-      if @pact.is_active?
+      # if total goal count for the pact is equal to weeks * users, then update goals for weeks after current week
+      if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
         @pact.weeks.each do |pw|
-          if pw.start_date.future?
+          # if pact week is after current_week's start date, then update the goals for the following weeks
+          if pw.start_date >= current_week.start_date
             @pact.users.each do |pu|
-            # get last updated goal for user
-            last_goal_day = pu.goals.last.goal
-
-              # if goal already exists for the week, do not create any new goals for that week
-              if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-              else
-                new_goal = @pact.goals.build
-                new_goal.user_id = pu.id
-                new_goal.goal = last_goal_day
-                new_goal.week_id = pw.id
-                new_goal.save
-              end
-            end
-          end
-        end
-
-      else
-
-        # needs fixing. duplicates week 1 goals
-        if @pact.goals.empty?
-          # do nothing
-        else
-          @pact.weeks.each do |pw|
-            @pact.users.each do |pu|
-              # get last updated goal for user
-              last_goal = pu.goals.last.goal
-              # if goal already exists for the week, do not create any new goals for that week
-              if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-              else
-                new_goal = @pact.goals.build
-                new_goal.user_id = pu.id
-                new_goal.goal = last_goal
-                new_goal.week_id = pw.id
-                new_goal.save
-              end
-
-              # ignore first week, since first week will have been created from the initial form
-              if pw == @pact.weeks.first 
-                # do nothing
-              else
-                @pact.users.each do |pu|
-                # get last updated goal for user
-                last_goal = pu.goals.last.goal
-                
-                  # if goal already exists for the week, do not create any new goals for that week
-                  if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
-                  else
-                    new_goal = @pact.goals.build
-                    new_goal.user_id = pu.id
-                    new_goal.goal = last_goal
-                    new_goal.week_id = pw.id
-                    new_goal.save
-                  end
+              # get most recently updated goal for user. most recently updated goal is obtained from get_current_week
+              last_goal = pu.goals("updated_at").last
+              # update goals for user for every week after current week
+              pu.goals.each do |pg|
+                # if goal's week is before most recently updated goal, do not update it
+                if pg.week_id <= last_goal.week_id
+                else
+                  # update the goal to match most recently updated goal
+                  pg = last_goal
+                  pg.save
                 end
               end
             end
           end
         end
+      else
+        if @pact.is_active?
+          @pact.weeks.each do |pw|
+            if pw.start_date.future?
+              @pact.users.each do |pu|
+              # get last updated goal for user
+              last_goal_day = pu.goals.last.goal
 
-      end # if pact.is_active?
+                # if goal already exists for the week, do not create any new goals for that week
+                if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                else
+                  new_goal = @pact.goals.build
+                  new_goal.user_id = pu.id
+                  new_goal.goal = last_goal_day
+                  new_goal.week_id = pw.id
+                  new_goal.save
+                end
+              end
+            end
+          end
+        else
 
-    end
+          # needs fixing. duplicates week 1 goals
+          # if @pact.goals.empty?
+          #   # do nothing
+          #   debugger
+          # else
+            @pact.weeks.each do |pw|
+              @pact.users.each do |pu|
+                # get last updated goal for user
+                last_goal = pu.goals.last.goal
+                # if goal already exists for the week, do not create any new goals for that week
+                if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                else
+                  new_goal = @pact.goals.build
+                  new_goal.user_id = pu.id
+                  new_goal.goal = last_goal
+                  new_goal.week_id = pw.id
+                  new_goal.save
+                end
+
+                # ignore first week, since first week will have been created from the initial form
+                if pw == @pact.weeks.first 
+                  # do nothing
+                else
+                  @pact.users.each do |pu|
+                  # get last updated goal for user
+                  last_goal = pu.goals.last.goal
+                  
+                    # if goal already exists for the week, do not create any new goals for that week
+                    if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                    else
+                      new_goal = @pact.goals.build
+                      new_goal.user_id = pu.id
+                      new_goal.goal = last_goal
+                      new_goal.week_id = pw.id
+                      new_goal.save
+                    end
+                  end
+                end
+              end
+            end
+          # end
+
+        end # if pact.is_active?
+
+      end # end of second if statement
+
+    # end # end of first if statement
     
   end # def check_goals
 
   def create_payments
-    
+    # @pact = Pact.last because this is done immediately after a pact is created
+    @pact = Pact.last
+    @pact.users.each do |pu|
+      # if payment for user is nil, create it
+      if @pact.payments.find_by(user_id: pu.id) == nil
+        @payment = @pact.payments.build
+        @payment.payment = 0
+        @payment.user_id = pu.id
+        @payment.pact_id = @pact.id
+        @payment.save
+      else
+
+      end
+    end
   end
+  
 
   def self.import(file, pact) 
     # open the file
@@ -504,6 +545,7 @@ class Pact < ActiveRecord::Base
       # separate date and time
       # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
       # @message.time = @message.msg_date_time.partition(", ")[2]
+      
       #the following line partitions/parses the date in the incorrect format
       # @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
       # separate sender/user and message
@@ -632,7 +674,9 @@ class Pact < ActiveRecord::Base
 ############################################################
       elsif @message.date != "" && @message.time != "" && @message.sender != "" && @message.message = ""
         # if message is blank, it's a SYSTEM MESSAGE
-        @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
+        # the following strptime line is no longer needed after using gem 'american_date'
+        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         @message.time = @message.msg_date_time.partition(", ")[2]
         # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         @message.is_workout = false

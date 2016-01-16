@@ -42,6 +42,9 @@
             %td.border-right
               =user.username
             %td.border-right
+              -if !user.goals.find_by(week_id: @week.id).nil?
+                = user.goals.find_by("week_id: = ? and pact_id: = ?", @week.id, @pact.id).goal
+                = debugger
             %td
             %td
             %td.border-right

@@ -46,7 +46,9 @@ class PactsController < ApplicationController
     @weeks = @pact.weeks
     @users = @pact.users
     @goals = @pact.goals
+    @penalties = @pact.penalties
     @workouts = @pact.workouts
+    @payments = @pact.payments
   end
 
   def users
@@ -104,10 +106,12 @@ class PactsController < ApplicationController
       user_ids:[], 
       goals_attributes:[:id, :pact_id, :goal, :user_id, :week_id],
       messages_attributes:[:id, :pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id],
-      workouts_attributes:[:id, :distance, :duration, :is_makeup_workout, :pace, :video1, :video2, :workout_description, :workout_name, :sent, :photo_id, :user_id, :week_id, :message_id]
+      workouts_attributes:[:id, :distance, :duration, :is_makeup_workout, :pace, :video1, :video2, :workout_description, :workout_name, :sent, :photo_id, :user_id, :week_id, :message_id],
+      payments_attributes:[:id, :payment, :user_id, :pact_id]
       )
   end 
 
+  # unneeded?
   def week_params
     params.require(:week).permit(:start_date, :end_date, :pact_id, :week_number)
   end

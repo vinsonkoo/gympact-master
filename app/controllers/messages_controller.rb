@@ -36,8 +36,6 @@ class MessagesController < ApplicationController
     redirect_to pact_path(@message.pact_id)
   end
 
-
-
   def is_workout
     @message = Message.find(params[:id])
     if @message.is_workout == true

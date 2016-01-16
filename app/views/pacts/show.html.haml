@@ -195,10 +195,13 @@
           %th Goal Days
           %th Penalty
       %tbody
-        -@pact.penalties.each do |penalty|
-          %tr
-            %td= penalty.goal_days
-            %td= number_to_currency(penalty.penalty)
+        -if @pact.penalties.empty?
+
+        -else
+          -@pact.penalties.each do |penalty|
+            %tr
+              %td= penalty.goal_days
+              %td= number_to_currency(penalty.penalty)
     %p= link_to "Edit penalties for #{@pact.pact_name}", controller: "pacts", action: "add_penalties", id: @pact
   -else
     %p 
@@ -281,6 +284,7 @@
               -if !@pact.penalty_for_goal(pw.id, pu).nil?
                 = number_to_currency(@pact.penalty_for_goal(pw.id, pu).goal_days)
               - else
+                / = debugger
                 Penalties do not exist yet. 
                 = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
             %td
@@ -303,6 +307,25 @@
               / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
             %td
               / Amount paid
+              / = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
+              .content
+                .content-section
+                  = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
+                    - if @pact.errors.any?
+                      .error_explanation
+                        %h2
+                          = pluralize(@pact.errors.count, "error")
+                          prohibited this pact from being saved.
+                        %ul
+                          - @pact.errors.full_messages.each do |msg|
+                            %li= msg
+
+                    .form-row
+                      = f.number_field :payment, :step => 0.01, min: 0
+                      = f.hidden_field :user_id, :value => pu.id
+                      = f.hidden_field :pact_id, :value => @pact.id
+                      
+                    = f.submit "Update Paid Amount", :class => "button"
 
   %h1 Pact's Chat/Messages
 
@@ -339,11 +362,14 @@
             - if message.media == true
               - if message.is_workout == true
                 %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id}, :class => "button button-full"
-              - else 
-                %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
                 -if @pact.workouts.find_by(message_id: message.id) == nil
                 -else
-                  %p= link_to 'Copy workout', controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id), :class => "button button-full"
+                  %p= link_to 'Copy workout', {controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id)}, :class => "button button-full"
+              - else 
+                %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+                / -if @pact.workouts.find_by(message_id: message.id) == nil
+                / -else
+                  
               - if !@pact.workouts.find_by(message_id: message.id).nil?
                 - if @pact.workouts.find_by(message_id: message.id).workout_name == nil
                   %p= link_to 'Give this workout a name', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"

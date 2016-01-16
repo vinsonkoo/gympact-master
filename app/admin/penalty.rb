@@ -3,7 +3,7 @@ ActiveAdmin.register Penalty do
 	selectable_column
     column :id
     column :pact
-    column :goal
+    column :goal_days
     column :penalty
     column :created_at
     column :updated_at

@@ -1,0 +1,23 @@
+.form
+  .content
+    .content-section
+      = form_for setup_pact_payments(@pact) do |f|
+        - if @pact.errors.any?
+          .error_explanation
+            %h2
+              = pluralize(@pact.errors.count, "error")
+              prohibited this pact from being saved.
+            %ul
+              - @pact.errors.full_messages.each do |msg|
+                %li= msg
+
+        .form-row
+          = f.number_field :payment, :step => 0.01
+          = f.hidden_field :user_id, value => pu.id
+          = f.hidden_field :pact_id, value => @pact.id
+          
+          
+
+        
+
+        = f.submit "Update Paid Amount", :class => "button button-full"

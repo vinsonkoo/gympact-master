@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       post :import
 
     end
-    # resources :chat
+    resources :payments
     resources :penalties
     resources :goals
     resources :weeks

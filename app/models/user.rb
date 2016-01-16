@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :goals
 
   has_many :workouts, dependent: :destroy
+  accepts_nested_attributes_for :workouts
+
+  has_many :payments, dependent: :destroy
+  accepts_nested_attributes_for :payments
 end

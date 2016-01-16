@@ -27,7 +27,7 @@
                 days per week
                 = ff.hidden_field :goal_days, :value => ff.index, :placeholder => ff.index, :readonly => true
               .form-penalties-penalty-amount
-                = ff.number_field :penalty, :step => 0.01
+                = ff.number_field :penalty, :step => 0.01, min: 0
                 = ff.hidden_field :pact_id, :value => @pact.id
         .form-row
           = f.submit :class => "button button-full"

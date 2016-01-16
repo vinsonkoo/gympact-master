@@ -15,6 +15,9 @@ group :production do
 	gem 'rails_12factor'
 end
 
+gem 'american_date'
+gem 'validates_timeliness', '~> 4.0'
+
 gem 'bootstrap-datepicker-rails'
 
 gem 'autoprefixer-rails'

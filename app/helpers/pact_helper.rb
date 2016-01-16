@@ -14,16 +14,22 @@ module PactHelper
     # only build if goals do not exist yet
 
     if !pact.goals.present?
-      # debugger
       pact.goals.build
-      puts 'hello helper'
     else
       pact
-      puts 'bye helper'
-      # debugger
     end
     pact
   end
 
+  def setup_pact_payments(pact)
+
+    if !pact.payments.present?
+      pact.payments
+    else
+      pact.payments
+    end
+
+    pact
+  end
 
 end
