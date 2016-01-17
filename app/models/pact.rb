@@ -556,7 +556,8 @@ class Pact < ActiveRecord::Base
         # format date
         # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
 
-        @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        @message.date = Date.parse(@message.msg_date_time)
         @message.time = @message.msg_date_time.partition(", ")[2]
         
         # logic that checks if message contains either an image or video, and if so media is set to true (boolean) and the other is set to nil in order to render the media in the view with an if statement
@@ -677,6 +678,7 @@ class Pact < ActiveRecord::Base
         @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
         # the following strptime line is no longer needed after using gem 'american_date'
         # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+        @message.date = Date.parse(@message.msg_date_time)
         @message.time = @message.msg_date_time.partition(", ")[2]
         # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         @message.is_workout = false
@@ -709,7 +711,8 @@ class Pact < ActiveRecord::Base
           append_sender = @message.sender
           append_message = @message.message
           @message = Message.all.last
-          @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+          # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
+          @message.date = Date.parse(@message.msg_date_time)
 
           @message.message << append_date_time << append_sender << append_message
           # @message.save
