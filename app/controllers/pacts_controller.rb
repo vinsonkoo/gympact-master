@@ -7,8 +7,8 @@ class PactsController < ApplicationController
   def create
     @pact = Pact.new(pact_params)
     if @pact.save
-      redirect_to @pact
-      # redirect_to 'add_users_path'
+      # redirect_to @pact
+      redirect_to add_users_path(@pact)
     else
       render 'new'
     end
@@ -30,7 +30,24 @@ class PactsController < ApplicationController
   def update
     @pact = Pact.find(params[:id])
     @pact.update(pact_params)
-    redirect_to @pact
+    # debugger
+    if @pact.users.exists?
+
+      if @pact.goals.exists?
+
+        if @pact.penalties.exists?
+
+          redirect_to @pact
+        else
+          redirect_to add_penalties_path(@pact)
+        end
+
+      else
+        redirect_to add_goals_path(@pact)
+      end
+    else
+      redirect_to add_users_path(@pact)
+    end
   end
 
   def all 

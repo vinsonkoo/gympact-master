@@ -14,12 +14,16 @@
             %ul
               - @pact.errors.full_messages.each do |msg|
                 %li= msg
+        
 
+        %p
+        = f.label "Select All"
+        = check_box_tag 'select_all', 'select_all', false, :checked => false
         .form-users
           = f.collection_check_boxes :user_ids, User.all, :id, :username do |b|
             .form-users-user
               %span.form-users-user-checkbox
-                = b.check_box
+                = b.check_box :class => "user_check_box"
               %span.form-users-user-name
                 = b.label
 
@@ -34,3 +38,23 @@
         .form-row
           .form-row-note 
             Next Step: Add goals
+
+:javascript
+  $('#select_all').click(function() {
+    if(this.checked) {
+      $('.user_check_box').each(function() {
+        this.checked = true;                        
+      });
+    } else {
+      $('.user_check_box').each(function() {
+        this.checked = false;                        
+        });
+      } 
+  });
+  $('.user_check_box').click(function () {
+    if ($(this).is(':checked')) {
+      
+    } else {
+      $('#select_all').prop('checked', false);
+    }
+  });

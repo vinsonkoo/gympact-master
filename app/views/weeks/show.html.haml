@@ -42,18 +42,39 @@
             %td.border-right
               =user.username
             %td.border-right
-              -if !user.goals.find_by(week_id: @week.id).nil?
-                = user.goals.find_by("week_id: = ? and pact_id: = ?", @week.id, @pact.id).goal
-                = debugger
+              / GOAL DAYS
+              / if user has any goals for this pact then show it for the week
+              -if !user.goals.where(pact_id: @pact.id).nil?
+                = user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal
             %td
+              / WORKOUTS
+              = user.workouts.where('pact_id = ? and week_id = ?', @pact.id, @week.id).count
             %td
+              / MISSED DAYS
+              = (user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal - user.workouts.where('pact_id = ? and week_id = ?', @pact.id, @week.id).count)
+              / MISSED DAYS BEGINNING OF WEEK
+              / = @pact.get_missed_days_beginning_of_week(@week.week_number, user)
             %td.border-right
+              / BONUS DAYS
+              = @pact.get_bonus_days_for_week(@week.week_number, user)
             %td
+              / OWED
+              = number_to_currency(@pact.get_user_penalty_beginning_of_week(@week.week_number, user))
             %td.border-right
+              / PAID
+              = number_to_currency( @pact.payments.find_by(user_id: user.id).payment )
             %td.border-right
+              / PENALTY TOTAL
+              / PENALTY AT BEGINNING OF WEEK
+              = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + ( @pact.payments.find_by(user_id: user.id).payment ) )
             %td
+              / END OF WEEK WORKOUTS
             %td
+              / END OF WEEK MISSED
+              = @pact.get_missed_days_end_of_week(@week.week_number, user)
             %td
+              / END OF WEEK PENALTY
+              = number_to_currency(@pact.get_user_weekly_penalty(@week.id, user))
       %tfoot
         %tr
           %td.border-right
