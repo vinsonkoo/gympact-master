@@ -38,6 +38,7 @@ class MessagesController < ApplicationController
 
   def is_workout
     @message = Message.find(params[:id])
+    @pact = Pact.find_by(id: @message.pact_id)
     if @message.is_workout == true
       @message.is_workout = false
       @message.save
@@ -45,6 +46,11 @@ class MessagesController < ApplicationController
       @workouts.destroy_all
     else
       @message.is_workout = true
+      if @message.date < @pact.start_date
+        @message.week_id = @pact.weeks.first
+      elsif @message.date > @pact.end_date
+        @message.week_id = @pact.weeks.last
+      end
       @message.save
       @pact = Pact.find_by(id: @message.pact_id)
       @workout = @pact.workouts.build(

@@ -27,15 +27,28 @@
                 %strong Weekly Goal Days
 
             - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-              - @pact.users.each do |pu|
-                .form-goals-goal
-                  .form-goals-goal-user
-                    = pu.first_name
-                    = pu.last_name
-                    = f.hidden_field :user_id, :value => pu.id
-                  .form-goals-goal-days
-                    = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
-                    = f.hidden_field :week_id, :value => @pact.get_current_week.id
+              - if Date.today < @pact.start_date
+                - @pact.users.each do |pu|
+                  .form-goals-goal
+                    .form-goals-goal-user
+                      = pu.first_name
+                      = pu.last_name
+                      = f.hidden_field :user_id, :value => pu.id
+                    .form-goals-goal-days
+                      = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
+                      = f.hidden_field :week_id, :value => @pact.get_current_week.id
+
+              - elsif Date.today > @pact.end_date
+
+                - @pact.users.each do |pu|
+                  .form-goals-goal
+                    .form-goals-goal-user
+                      = pu.first_name
+                      = pu.last_name
+                      = f.hidden_field :user_id, :value => pu.id
+                    .form-goals-goal-days
+                      = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
+                      = f.hidden_field :week_id, :value => @pact.get_current_week.id
             - else
               - @pact.users.each do |pu|
                 = f.fields_for :goals do |ff|

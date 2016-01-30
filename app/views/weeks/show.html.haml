@@ -62,19 +62,21 @@
               = number_to_currency(@pact.get_user_penalty_beginning_of_week(@week.week_number, user))
             %td.border-right
               / PAID
-              = number_to_currency( @pact.payments.find_by(user_id: user.id).payment )
+              = number_to_currency( @pact.payments.find_by(user_id: user.id).paid )
             %td.border-right
               / PENALTY TOTAL
               / PENALTY AT BEGINNING OF WEEK
-              = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + ( @pact.payments.find_by(user_id: user.id).payment ) )
+              - if ( @pact.payments.find_by(user_id: user.id).owed ) == nil 
+                = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + ( @pact.payments.find_by(user_id: user.id).owed ) )
             %td
               / END OF WEEK WORKOUTS
+              = @pact.workouts.where(user_id: user.id).count
             %td
               / END OF WEEK MISSED
               = @pact.get_missed_days_end_of_week(@week.week_number, user)
             %td
               / END OF WEEK PENALTY
-              = number_to_currency(@pact.get_user_weekly_penalty(@week.id, user))
+              = number_to_currency(@pact.get_user_weekly_penalty(@week.week_number, user))
       %tfoot
         %tr
           %td.border-right

@@ -249,7 +249,6 @@ class Pact < ActiveRecord::Base
       # to figure out if total_missed_days at beginning of week i > 0
       for i in 1 .. week_number 
         if week_number > weeks.last.week_number
-
         else
           # get user's goal days for the week for the pact
           week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
@@ -533,7 +532,7 @@ class Pact < ActiveRecord::Base
       # if payment for user is nil, create it
       if @pact.payments.find_by(user_id: pu.id) == nil
         @payment = @pact.payments.build
-        @payment.payment = 0
+        @payment.owed = 0
         @payment.user_id = pu.id
         @payment.pact_id = @pact.id
         @payment.save

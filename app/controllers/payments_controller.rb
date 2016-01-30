@@ -23,6 +23,7 @@ class PaymentsController < ApplicationController
   def update
     @payment = Payment.find(params[:id])
     @payment.update(payment_params)
+    @payment.owed = @payment.payment
     redirect_to pact_path(@payment.pact_id)
   end
   def show
@@ -32,6 +33,6 @@ class PaymentsController < ApplicationController
   private
   
   def payment_params
-    params.require(:payment).permit(:payment, :user_id, :pact_id)
+    params.require(:payment).permit(:payment, :owed, :paid, :user_id, :pact_id)
   end
 end
