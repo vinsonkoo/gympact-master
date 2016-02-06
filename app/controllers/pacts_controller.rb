@@ -31,23 +31,33 @@ class PactsController < ApplicationController
     @pact = Pact.find(params[:id])
     @pact.update(pact_params)
     # debugger
+
     if @pact.users.exists?
 
       if @pact.goals.exists?
 
         if @pact.penalties.exists?
-
+          # after adding users, goals, and penalties, redirect to pact
           redirect_to @pact
+
         else
+          #after adding goals, user will be redirected to add penalties
           redirect_to add_penalties_path(@pact)
+
         end
 
       else
+        # after adding users, user will be redirected to add goals
         redirect_to add_goals_path(@pact)
+
       end
+
     else
+      # after creating the pact, user will be redirected to add users
       redirect_to add_users_path(@pact)
+
     end
+
   end
 
   def all 
