@@ -7,6 +7,7 @@ class Message < ActiveRecord::Base
 	# Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
   belongs_to :pact
   belongs_to :user
+  belongs_to :week
 
   has_many :workouts, dependent: :destroy
 

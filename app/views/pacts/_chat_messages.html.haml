@@ -1,0 +1,44 @@
+%tr
+  %td.message-id= message.id
+  %td.message-datetime= message.msg_date_time
+  %td.message-date= message.date.strftime("%-m/%-d/%Y")
+  %td.message-time= message.time
+  %td.message-user-id= message.user_id
+  %td.message-sender= message.sender
+  %td.message-message
+    - if message.media == true
+      - if message.image != nil
+        = image_tag("/media/#{message.image}.jpg", class: "attached-image")
+      - elsif message.video != nil
+        = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
+    - else
+      = message.message
+  %td.message-is-workout
+    %p= message.is_workout
+    - if message.date < @pact.start_date or message.date > @pact.end_date
+      - if message.id == 24836
+        - debugger
+      - if message.media == true
+        - if message.is_workout == true
+          %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+        - else 
+          %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+    - else
+      - if message.media == true
+        - if message.is_workout == true
+          %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id}, :class => "button button-full"
+          -if @pact.workouts.find_by(message_id: message.id) == nil
+          -else
+            %p= link_to 'Copy workout', {controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id)}, :class => "button button-full"
+        - else 
+          %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+          / -if @pact.workouts.find_by(message_id: message.id) == nil
+          / -else
+            
+        - if !@pact.workouts.find_by(message_id: message.id).nil?
+          - if @pact.workouts.find_by(message_id: message.id).workout_name == nil
+            %p= link_to 'Give this workout a name', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"
+          - else
+            = @pact.workouts.find_by(message_id: message.id).workout_name
+            = @pact.workouts.find_by(message_id: message.id).workout_description
+            %p= link_to 'Edit workout', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"

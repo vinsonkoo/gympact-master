@@ -579,23 +579,11 @@ class Pact < ActiveRecord::Base
       @message = Message.new
       # separate date/time from the rest of the message (sender, message)
       @message.msg_date_time, sep, @message.message = line.partition(": ")
-      # date and time are partitioned below, given the type of message (regular message, system message, multiline)
-
-      # separate date and time
-      # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
-      # @message.time = @message.msg_date_time.partition(", ")[2]
-      
-      #the following line partitions/parses the date in the incorrect format
-      # @message.date, sep, @message.time = @message.msg_date_time.partition(", ")
       # separate sender/user and message
       @message.sender, sep, @message.message = @message.message.partition(": ")
       # if fields are not blank, save. logic to check if any fields are blank before saving. date and time will most likely never be blank due to the constant format unlike users and messages, but will be checked anyway.
 ############################################################
       if @message.date != "" && @message.time != "" && @message.sender != "" && @message.message != "" 
-        # format date
-        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
-
-        # @message.date = Date.strptime(@message.msg_date_time, "%m/%d/%y")
         @message.date = Date.parse(@message.msg_date_time)
         @message.time = @message.msg_date_time.partition(", ")[2]
         

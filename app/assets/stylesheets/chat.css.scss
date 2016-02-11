@@ -1,5 +1,27 @@
 @import "partials/variables";
 
+.chat-week-nav {
+	display: block;
+	.chat-week-prev,
+	.chat-week-next,
+	.chat-week-dropdown {
+		width: 33%;
+		display: inline-block;
+	}
+
+	.chat-week-prev {
+		text-align: left;
+	}
+
+	.chat-week-next {
+		text-align: right;
+	}
+
+	.chat-week-dropdown {
+		text-align: center;
+	}
+}
+
 .chat-row {
 	display: block;
 	overflow: hidden;

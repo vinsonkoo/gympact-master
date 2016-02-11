@@ -19,8 +19,12 @@
   <div class="chat-row" id="message-row-#{message.id}">
     <div class="chat-message">
       <div class="chat-message-header">
-        <span class="chat-message-header-username"><%= message.user.username %></span>
-        <span class="chat-message-header-timestamp"><%= message.date.strftime("%B %-d, %Y") %> <%= message.time.to_time.strftime("%l:%M %p") %></span>
+        <% if message.user == nil %>
+          <span class="chat-message-header-username"><%= message.sender %></span>
+        <% else %>
+          <span class="chat-message-header-username"><%= message.user.username %></span>
+        <% end %>
+        <span class="chat-message-header-timestamp"><%= message.date %> <%= message.time %></span>
       </div>
       <div class="chat-message-content">
 <% end %>
@@ -35,7 +39,12 @@
     <div class="chat-message-workout">
       <div class="chat-message-workout-detail"><h4>Workout Details</h4></div>
       <div class="chat-message-workout-detail">
-        <span class="glyphicon glyphicon-user chat-message-workout-detail-glyphicon"></span> <%= message.user.username %>
+        <!-- check if message.user is nil to display username -->
+        <% if message.user == nil %>
+          <span class="glyphicon glyphicon-user chat-message-workout-detail-glyphicon"></span><%= message.sender %>
+        <% else %>
+          <span class="glyphicon glyphicon-user chat-message-workout-detail-glyphicon"></span> <%= message.user.username %>
+        <% end %>
       </div>
       <div class="chat-message-workout-detail">
         <span class="glyphicon glyphicon-calendar chat-message-workout-detail-glyphicon"></span><%= message.date.strftime("%a, %B %-d, %Y") %>

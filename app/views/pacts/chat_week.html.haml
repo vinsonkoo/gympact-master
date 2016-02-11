@@ -1,20 +1,22 @@
 = render partial: 'partials/pact_menu'
 .content
-  %div.text-center
-    %select#week_numbers.text-center
-      %option{:value => nil, include_blank: true}="Navigate to week"
-      = @pact.weeks.each do |week|
-        %option{:value => week.id}="Week #{week.week_number}"
-  - if @messages
-    / - previous_message = nil
-    / - last_message = false
-    / - @messages.each_with_index do |message, index|
-    /   - if index == @messages.size - 1
-    /     - last_message = true
-    /     / - if message.user
-    /     = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
-    /     - previous_message = message
+  .chat-week-nav
+    .chat-week-prev
+      - if @week.week_number > @pact.weeks.first.week_number && @week.week_number < @pact.weeks.last.week_number
+        %h2
+          = link_to 'Previous Week', pact_chat_week_path(@pact.id, (@week.id - 1))
+    .chat-week-dropdown
+      %select#week_numbers
+        = @pact.weeks.each do |week|
+          %option{:value => week.id, :selected => (week.id == @week.id) }="Week #{week.week_number}"
+    .chat-week-next
+      -if @week.week_number == @pact.weeks.first.week_number || @week.week_number < @pact.weeks.last.week_number
+        %h2
+          = link_to 'Next Week', pact_chat_week_path(@pact.id, (@week.id + 1))
 
+  %div.text-center
+    
+  - if @messages
     %table
       %thead
         %tr
@@ -27,7 +29,7 @@
           %th Message
           %th Workout?
       %tbody
-        - @pact.messages.each do |message|
+        - @week.messages.each do |message|
           / show the week number
           - if (@pact.start_date..@pact.end_date).include?(message.date)
             - if message.week.messages.empty? == true
@@ -50,5 +52,5 @@
 
 :javascript
   $('#week_numbers').change(function() {
-    window.location = "chat/week/"+ $(this).find('option:selected').val();
+    window.location = $(this).find('option:selected').val();
     });
