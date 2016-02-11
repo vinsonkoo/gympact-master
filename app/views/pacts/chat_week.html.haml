@@ -2,7 +2,7 @@
 .content
   .chat-week-nav
     .chat-week-prev
-      - if @week.week_number > @pact.weeks.first.week_number && @week.week_number < @pact.weeks.last.week_number
+      - if @week.week_number > @pact.weeks.first.week_number
         %h2
           = link_to 'Previous Week', pact_chat_week_path(@pact.id, (@week.id - 1))
     .chat-week-dropdown
@@ -10,7 +10,7 @@
         = @pact.weeks.each do |week|
           %option{:value => week.id, :selected => (week.id == @week.id) }="Week #{week.week_number}"
     .chat-week-next
-      -if @week.week_number == @pact.weeks.first.week_number || @week.week_number < @pact.weeks.last.week_number
+      -if @week.week_number < @pact.weeks.last.week_number
         %h2
           = link_to 'Next Week', pact_chat_week_path(@pact.id, (@week.id + 1))
 
