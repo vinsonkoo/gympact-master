@@ -6,14 +6,14 @@
       = @pact.weeks.each do |week|
         %option{:value => week.id}="Week #{week.week_number}"
   - if @messages
-    / - previous_message = nil
-    / - last_message = false
-    / - @messages.each_with_index do |message, index|
-    /   - if index == @messages.size - 1
-    /     - last_message = true
-    /     / - if message.user
-    /     = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
-    /     - previous_message = message
+    - previous_message = nil
+    - last_message = false
+    - @messages.each_with_index do |message, index|
+      - if index == @messages.size - 1
+        - last_message = true
+        / - if message.user
+        = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
+        - previous_message = message
 
     %table
       %thead
