@@ -25,10 +25,13 @@
                 %strong Users
               .form-goals-goal-days
                 %strong Weekly Goal Days
-
+            
+            
             - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-              - if Date.today < @pact.start_date
-                - @pact.users.each do |pu|
+              / if goals count is equal to (number of weeks)*(number of users)
+              - if Date.today < @pact.start_date || Date.today > @pact.end_date
+                / if today's date is not within the pact's start/end dates
+                - @pact.users.order(:id).each do |pu|
                   .form-goals-goal
                     .form-goals-goal-user
                       = pu.first_name
@@ -36,11 +39,10 @@
                       = f.hidden_field :user_id, :value => pu.id
                     .form-goals-goal-days
                       = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
-                      = f.hidden_field :week_id, :value => @pact.get_current_week.id
-
-              - elsif Date.today > @pact.end_date
-
-                - @pact.users.each do |pu|
+                    = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                    = f.hidden_field :pact_id, :value => @pact.id
+              - else 
+                - @pact.users.order(:id).each do |pu|
                   .form-goals-goal
                     .form-goals-goal-user
                       = pu.first_name
@@ -48,9 +50,12 @@
                       = f.hidden_field :user_id, :value => pu.id
                     .form-goals-goal-days
                       = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
-                      = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                    = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                    = f.hidden_field :pact_id, :value => @pact.id
+            
             - else
-              - @pact.users.each do |pu|
+              / if goals count is not equal to (number of weeks)*(number of users)
+              - @pact.users.order(:id).each do |pu|
                 = f.fields_for :goals do |ff|
                   .form-goals-goal
                     .form-goals-goal-user
@@ -59,12 +64,16 @@
                       \#{ff.hidden_field :user_id, :value => pu.id}
                     .form-goals-goal-days
                       = ff.number_field :goal, min: 0, max: 7, :step => '1'
-                    = ff.hidden_field :pact_id, :value => @pact.id
+                      = ff.hidden_field :pact_id, :value => @pact.id
+
                     - if @pact.is_active == true
                       = ff.hidden_field :week_id, :value => @pact.get_current_week.id
-                    - else
-                      / if pact is not active, these goals are for the first week
+                    - elsif @pact.is_active == false && Date.today < @pact.start_date
+                      / if pact is not active and hasn't started, these goals are for the first week
                       = ff.hidden_field :week_id, :value => @pact.weeks.first.id
+                    - elsif @pact.is_active == false && Date.today > @pact.end_date
+                      / if pact is not active and ended, these goals are for the last week
+                      = ff.hidden_field :week_id, :value => @pact.weeks.last.id
             
           .form-row
             = f.submit "Add Goals", :class => "button button-full"

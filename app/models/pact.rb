@@ -423,7 +423,6 @@ class Pact < ActiveRecord::Base
     if @pact.goals.empty?
     else
       if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-        debugger
         @pact.weeks.each do |pw|
           # if pact week is after current_week's start date, then update the goals for the following weeks
           if pw.start_date >= current_week.start_date
@@ -495,14 +494,9 @@ class Pact < ActiveRecord::Base
 
             # end
           end
-        else
-          # if pact is not active
+        else # if pact isn't active
+          # this works
 
-          # needs fixing. duplicates week 1 goals
-          # if @pact.goals.empty?
-          #   # do nothing
-            debugger
-          # else
             @pact.weeks.each do |pw|
               @pact.users.each do |pu|
                 # get last updated goal for user
@@ -510,8 +504,8 @@ class Pact < ActiveRecord::Base
                 if last_goal == nil
 
                 else
-                  # if goal already exists for the week, do not create any new goals for that week
-                  if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
+                  # if goal already exists for the week, do not create any new goals for that week (if array is not empty)
+                  if @pact.goals.where(:week_id => pw.id, :user_id => pu.id) != []
                   else
                     new_goal = @pact.goals.build
                     new_goal.user_id = pu.id
