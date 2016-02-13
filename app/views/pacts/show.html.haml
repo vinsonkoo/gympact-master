@@ -312,22 +312,22 @@
               = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
               .content
                 .content-section
-                  = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
-                    - if @pact.errors.any?
-                      .error_explanation
-                        %h2
-                          = pluralize(@pact.errors.count, "error")
-                          prohibited this pact from being saved.
-                        %ul
-                          - @pact.errors.full_messages.each do |msg|
-                            %li= msg
+                  / = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
+                  /   - if @pact.errors.any?
+                  /     .error_explanation
+                  /       %h2
+                  /         = pluralize(@pact.errors.count, "error")
+                  /         prohibited this pact from being saved.
+                  /       %ul
+                  /         - @pact.errors.full_messages.each do |msg|
+                  /           %li= msg
 
-                    .form-row
-                      = f.number_field :payment, :step => 0.01, min: 0
-                      = f.hidden_field :user_id, :value => pu.id
-                      = f.hidden_field :pact_id, :value => @pact.id
+                  /   .form-row
+                  /     = f.number_field :payment, :step => 0.01, min: 0
+                  /     = f.hidden_field :user_id, :value => pu.id
+                  /     = f.hidden_field :pact_id, :value => @pact.id
                       
-                    = f.submit "Update Paid Amount", :class => "button"
+                  /   = f.submit "Update Paid Amount", :class => "button"
 
   %h1 Pact's Chat/Messages
 
