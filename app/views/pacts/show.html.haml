@@ -247,87 +247,87 @@
   %h1 Dashboard
 
 
-  / %table
-  /   %thead
-  /     %tr
-  /       %th User ID
-  /       %th Full Name
-  /       %th Week
-  /       %th Goal Days
-  /       %th Penalty Per Missed Day
-  /       %th Weekly Total Workout
-  /       %th Bonus Days
-  /       %th Total Missed Days at Beginning of Week
-  /       %th Total Missed Days At End of Week
-  /       %th Weekly Penalty Total
-  /       %th Penalty Total At Beginning of Week
-  /       %th Amount Paid
-  /   %tbody
-  /     -@pact.weeks.each do |pw|
-  /       -@pact.users.each do |pu|
-  /         %tr
-  /           %td
-  /             / User ID
-  /             = pu.id
-  /           %td
-  /             / User's full name / username
-  /             = pu.first_name
-  /             = pu.last_name
-  /             (#{pu.username})
-  /           %td
-  /             / Week Number
-  /             = pw.week_number
-  /           %td
-  /             / User's goal days for week
-  /             -if !pu.goals.find_by(week_id: pw.id).nil?
-  /               = pu.goals.find_by(week_id: pw.id).goal
-  /           %td
-  /             / Penalty per missed day
-  /             -if !@pact.penalty_for_goal(pw.id, pu).nil?
-  /               = number_to_currency(@pact.penalty_for_goal(pw.id, pu).goal_days)
-  /             - else
-  /               / = debugger
-  /               Penalties do not exist yet. 
-  /               = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
-  /           %td
-  /             / Weekly total workout
-  /             / = pu.workouts.where(week_id: pw.id).count
-  /           %td
-  /             / Bonus days for user
-  /             / = @pact.get_bonus_days_for_week(pw.week_number, pu)
-  /           %td
-  /             / Total missed days at beginning of week
-  /             / = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
-  /           %td
-  /             / Total missed days at end of week
-  /             / = @pact.get_missed_days_end_of_week(pw.week_number, pu)
-  /           %td
-  /             / Weekly penalty total
-  /             / = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
-  /           %td
-  /             / Penalty total at beginning of week
-  /             / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
-  /           %td
-  /             / Amount paid
-  /             / = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
-  /             .content
-  /               .content-section
-  /                 = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
-  /                   - if @pact.errors.any?
-  /                     .error_explanation
-  /                       %h2
-  /                         = pluralize(@pact.errors.count, "error")
-  /                         prohibited this pact from being saved.
-  /                       %ul
-  /                         - @pact.errors.full_messages.each do |msg|
-  /                           %li= msg
+  %table
+    %thead
+      %tr
+        %th User ID
+        %th Full Name
+        %th Week
+        %th Goal Days
+        %th Penalty Per Missed Day
+        %th Weekly Total Workout
+        %th Bonus Days
+        %th Total Missed Days at Beginning of Week
+        %th Total Missed Days At End of Week
+        %th Weekly Penalty Total
+        %th Penalty Total At Beginning of Week
+        %th Amount Paid
+    %tbody
+      -@pact.weeks.each do |pw|
+        -@pact.users.each do |pu|
+          %tr
+            %td
+              / User ID
+              = pu.id
+            %td
+              / User's full name / username
+              = pu.first_name
+              = pu.last_name
+              (#{pu.username})
+            %td
+              / Week Number
+              = pw.week_number
+            %td
+              / User's goal days for week
+              -if !pu.goals.find_by(week_id: pw.id).nil?
+                = pu.goals.find_by(week_id: pw.id).goal
+            %td
+              / Penalty per missed day
+              -if !@pact.penalty_for_goal(pw.id, pu).nil?
+                = number_to_currency(@pact.penalty_for_goal(pw.id, pu).goal_days)
+              - else
+                / = debugger
+                Penalties do not exist yet. 
+                = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
+            %td
+              / Weekly total workout
+              / = pu.workouts.where(week_id: pw.id).count
+            %td
+              / Bonus days for user
+              / = @pact.get_bonus_days_for_week(pw.week_number, pu)
+            %td
+              / Total missed days at beginning of week
+              / = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
+            %td
+              / Total missed days at end of week
+              / = @pact.get_missed_days_end_of_week(pw.week_number, pu)
+            %td
+              / Weekly penalty total
+              / = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
+            %td
+              / Penalty total at beginning of week
+              / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
+            %td
+              / Amount paid
+              / = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
+              .content
+                .content-section
+                  = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
+                    - if @pact.errors.any?
+                      .error_explanation
+                        %h2
+                          = pluralize(@pact.errors.count, "error")
+                          prohibited this pact from being saved.
+                        %ul
+                          - @pact.errors.full_messages.each do |msg|
+                            %li= msg
 
-  /                   .form-row
-  /                     = f.number_field :payment, :step => 0.01, min: 0
-  /                     = f.hidden_field :user_id, :value => pu.id
-  /                     = f.hidden_field :pact_id, :value => @pact.id
+                    .form-row
+                      = f.number_field :payment, :step => 0.01, min: 0
+                      = f.hidden_field :user_id, :value => pu.id
+                      = f.hidden_field :pact_id, :value => @pact.id
                       
-  /                   = f.submit "Update Paid Amount", :class => "button"
+                    = f.submit "Update Paid Amount", :class => "button"
 
   %h1 Pact's Chat/Messages
 
