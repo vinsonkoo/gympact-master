@@ -291,25 +291,25 @@
                 = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
             %td
               / Weekly total workout
-              / = pu.workouts.where(week_id: pw.id).count
+              = pu.workouts.where(week_id: pw.id).count
             %td
               / Bonus days for user
-              / = @pact.get_bonus_days_for_week(pw.week_number, pu)
+              = @pact.get_bonus_days_for_week(pw.week_number, pu)
             %td
               / Total missed days at beginning of week
-              / = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
+              = @pact.get_missed_days_beginning_of_week(pw.week_number, pu)
             %td
               / Total missed days at end of week
-              / = @pact.get_missed_days_end_of_week(pw.week_number, pu)
+              = @pact.get_missed_days_end_of_week(pw.week_number, pu)
             %td
               / Weekly penalty total
-              / = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
+              = number_to_currency(@pact.get_user_weekly_penalty(pw.id, pu))
             %td
               / Penalty total at beginning of week
-              / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
+              = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
             %td
               / Amount paid
-              / = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
+              = number_to_currency( @pact.payments.find_by(user_id: pu.id).payment )
               .content
                 .content-section
                   = form_for (Payment.find_by(user_id: pu.id)), url: {action: "update"} do |f|
