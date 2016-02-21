@@ -62,11 +62,17 @@
               = number_to_currency(@pact.get_user_penalty_beginning_of_week(@week.week_number, user))
             %td.border-right
               / PAID
-              = number_to_currency( @pact.payments.find_by(user_id: user.id).paid )
+              / Amount paid
+              - if @pact.payments.find_by(user_id: user.id) == nil
+                0
+              - else
+                = number_to_currency( @pact.payments.find_by(user_id: user.id).paid )
             %td.border-right
               / PENALTY TOTAL
               / PENALTY AT BEGINNING OF WEEK
-              - if ( @pact.payments.find_by(user_id: user.id).owed ) == nil 
+              - if ( @pact.payments.find_by(user_id: user.id) ) == nil 
+                = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + 0 )
+              - else
                 = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + ( @pact.payments.find_by(user_id: user.id).owed ) )
             %td
               / END OF WEEK WORKOUTS
