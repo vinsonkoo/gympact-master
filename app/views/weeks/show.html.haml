@@ -100,7 +100,10 @@
               = @pact.get_missed_days_end_of_week(@week.week_number, user)
             %td
               / END OF WEEK PENALTY
-              = number_to_currency( @pact.get_user_penalty_end_of_week(@week.week_number, user) )
+              -if @pact.get_user_penalty_end_of_week(@week.week_number, user) == nil
+                N/A
+              - else
+                = number_to_currency( @pact.get_user_penalty_end_of_week(@week.week_number, user) )
       %tfoot
         %tr
           %td.border-right
