@@ -59,7 +59,7 @@
               = @pact.get_bonus_days_for_week(@week.week_number, user)
             %td
               / AMOUNT OWED
-              - if Date.today > @week.end_date
+              - if Date.today > @week.end_date && if ( @pact.payments.find_by(user_id: user).paid )!= nil
                 = number_to_currency( @pact.get_user_penalty_for_week(@week.week_number, user) - ( @pact.payments.find_by(user_id: user).paid ) )
               - else
                 N/A
