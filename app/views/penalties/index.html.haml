@@ -1,20 +1,25 @@
-%h1 Penalties#index
-%p Find me in app/views/penalties/index.html.erb
-%table
-  %thead
-    %tr
-      %th Goal Days
-      %th Penalties
-  %tbody
-    - @penalties.each do |penalty|
+= render partial: 'partials/pact_menu'
+
+
+.content
+  %h1 
+    Penalties for 
+    =@pact.pact_name
+  %table
+    %thead
       %tr
-        %td
-          - if penalty.goal_days.nil?
-            nil
-          - else
-            = penalty.goal_days
-        %td
-          - if penalty.penalty.nil?
-            nil
-          - else
-            = penalty.penalty
+        %th Goal Days
+        %th Penalties
+    %tbody
+      - @penalties.each do |penalty|
+        %tr
+          %td
+            - if penalty.goal_days.nil?
+              nil
+            - else
+              = penalty.goal_days
+          %td
+            - if penalty.penalty.nil?
+              nil
+            - else
+              = number_to_currency(penalty.penalty)

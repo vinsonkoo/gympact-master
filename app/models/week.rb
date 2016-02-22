@@ -5,6 +5,8 @@ class Week < ActiveRecord::Base
 	belongs_to :pact
   has_many :messages
   has_many :goals
+  has_many :payments, :through => :pact
+  accepts_nested_attributes_for :payments 
 
 
 	#######################################################

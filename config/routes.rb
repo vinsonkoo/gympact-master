@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'pacts/:id/add_goals'       => 'pacts#add_goals',     as: "add_goals"
   get 'pacts/:id/add_penalties'   => 'pacts#add_penalties', as: "add_penalties"
   post 'pacts/:id/import'          => 'pacts#import',        as: "import"
+
   resources :pacts do
     collection do
       get ':pact_id/import/', action: :import
@@ -31,7 +32,9 @@ Rails.application.routes.draw do
     resources :payments
     resources :penalties
     resources :goals
-    resources :weeks
+    resources :weeks do
+      resources :payments
+    end
   end
   get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
   get 'pacts/:pact_id/chat'                 => 'pacts#chat',     as: 'pact_chat'
@@ -59,6 +62,7 @@ Rails.application.routes.draw do
   resources :workouts
 
 
+  resources :payments
   # get "pages/home"
 
   # The priority is based upon order of creation:

@@ -1,16 +1,21 @@
-%h1 Goals#index
-%p Find me in app/views/goals/index.html.erb
-%table
-  %thead
-    %tr
-      %th User ID
-      %th Pact ID
-      %th Goal
-      %th Week
-  %tbody
-    - @goals.each do |goal|
+= render partial: 'partials/pact_menu'
+
+
+.content
+  %h1 
+    Goals for 
+    =@pact.pact_name
+  %table
+    %thead
       %tr
-        %td= goal.user_id
-        %td= goal.pact_id
-        %td= goal.goal
-        %td= goal.week
+        %th User
+        %th Goal
+        %th Week Number
+    %tbody
+      - @goals.order(:week_id).each do |goal|
+        %tr
+          %td
+            = goal.user.first_name 
+            = goal.user.last_name
+          %td= goal.goal
+          %td= goal.week.week_number

@@ -8,7 +8,13 @@
           =link_to add_users_path(@pact.id), class: "button button-full" do
             &laquo; &nbsp; Add users before adding goals
       - else
-        %h2 Add goals for users in #{@pact.pact_name}
+        - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
+          - if Date.today > @pact.start_date || Date.today < @pact.end_date
+            %h2 Edit goals for users in #{@pact.pact_name} for Week # #{@current_week.week_number}
+          - else 
+            %h2 Edit goals for users in #{@pact.pact_name} for Week # #{@current_week.week_number}
+        - else
+          %h2 Add goals for users in #{@pact.pact_name}
         = form_for setup_pact_goals(@pact) do |f|
           - if @pact.errors.any?
             .error_explanation
@@ -19,6 +25,8 @@
                 - @pact.errors.full_messages.each do |msg|
                   %li= msg
 
+          %h1 
+            
           .form-goals
             .form-goals-goal
               .form-goals-goal-user
@@ -31,6 +39,7 @@
               / if goals count is equal to (number of weeks)*(number of users)
               - if Date.today < @pact.start_date || Date.today > @pact.end_date
                 / if today's date is not within the pact's start/end dates
+                -debugger
                 - @pact.users.order(:id).each do |pu|
                   .form-goals-goal
                     .form-goals-goal-user

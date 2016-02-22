@@ -58,31 +58,49 @@
               / BONUS DAYS
               = @pact.get_bonus_days_for_week(@week.week_number, user)
             %td
-              / OWED
-              = number_to_currency(@pact.get_user_penalty_beginning_of_week(@week.week_number, user))
-            %td.border-right
-              / PAID
-              / Amount paid
-              - if @pact.payments.find_by(user_id: user.id) == nil
-                0
+              / AMOUNT OWED
+              - if Date.today > @week.end_date
+                = number_to_currency( @pact.get_user_penalty_for_week(@week.week_number, user) - ( @pact.payments.find_by(user_id: user).paid ) )
               - else
+                N/A
+            %td.border-right
+              / AMOUNT PAID
+              - if Date.today > @week.end_date
                 = number_to_currency( @pact.payments.find_by(user_id: user.id).paid )
+                / = form_for (Payment.find_by(user_id: user.id)), url: {action: "update"} do |f|
+                = form_for setup_pact_payments(@pact, user) do |f|
+                  - if @pact.errors.any?
+                    .error_explanation
+                      %h2
+                        = pluralize(@pact.errors.count, "error")
+                        prohibited this pact from being saved.
+                      %ul
+                        - @pact.errors.full_messages.each do |msg|
+                          %li= msg
+
+
+                  .form-row
+                    = f.number_field :paid, :step => 1, min: 0, max: @pact.get_user_penalty_for_week(@week.week_number, user), :value => @payment.owed 
+                    = f.hidden_field :user_id, :value => user.id
+                    = f.hidden_field :pact_id, :value => @pact.id
+                    / -if user.first_name == 'Samuel'
+                    /   -debugger
+                    = f.submit "Update Paid Amount", :class => "button"
+              - else
+                N/A
             %td.border-right
               / PENALTY TOTAL
               / PENALTY AT BEGINNING OF WEEK
-              - if ( @pact.payments.find_by(user_id: user.id) ) == nil 
-                = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + 0 )
-              - else
-                = number_to_currency( ( @pact.get_user_penalty_beginning_of_week(@week.week_number, user) ) + ( @pact.payments.find_by(user_id: user.id).owed ) )
+              = number_to_currency( ( @pact.get_user_penalty_for_week(@week.week_number, user) ) )
             %td
               / END OF WEEK WORKOUTS
-              = @pact.workouts.where(user_id: user.id).count
+              = @pact.workouts.where('user_id = ? and week_id = ?', user.id, @week.id).count
             %td
               / END OF WEEK MISSED
               = @pact.get_missed_days_end_of_week(@week.week_number, user)
             %td
               / END OF WEEK PENALTY
-              = number_to_currency(@pact.get_user_weekly_penalty(@week.week_number, user))
+              = number_to_currency( @pact.get_user_penalty_end_of_week(@week.week_number, user) )
       %tfoot
         %tr
           %td.border-right
@@ -90,15 +108,37 @@
             %br
             %small
           %td
+            / TOTAL GOALS FOR WEEK
+            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal)
           %td
+            / TOTAL WORKOUTS FOR WEEK
+            = (@pact.workouts.where(:week_id => @pact.get_current_week.id).count)
           %td
+            / TOTAL MISSED DAYS FOR WEEK
+            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal) -  (@pact.workouts.where(:week_id => @pact.get_current_week.id).count)
           %td.border-right
+            / TOTAL BONUS DAYS FOR WEEK
+            = @pact.get_total_bonus_days_for_week(@week.week_number)
           %td
+            / TOTAL OWED
+            = number_to_currency( @pact.payments.sum :owed )
           %td
+            / TOTAL PAID
+            = number_to_currency( @pact.payments.sum :paid )
           %td.border-right
+            / TOTAL PENALTY FOR WEEK
+            = number_to_currency( @pact.get_total_penalty_for_week(@week.week_number) )
           %td
+            / TOTAL WORKOUTS AT END OF WEEK
+            = @pact.workouts.count
           %td
+            / TOTAL MISSED DAYS AT END OF WEEK
+            - if @pact.workouts.count > ( @pact.goals.sum :goal )
+              0
+            - else
+              = ( @pact.goals.sum :goal ) - ( @pact.workouts.count )
           %td
+            = number_to_currency( @pact.payments.sum :owed )
 
   .content-box
     .week-email
@@ -116,3 +156,7 @@
       %textarea.week-email-textarea.week-email-textarea-email
         Hi everyone!&#10;&#10;Congrats on completing Week #{@week.week_number} of #{@week.pact.pact_name}! This week, we had 5 people fall short of their goals. As a group, we worked out 75 times, with 3 people achieving bonus days (congrats to Justin, Sam, and Zeus!). As of now, we have $52.25 in the GymPact Bank for HotPot/Korean BBQ! As always, feel free to check out the tracking sheet here.
 
+/ :javascript
+/   $('#week_numbers').change(function() {
+/     window.location = $(this).find('option:selected').val();
+/     });

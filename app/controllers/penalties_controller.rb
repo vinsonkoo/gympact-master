@@ -13,7 +13,8 @@ class PenaltiesController < ApplicationController
   end
 
   def index
-    @penalties = Penalty.all
+    @pact = Pact.find(params[:pact_id])
+    @penalties = @pact.penalties
   end
 
   def show

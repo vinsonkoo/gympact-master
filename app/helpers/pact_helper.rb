@@ -21,6 +21,8 @@ module PactHelper
     pact
   end
 
+
+  # not needed. helper method in WeekHelper
   def setup_pact_payments(pact)
 
     if !pact.payments.present?

@@ -28,6 +28,8 @@ class GoalsController < ApplicationController
   end
 
   def index
+    @pact = Pact.find(params[:pact_id])
+    @goals = @pact.goals
   end
 
   def destroy
@@ -42,7 +44,6 @@ class GoalsController < ApplicationController
   def show
     @goal = Goal.find(params[:id])
     @pact = Pact.find_by(id: @goal.pact_id)
-
   end
 
   
