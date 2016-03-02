@@ -103,10 +103,10 @@
               = @pact.get_missed_days_end_of_week(@week.week_number, user)
             %td
               / END OF WEEK PENALTY
-              -if ( @pact.get_user_penalty_end_of_week(@week.week_number, user) ) == nil
-                N/A
-              - else
+              -if Date.today > @week.end_date
                 = number_to_currency( @pact.get_user_penalty_end_of_week(@week.week_number, user) )
+              - else
+                N/A
 
               / the if statements for checking business logic == nil are not needed if pact creation is after the ruby version update ----- the nil values would be properly updated
       %tfoot
@@ -155,7 +155,10 @@
             - else
               = ( @pact.goals.sum :goal ) - ( @pact.workouts.count )
           %td
-            = number_to_currency( @pact.payments.sum :owed )
+            - if Date.today > @week.end_date
+              = number_to_currency( @pact.payments.sum :owed )
+            - else
+              N/A
 
   .content-box
     .week-email

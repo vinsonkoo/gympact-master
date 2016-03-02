@@ -3,8 +3,7 @@ class Pact < ActiveRecord::Base
 
   after_create  :check_active, :parse_weeks
   after_update  :create_payments
-  after_save    :check_goals, 
-                :save_photos, if: :photo
+  after_save    :check_goals
   #######################################################
   # Specifies Associations
   # Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
@@ -45,22 +44,22 @@ class Pact < ActiveRecord::Base
 
 
 
-  mount_uploader :attachment, PhotoUploader
-  validates :name, presence: true
+  # mount_uploader :attachment, PhotoUploader
+  # validates :name, presence: true
 
-  # single upload for now
-  def save_photos
-    filename = photo.original_filename
+  # # single upload for now
+  # def save_photos
+  #   filename = photo.original_filename
     
-    folder = 'public/media/#{pact_name}'
+  #   folder = 'public/media/#{pact_name}'
 
-    FileUtils::mkdir_p folder
-    f.write photo.read()
-    f.close
+  #   FileUtils::mkdir_p folder
+  #   f.write photo.read()
+  #   f.close
 
-    self.photo = nil
-    update photo_filename: filename
-  end
+  #   self.photo = nil
+  #   update photo_filename: filename
+  # end
 
 
   # Gets the week that the pact is on as of today
