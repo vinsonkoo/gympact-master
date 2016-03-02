@@ -1,9 +1,10 @@
 class Pact < ActiveRecord::Base
   require 'date'
 
-  after_create :check_active, :parse_weeks
-  after_update :create_payments
-  after_save :check_goals
+  after_create  :check_active, :parse_weeks
+  after_update  :create_payments
+  after_save    :check_goals, 
+                :save_photos, if: :photo
   #######################################################
   # Specifies Associations
   # Read more about Rails Associations here: http://guides.rubyonrails.org/association_basics.html
@@ -44,10 +45,22 @@ class Pact < ActiveRecord::Base
 
 
 
-  # Gets users who are in this pact
-  # def get_users
-  #   User.joins(:pact_user_relations).where(pact_user_relations: { pact_id: self.id })
-  # end
+  mount_uploader :attachment, PhotoUploader
+  validates :name, presence: true
+
+  # single upload for now
+  def save_photos
+    filename = photo.original_filename
+    
+    folder = 'public/media/#{pact_name}'
+
+    FileUtils::mkdir_p folder
+    f.write photo.read()
+    f.close
+
+    self.photo = nil
+    update photo_filename: filename
+  end
 
 
   # Gets the week that the pact is on as of today

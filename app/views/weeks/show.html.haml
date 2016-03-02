@@ -91,7 +91,10 @@
             %td.border-right
               / PENALTY TOTAL
               / PENALTY AT BEGINNING OF WEEK
-              = number_to_currency( ( @pact.get_user_penalty_for_week(@week.week_number, user) ) )
+              - if Date.today > @week.end_date
+                = number_to_currency( ( @pact.get_user_penalty_for_week(@week.week_number, user) ) )
+              - else
+                N/A
             %td
               / END OF WEEK WORKOUTS
               = @pact.workouts.where('user_id = ? and week_id = ?', user.id, @week.id).count
@@ -126,13 +129,22 @@
             = @pact.get_total_bonus_days_for_week(@week.week_number)
           %td
             / TOTAL OWED
-            = number_to_currency( @pact.payments.sum :owed )
+            - if Date.today > @week.end_date
+              = number_to_currency( @pact.payments.sum :owed )
+            - else
+              N/A
           %td
             / TOTAL PAID
-            = number_to_currency( @pact.payments.sum :paid )
+            - if Date.today > @week.end_date
+              = number_to_currency( @pact.payments.sum :paid )
+            - else
+              N/A
           %td.border-right
             / TOTAL PENALTY FOR WEEK
-            = number_to_currency( @pact.get_total_penalty_for_week(@week.week_number) )
+            - if Date.today > @week.end_date
+              = number_to_currency( @pact.get_total_penalty_for_week(@week.week_number) )
+            - else
+              N/A
           %td
             / TOTAL WORKOUTS AT END OF WEEK
             = @pact.workouts.count

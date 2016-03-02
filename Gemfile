@@ -15,6 +15,8 @@ group :production do
 	gem 'rails_12factor'
 end
 
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+
 gem 'american_date'
 gem 'validates_timeliness', '~> 4.0'
 
