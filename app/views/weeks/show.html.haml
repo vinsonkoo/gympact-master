@@ -12,8 +12,9 @@
             - else
               .week-button-previous
             %span.week-button-number
-              Week
-              = @week.week_number
+              %select#week_numbers
+                = @pact.weeks.each do |week|
+                  %option{:value => week.id, :selected => (week.id == @week.id) }="Week #{week.week_number}"
               %br
               %small
                 = @week.start_date.strftime("%b %e")
@@ -176,7 +177,7 @@
       %textarea.week-email-textarea.week-email-textarea-email
         Hi everyone!&#10;&#10;Congrats on completing Week #{@week.week_number} of #{@week.pact.pact_name}! This week, we had 5 people fall short of their goals. As a group, we worked out 75 times, with 3 people achieving bonus days (congrats to Justin, Sam, and Zeus!). As of now, we have $52.25 in the GymPact Bank for HotPot/Korean BBQ! As always, feel free to check out the tracking sheet here.
 
-/ :javascript
-/   $('#week_numbers').change(function() {
-/     window.location = $(this).find('option:selected').val();
-/     });
+:javascript
+  $('#week_numbers').change(function() {
+    window.location = $(this).find('option:selected').val();
+    });
