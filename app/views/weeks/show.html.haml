@@ -13,6 +13,7 @@
               .week-button-previous
             %span.week-button-number
               %select#week_numbers
+                %option{:value => nil, include_blank: true}="Navigate to week"
                 = @pact.weeks.each do |week|
                   %option{:value => week.id, :selected => (week.id == @week.id) }="Week #{week.week_number}"
               %br

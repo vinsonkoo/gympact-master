@@ -7,6 +7,7 @@
           = link_to 'Previous Week', pact_chat_week_path(@pact.id, (@week.id - 1))
     .chat-week-dropdown
       %select#week_numbers
+        %option{:value => nil, include_blank: true}="Navigate to week"
         = @pact.weeks.each do |week|
           %option{:value => week.id, :selected => (week.id == @week.id) }="Week #{week.week_number}"
     .chat-week-next
@@ -48,7 +49,7 @@
                       \
                       = message.week.week_number
           / render partial for chat's messages
-          = render partial: "chat_messages", :object => @week, :locals => {:message => message}
+          / = render partial: "chat_messages", :object => @week, :locals => {:message => message}
 
 :javascript
   $('#week_numbers').change(function() {
