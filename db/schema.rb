@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130215517) do
+ActiveRecord::Schema.define(version: 20160303153252) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(version: 20160130215517) do
     t.integer "goal_id"
   end
 
+  create_table "goals_weeks", id: false, force: :cascade do |t|
+    t.integer "goal"
+    t.integer "pact_id"
+    t.integer "user_id"
+    t.integer "week_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.text     "message"
     t.datetime "created_at"
@@ -81,6 +88,7 @@ ActiveRecord::Schema.define(version: 20160130215517) do
     t.boolean  "is_workout"
     t.integer  "workout_id"
     t.integer  "week_id"
+    t.string   "media_filename"
   end
 
   add_index "messages", ["pact_id"], name: "index_pact_id_4"
@@ -101,11 +109,6 @@ ActiveRecord::Schema.define(version: 20160130215517) do
   end
 
   add_index "pacts", ["pact_name"], name: "index_pacts_on_pact_name", unique: true
-
-  create_table "pacts_goals", id: false, force: :cascade do |t|
-    t.integer "pact_id"
-    t.integer "goal_id"
-  end
 
   create_table "pacts_penalties", id: false, force: :cascade do |t|
     t.integer "pact_id"
@@ -128,6 +131,7 @@ ActiveRecord::Schema.define(version: 20160130215517) do
     t.datetime "updated_at", null: false
     t.float    "owed"
     t.float    "paid"
+    t.integer  "week_id"
   end
 
   create_table "penalties", force: :cascade do |t|

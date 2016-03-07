@@ -16,11 +16,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_week
-  	if(params.has_key?(:week_id))
-  		Week.find(params[:week_id])
-    else
-      this_week
-  	end
+  	# if(params.has_key?(:week_id))
+  	# 	Week.find(params[:week_id])
+   #  else
+   #    this_week
+  	# end
   end
 
   def this_week(pact=current_pact)

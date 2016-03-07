@@ -1,20 +1,14 @@
+= render partial: 'partials/pact_menu'
 .content
   .content-box
     = render :partial => 'partials/create_pact_progress'
-
     .form
       - if !@pact.users.present?
         .form-row
           =link_to add_users_path(@pact.id), class: "button button-full" do
             &laquo; &nbsp; Add users before adding goals
       - else
-        - if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
-          - if Date.today > @pact.start_date || Date.today < @pact.end_date
-            %h2 Edit goals for users in #{@pact.pact_name} for Week # #{@current_week.week_number}
-          - else 
-            %h2 Edit goals for users in #{@pact.pact_name} for Week # #{@current_week.week_number}
-        - else
-          %h2 Add goals for users in #{@pact.pact_name}
+
         = form_for setup_pact_goals(@pact) do |f|
           - if @pact.errors.any?
             .error_explanation
@@ -25,8 +19,15 @@
                 - @pact.errors.full_messages.each do |msg|
                   %li= msg
 
-          %h1 
-            
+          / DROPDOWN DOES NOT CURRENTLY WORK. UNCOMMENT THE HIDDEN FIELDS FOR WEEK SECTION.
+
+          = fields_for :goal do |goal|
+            = goal.collection_select(:week_id, @pact.weeks, :id, :week_number, {:prompt => false}, {:class => "week_number"}) do
+              =@pact.weeks.each do |week|
+                %option{:value => week.id, :selected => params[(week.id == @pact.get_current_week.id)] }="Week #{week.week_number}"
+          / %h2 
+          / Edit goals for users in #{@pact.pact_name} for Week # #{@pact.get_current_week.week_number}
+
           .form-goals
             .form-goals-goal
               .form-goals-goal-user
@@ -39,7 +40,6 @@
               / if goals count is equal to (number of weeks)*(number of users)
               - if Date.today < @pact.start_date || Date.today > @pact.end_date
                 / if today's date is not within the pact's start/end dates
-                -debugger
                 - @pact.users.order(:id).each do |pu|
                   .form-goals-goal
                     .form-goals-goal-user
@@ -48,7 +48,11 @@
                       = f.hidden_field :user_id, :value => pu.id
                     .form-goals-goal-days
                       = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
-                    = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                      / = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                      = f.fields_for :goal do |goal|
+                        = goal.collection_select(:week_id, @pact.weeks, :id, :week_number, {:prompt => false}, {:class => "week_number"}) do
+                          =@pact.weeks.each do |week|
+                            %option{:value => week.id, :selected => params[(week.id == @pact.get_current_week.id)] }="Week #{week.week_number}"
                     = f.hidden_field :pact_id, :value => @pact.id
               - else 
                 - @pact.users.order(:id).each do |pu|
@@ -59,7 +63,11 @@
                       = f.hidden_field :user_id, :value => pu.id
                     .form-goals-goal-days
                       = f.number_field :goal, min: 0, max: 7, :step => '1', :value => pu.goals.find_by(week_id: @pact.get_current_week.id).goal
-                    = f.hidden_field :week_id, :value => @pact.get_current_week.id
+                      = f.fields_for :goal do |goal|
+                        = goal.collection_select(:week_id, @pact.weeks, :id, :week_number, {:prompt => false}, {:class => "week_number"}) do
+                          =@pact.weeks.each do |week|
+                            %option{:value => week.id, :selected => params[(week.id == @pact.get_current_week.id)] }="Week #{week.week_number}"
+                    / = f.hidden_field :week_id, :value => @pact.get_current_week.id
                     = f.hidden_field :pact_id, :value => @pact.id
             
             - else
@@ -76,13 +84,13 @@
                       = ff.hidden_field :pact_id, :value => @pact.id
 
                     - if @pact.is_active == true
-                      = ff.hidden_field :week_id, :value => @pact.get_current_week.id
+                      / = ff.hidden_field :week_id, :value => @pact.get_current_week.id
                     - elsif @pact.is_active == false && Date.today < @pact.start_date
                       / if pact is not active and hasn't started, these goals are for the first week
-                      = ff.hidden_field :week_id, :value => @pact.weeks.first.id
+                      / = ff.hidden_field :week_id, :value => @pact.weeks.first.id
                     - elsif @pact.is_active == false && Date.today > @pact.end_date
                       / if pact is not active and ended, these goals are for the last week
-                      = ff.hidden_field :week_id, :value => @pact.weeks.last.id
+                      / = ff.hidden_field :week_id, :value => @pact.weeks.last.id
             
           .form-row
             = f.submit "Add Goals", :class => "button button-full"
@@ -90,3 +98,10 @@
           .form-row
             .form-row-note 
               Next step: Add penalties
+
+:javascript
+  var select = $('select.week_number');
+    select.change(function () {
+        select.not(this).val(this.value);
+    });
+});

@@ -66,23 +66,19 @@ class Pact < ActiveRecord::Base
   def get_current_week
     @pact = Pact.find_by(id: id)
     today = Date.today
-    week = @pact.weeks.where(["end_date >= ? and start_date <= ?", today, today])
-    if week.empty?
-      # if week is before pact start_date, then week should be the first week
-      if today <= @pact.start_date
-        week = @pact.weeks.first
-      # if week is after pact end_date, then week should be the last week
-      else today >= @pact.end_date
-        week = @pact.weeks.last
-      end
+    week = @pact.weeks.where(["end_date >= ?", today]).order(:week_number).first
+    week_range = week.start_date..week.end_date
+    # if week is before pact start_date, then week should be the first week
+    if today <= @pact.start_date
+      week = @pact.weeks.first
+    # if week is after pact end_date, then week should be the last week
+    elsif today >= @pact.end_date
+      week = @pact.weeks.last
     else
-      week = week.last
-      week_range = week.start_date..week.end_date
       if week_range.cover?(today)
         week
       end
     end
-    
     # @pact.weeks already includes the search for pact_id in the below statement
     # week = Week.where(["pact_id = ? and start_date <= ? or end_date >= ?", self.id, today, today]).first
     # if !week
@@ -296,7 +292,11 @@ class Pact < ActiveRecord::Base
       end
     end
     @payment = payments.find_by(user_id: user.id)
-    @payment.owed = total_penalty_at_end_of_week - @payment.paid
+    if @payment.paid == nil
+      @payment.owed = total_penalty_at_end_of_week
+    else
+      @payment.owed = total_penalty_at_end_of_week - @payment.paid
+    end
     @payment.save
     total_penalty_at_end_of_week
   end
@@ -610,22 +610,23 @@ class Pact < ActiveRecord::Base
     
   end # def check_goals
 
+
   def create_payments
     # @pact = Pact.last because this is done after users are added to a pact (after users are "updated" to the pact)
     @pact = Pact.find_by(id: id)
     @pact.users.each do |pu|
-      # if payment for user is nil, create it
-      # total payment objects should not exceed number of users
-      if @pact.payments.find_by(user_id: pu.id) == nil
-        @payment = @pact.payments.build
-        @payment.owed = 0
-        @payment.paid = 0
-        @payment.user_id = pu.id
-        @payment.pact_id = @pact.id
-        @payment.save
-        @pact.save
-      else
-
+      @pact.weeks.each do |pw|
+        # if payment for user is nil, create it
+        # total payment objects should not exceed number of users
+        if @pact.payments.where("user_id = ? and week_id = ?", pu.id, pw.id).empty?
+          @payment = @pact.payments.build
+          @payment.owed = 0
+          @payment.paid = 0
+          @payment.user_id = pu.id
+          @payment.week_id = pw.id
+          @payment.pact_id = @pact.id
+          @payment.save
+        end
       end
     end
   end

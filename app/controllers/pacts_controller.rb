@@ -113,6 +113,7 @@ class PactsController < ApplicationController
 
   def add_goals
     @pact = Pact.find(params[:id])
+    @goals = @pact.goals
   end
 
 
@@ -147,8 +148,4 @@ class PactsController < ApplicationController
       )
   end 
 
-  # unneeded?
-  def week_params
-    params.require(:week).permit(:start_date, :end_date, :pact_id, :week_number)
-  end
 end
