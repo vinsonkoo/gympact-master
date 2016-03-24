@@ -144,7 +144,7 @@
           %td.border-right
             / TOTAL PENALTY FOR WEEK
             - if Date.today > @week.end_date
-              = number_to_currency( @pact.get_total_penalty_for_week(@week.week_number) )
+              = number_to_currency( @pact.payments.where(week_id: @week.id).sum :owed )
             - else
               N/A
           %td
