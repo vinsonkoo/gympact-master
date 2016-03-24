@@ -47,13 +47,13 @@
               / GOAL DAYS
               / if user has any goals for this pact then show it for the week
               -if !user.goals.where(pact_id: @pact.id).nil?
-                = user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal
+                = user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal_days
             %td
               / WORKOUTS
               = user.workouts.where('pact_id = ? and week_id = ?', @pact.id, @week.id).count
             %td
               / MISSED DAYS
-              = (user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal - user.workouts.where('pact_id = ? and week_id = ?', @pact.id, @week.id).count)
+              = (user.goals.find_by('pact_id = ? and week_id = ?', @pact.id, @week.id).goal_days - user.workouts.where('pact_id = ? and week_id = ?', @pact.id, @week.id).count)
               / MISSED DAYS BEGINNING OF WEEK
               / = @pact.get_missed_days_beginning_of_week(@week.week_number, user)
             %td.border-right
@@ -119,13 +119,13 @@
             %small
           %td
             / TOTAL GOALS FOR WEEK
-            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal)
+            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal_days)
           %td
             / TOTAL WORKOUTS FOR WEEK
             = (@pact.workouts.where(:week_id => @pact.get_current_week.id).count)
           %td
             / TOTAL MISSED DAYS FOR WEEK
-            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal) -  (@pact.workouts.where(:week_id => @pact.get_current_week.id).count)
+            = (@pact.goals.where(:week_id => @pact.get_current_week.id).sum :goal_days) -  (@pact.workouts.where(:week_id => @pact.get_current_week.id).count)
           %td.border-right
             / TOTAL BONUS DAYS FOR WEEK
             = @pact.get_total_bonus_days_for_week(@week.week_number)
@@ -152,10 +152,10 @@
             = @pact.workouts.count
           %td
             / TOTAL MISSED DAYS AT END OF WEEK
-            - if @pact.workouts.count > ( @pact.goals.sum :goal )
+            - if @pact.workouts.count > ( @pact.goals.sum :goal_days )
               0
             - else
-              = ( @pact.goals.sum :goal ) - ( @pact.workouts.count )
+              = ( @pact.goals.sum :goal_days ) - ( @pact.workouts.count )
           %td
             - if Date.today > @week.end_date
               = number_to_currency( @pact.payments.sum :owed )

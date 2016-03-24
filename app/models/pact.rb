@@ -94,7 +94,7 @@ class Pact < ActiveRecord::Base
     else
       if  user.goals.find_by( week_id: week_id ) == nil
       else
-        self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal ) )
+        self.penalties.find_by( goal_days: ( user.goals.find_by( week_id: week_id ).goal_days ) )
       end
     end
   end
@@ -114,7 +114,7 @@ class Pact < ActiveRecord::Base
     else
       for i in 1 .. week_number 
         # get user's goal days for the week for the pact
-        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal_days
         # get user's workout count for the week
         week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
         # if you have bonus days
@@ -158,7 +158,7 @@ class Pact < ActiveRecord::Base
       # to figure out if total_missed_days at beginning of week i > 0
       for i in 1 .. week_number 
         # get user's goal days for the week for the pact
-        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal_days
         # get user's workout count for the week
         week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
         total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
@@ -211,7 +211,7 @@ class Pact < ActiveRecord::Base
       # to figure out if total_missed_days at beginning of week i > 0
       for i in 1 .. week_number 
         # get user's goal days for the week for the pact
-        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+        week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal_days
         # get user's workout count for the week
         week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
         total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
@@ -260,7 +260,7 @@ class Pact < ActiveRecord::Base
         if week_number > weeks.last.week_number
         else
           # get user's goal days for the week for the pact
-          week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+          week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal_days
           # get user's workout count for the week
           week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
           total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
@@ -306,7 +306,7 @@ class Pact < ActiveRecord::Base
     week = self.weeks.find_by(week_number: week_number)
 
     # get user's goal days for the week for the pact
-    week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal
+    week_goal_days = user.goals.find_by("pact_id = ? and week_id = ?", self, week.id).goal_days
     # get user's workout count for the week
     week_workouts = user.workouts.where("pact_id = ? and week_id = ?", self, week.id).count
 
@@ -340,7 +340,7 @@ class Pact < ActiveRecord::Base
       for i in 1 .. week_number 
 
         # get total users' goal days for the week for the pact
-        total_week_goal_days = ( @pact.goals.where(:week_id => week.id).sum :goal )
+        total_week_goal_days = ( @pact.goals.where(:week_id => week.id).sum :goal_days )
         # get total user's workout count for the week
         total_week_workouts = ( @pact.workouts.where(:week_id => week.id).count )
 
@@ -391,7 +391,7 @@ class Pact < ActiveRecord::Base
         else
 
           # get total users' goal days for the week for the pact
-          total_week_goal_days = ( @pact.goals.where(:week_id => week.id).sum :goal )
+          total_week_goal_days = ( @pact.goals.where(:week_id => week.id).sum :goal_days )
           # get total user's workout count for the week
           total_week_workouts = ( @pact.workouts.where(:week_id => week.id).count )
           total_missed_days_at_beginning_of_week = total_missed_days_at_end_of_week
@@ -551,7 +551,7 @@ class Pact < ActiveRecord::Base
                   else
                     new_goal = @pact.goals.build
                     new_goal.user_id = pu.id
-                    new_goal.goal = last_goal.goal
+                    new_goal.goal_days = last_goal.goal_days
                     new_goal.week_id = pw.id
                     new_goal.save
                   end
@@ -573,7 +573,7 @@ class Pact < ActiveRecord::Base
                   else
                     new_goal = @pact.goals.build
                     new_goal.user_id = pu.id
-                    new_goal.goal = last_goal
+                    new_goal.goal_days = last_goal
                     new_goal.week_id = pw.id
                     new_goal.save
                   end
@@ -584,14 +584,14 @@ class Pact < ActiveRecord::Base
                   else
                     @pact.users.each do |pu|
                     # get last updated goal for user
-                    last_goal = pu.goals.last.goal
+                    last_goal = pu.goals.last.goal_days
                     
                       # if goal already exists for the week, do not create any new goals for that week
                       if @pact.goals.where(:week_id => pw.id, :user_id => pu.id).exists?
                       else
                         new_goal = @pact.goals.build
                         new_goal.user_id = pu.id
-                        new_goal.goal = last_goal
+                        new_goal.goal_days = last_goal
                         new_goal.week_id = pw.id
                         new_goal.save
                       end
