@@ -11,6 +11,7 @@
         %th User
         %th Goal
         %th Week Number
+        %th Actions
     %tbody
       - @goals.order(:week_id).each do |goal|
         %tr
@@ -19,3 +20,4 @@
             = goal.user.last_name
           %td= goal.goal_days
           %td= goal.week.week_number
+          %td= link_to "Edit", edit_pact_goal_path(@pact, goal)

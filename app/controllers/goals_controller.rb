@@ -18,13 +18,15 @@ class GoalsController < ApplicationController
   end
 
   def edit
+    @pact = Pact.find(params[:pact_id])
     @goal = Goal.find(params[:id])
   end
 
   def update
+    @pact = Pact.find(params[:pact_id])
     @goal = Goal.find(params[:id])
     @goal.update(goal_params)
-    redirect_to @goal
+    redirect_to pact_goal_path
   end
 
   def index
@@ -51,6 +53,6 @@ class GoalsController < ApplicationController
   private
 
   def goal_params
-    params.require(:goal).permit(:goal, :user_id, :pact_id, :week_id)
+    params.require(:goal).permit(:goal_days, :user_id, :pact_id, :week_id)
   end
 end

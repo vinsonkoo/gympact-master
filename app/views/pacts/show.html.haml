@@ -26,7 +26,7 @@
                 =@users.count
                 users
             .summary-stats-stat-footer
-              = link_to "Edit users", add_users_path
+              = link_to "User", add_users_path
       .summary-stats-stat-container
         - if @goals.count == 0 || @users.count == 0
           = link_to add_goals_path, class: "summary-stats-stat summary-stats-stat-empty" do
@@ -40,7 +40,7 @@
               .summary-stats-stat-number
                 =@pact.workouts.count
             .summary-stats-stat-footer
-              = link_to "Edit goals", add_goals_path
+              = link_to "Goals", pact_goals_path(@pact)
       .summary-stats-stat-container
         -if !@pact.penalties.present?
           = link_to add_penalties_path, class: "summary-stats-stat summary-stats-stat-empty" do

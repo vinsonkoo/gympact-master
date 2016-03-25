@@ -507,10 +507,10 @@ class Pact < ActiveRecord::Base
 
   def check_goals
     @pact = Pact.find_by(id: id)
-    current_week = @pact.get_current_week
       # if total goal count for the pact is equal to weeks * users, then update goals for weeks after current week
     if @pact.goals.empty?
     else
+      current_week = @pact.get_current_week
       if @pact.goals.count == (@pact.weeks.count) * (@pact.users.count)
         @pact.weeks.each do |pw|
           # if pact week is after current_week's start date, then update the goals for the following weeks

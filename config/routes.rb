@@ -32,11 +32,12 @@ Rails.application.routes.draw do
     resources :payments
     resources :penalties
     resources :goals
+    resources :users
     resources :weeks do
       resources :payments
     end
   end
-  get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
+  # get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
   get 'pacts/:pact_id/chat'                 => 'pacts#chat',     as: 'pact_chat'
   get 'pacts/:pact_id/chat/week/:week_id'   => 'pacts#chat_week',     as: 'pact_chat_week'
 
@@ -47,6 +48,8 @@ Rails.application.routes.draw do
 
 
   # OTHER MODELS ###################################################################################
+
+
   # get 'messages/:id/is_workout'   => 'messages#is_workout', as: "is_workout"
   resources :messages do
     collection do

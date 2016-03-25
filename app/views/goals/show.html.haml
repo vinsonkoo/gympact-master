@@ -1,12 +1,13 @@
-%h1 Goals
-= render 'form'
-%table
-  %thead
-    %td User
-    %td Goals
-  %tbody
-    - @goal.pact.user_ids.each do |pu|
+.content
+  %h1 Goals
+  / = render 'form'
+  = link_to 'Edit Goal', edit_pact_goal_path
+  %table
+    %thead
+      %td User
+      %td Goals
+    %tbody
       %tr
-        %td= User.find_by(id: @pact.user_ids[pu-1]).username
+        %td= @goal.user.username
         %td= @goal.goal_days
 

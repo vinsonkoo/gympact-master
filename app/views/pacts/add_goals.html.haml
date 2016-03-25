@@ -21,10 +21,10 @@
 
           / DROPDOWN DOES NOT CURRENTLY WORK. UNCOMMENT THE HIDDEN FIELDS FOR WEEK SECTION.
 
-          = fields_for :goal do |goal|
-            = goal.collection_select(:week_id, @pact.weeks, :id, :week_number, {:prompt => false}, {:class => "week_number"}) do
-              =@pact.weeks.each do |week|
-                %option{:value => week.id, :selected => params[(week.id == @pact.get_current_week.id)] }="Week #{week.week_number}"
+          / = fields_for :goal do |goal|
+          /   = goal.collection_select(:week_id, @pact.weeks, :id, :week_number, {:prompt => false}, {:class => "week_number"}) do
+          /     =@pact.weeks.each do |week|
+          /       %option{:value => week.id, :selected => params[(week.id == @pact.get_current_week.id)] }="Week #{week.week_number}"
           / %h2 
           / Edit goals for users in #{@pact.pact_name} for Week # #{@pact.get_current_week.week_number}
 
@@ -80,17 +80,17 @@
                       = pu.last_name
                       \#{ff.hidden_field :user_id, :value => pu.id}
                     .form-goals-goal-days
-                      = ff.number_field :goal, min: 0, max: 7, :step => '1'
+                      = ff.number_field :goal_days, min: 0, max: 7, :step => '1'
                       = ff.hidden_field :pact_id, :value => @pact.id
 
                     - if @pact.is_active == true
-                      / = ff.hidden_field :week_id, :value => @pact.get_current_week.id
+                      = ff.hidden_field :week_id, :value => @pact.get_current_week.id
                     - elsif @pact.is_active == false && Date.today < @pact.start_date
                       / if pact is not active and hasn't started, these goals are for the first week
-                      / = ff.hidden_field :week_id, :value => @pact.weeks.first.id
+                      = ff.hidden_field :week_id, :value => @pact.weeks.first.id
                     - elsif @pact.is_active == false && Date.today > @pact.end_date
                       / if pact is not active and ended, these goals are for the last week
-                      / = ff.hidden_field :week_id, :value => @pact.weeks.last.id
+                      = ff.hidden_field :week_id, :value => @pact.weeks.last.id
             
           .form-row
             = f.submit "Add Goals", :class => "button button-full"
