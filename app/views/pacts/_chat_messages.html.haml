@@ -1,9 +1,9 @@
 %tr
-  %td.message-id= message.id
-  %td.message-datetime= message.msg_date_time
+  / %td.message-id= message.id
+  / %td.message-datetime= message.msg_date_time
   %td.message-date= message.date.strftime("%-m/%-d/%Y")
   %td.message-time= message.time
-  %td.message-user-id= message.user_id
+  / %td.message-user-id= message.user_id
   %td.message-sender= message.sender
   %td.message-message
     - if message.media == true

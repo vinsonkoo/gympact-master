@@ -649,18 +649,25 @@ class Pact < ActiveRecord::Base
         @message.date = Date.parse(@message.msg_date_time)
         @message.time = @message.msg_date_time.partition(", ")[2]
         
+
+        # if @message.message.include? "<attached>"
+        #   debugger
+        # end
+        # for some reason, below logic for parsing messages with media do not work without the above lines, even though it is commented out
         # logic that checks if message contains either an image or video, and if so media is set to true (boolean) and the other is set to nil in order to render the media in the view with an if statement
-        if @message.message.include? ".jpg <attached>" 
+
+        if @message.message.include? ".jpg <‎attached>"
+          # debugger
           @message.image = @message.message.partition(".jpg")[0]
           @message.media = true
           @message.video = nil
           @message.is_workout = true
         elsif @message.message.include? ".mp4 <attached>"
+          # debugger
           @message.video = @message.message.partition(".mp4")[0]
           @message.media = true
           @message.image = nil
           @message.is_workout = true
-          
         else
           @message.media = false
           @message.image = nil
@@ -674,17 +681,19 @@ class Pact < ActiveRecord::Base
         # check if a user's first and last name exists in database, if it doesn't exist, end chat upload and redirect to create user. ignore "System Message"
 
         # partition user's first and last name to find in database
-        first_name, sep, last_name = @message.sender.partition(" ")
+        # first_name, sep, last_name = @message.sender.partition(" ")
 
-        # if User.find_by_first_name_and_last_name(first_name, last_name).present?
-        #   # true
-        #   # do nothing and continue chat upload
-        # else
-        #   # false
-        #   # throw error and notice telling user to create users
-        #   raise "Error Message"
-        #   # return false
-        # end
+        if User.find_by( username: @message.sender ).present?
+          # true
+          # do nothing and continue chat upload
+          @message.user_id = User.find_by( username: @message.sender).id
+        else
+          # false
+          # throw error and notice telling user to create users
+          # raise "Error Message"
+          # return false
+          @message.user_id = nil
+        end
 
         ####### USER LOGIC #######
 
@@ -743,7 +752,7 @@ class Pact < ActiveRecord::Base
                 :workout_description => nil,
                 :is_makeup_workout => nil,
                 # find user based on @message.sender
-                :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
+                :user_id => @message.user_id,
                 :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
                 :pact_id => pact.id,
                 :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id
@@ -762,7 +771,7 @@ class Pact < ActiveRecord::Base
                 :workout_description => nil,
                 :is_makeup_workout => nil,
                 # find user based on @message.sender
-                :user_id => User.find_by("first_name like ? and last_name like ?", @message.sender.split(" ").first, @message.sender.split(" ").last).id,
+                :user_id => @message.user_id,
                 :week_id => pact.weeks.where("start_date <= ? and end_date >= ?", @message.date, @message.date).first.id,
                 :pact_id => pact.id,
                 :message_id => Message.find_by("message like? and msg_date_time like ?", @message.message, @message.msg_date_time).id

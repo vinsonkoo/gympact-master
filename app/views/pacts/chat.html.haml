@@ -14,20 +14,24 @@
         / - if message.user
         = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
         - previous_message = message
+        / -debugger
 
     %table
       %thead
         %tr
-          %th Message ID
-          %th Date+Time
+          / %th Message ID
+          / %th Date+Time
           %th Date
           %th Time
-          %th User ID
+          / %th User ID
           %th Sender
           %th Message
           %th Workout?
       %tbody
-        - @pact.messages.each do |message|
+        - @pact.messages.each_with_index do |message, el|
+          / - @pact.messages[el-1]
+          / - @pact.messages[el+1]
+          / starting point for chat-like view
           / show the week number
           - if (@pact.start_date..@pact.end_date).include?(message.date)
             - if message.week.messages.empty? == true
@@ -36,7 +40,6 @@
                   No messages for week #
                   \
                   - message.week.week_number
-
             -else
               - if message.id == message.week.messages.first.id
                 %tr
