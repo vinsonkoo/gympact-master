@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :attachments
+  resources :pact_attachments
   get 'payments/index'
 
   get 'payments/new'
@@ -29,13 +31,14 @@ Rails.application.routes.draw do
       post :import
 
     end
-    resources :payments
+      resources :payments
     resources :penalties
     resources :goals
     resources :users
     resources :weeks do
       resources :payments
     end
+    resources :attachments
   end
   # get 'pacts/:pact_id/users'                => 'pacts#users',   as: 'pact_users'
   get 'pacts/:pact_id/chat'                 => 'pacts#chat',     as: 'pact_chat'

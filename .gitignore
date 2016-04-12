@@ -93,3 +93,6 @@ Guardfile
 # Zookeeper / Kafka
 /log-cleaner.log
 .solano*
+
+# Ignore application configuration
+/config/application.yml
