@@ -26,7 +26,7 @@ class Pact < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments
 
-  mount_uploader :attachment, AttachmentUploader
+  # mount_uploader :attachment, AttachmentUploader
   has_many :attachments
   accepts_nested_attributes_for :attachments
 

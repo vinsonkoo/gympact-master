@@ -1,5 +1,5 @@
 class Attachment < ActiveRecord::Base
-  # mount_uploader :attachment, AttachmentUploader
   belongs_to    :pact
+  mount_uploader :attachment, AttachmentUploader
   validates     :pact, presence: true
 end

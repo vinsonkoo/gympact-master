@@ -17,6 +17,7 @@ end
 
 gem 'figaro'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'jquery-fileupload-rails'
 gem 'fog'
 gem 'aws-sdk', '~> 2'
 

@@ -119,10 +119,11 @@
       = file_field_tag :file, class: "pact-upload-file"
       = submit_tag "Upload Chat", class: "button pact-upload-button"
     %h2 Upload Media
-    = form_for(@pact, :html => { :multipart => true }) do |f|
-      = f.fields_for :attachment do |p|
-        = p.label :filename
-        = p.file_field :filename, :multiple => true, name: "attachments[filename][]", class: "pact-upload-file"
+    = form_for @pact, html: { multipart: true } do |f|
+      = f.fields_for :attachments, Attachment.new do |p|
+        = p.label :attachment
+        = p.file_field :attachment, multiple: true, name: "pact[attachments_attributes][][filename]", class: "pact-upload-file"
+        = p.file_field :attachment, multiple: true, class: 'btn btn-file', id: 'upload-image', name: "pact[attachments_attributes][][filename]"
       = f.submit "Upload Media", class: "button pact-upload-button"
 
 
