@@ -118,6 +118,13 @@
       %label{:for => "file", :class => "pact-upload-label"} Upload Whatsapp .txt file
       = file_field_tag :file, class: "pact-upload-file"
       = submit_tag "Upload Chat", class: "button pact-upload-button"
+    %h2 Upload Media
+    = form_for @pact, html: { multipart: true } do |f|
+      = f.fields_for :attachments, Attachment.new do |p|
+        = p.label :attachment
+        = p.file_field :attachment, multiple: true, name: "pact[attachments_attributes][][filename]", class: "pact-upload-file"
+        = p.file_field :attachment, multiple: true, class: 'btn btn-file', id: 'upload-image', name: "pact[attachments_attributes][][filename]"
+      = f.submit "Upload Media", class: "button pact-upload-button"
 
 
 
@@ -206,33 +213,33 @@
       = link_to "Add Penalty", controller: "pacts", action: "add_penalties", id: @pact
 
 
-  %h1 Goals
+  / %h1 Goals
 
-  / the first goal created for the pact is for "current week", then for other weeks
-  - if @pact.goals.present?
-    %table
-      %thead
-        %tr
-          %th User ID / Username
-          %th Pact ID
-          %th Goal
-          %th Goal ID
-          %th Week ID / Week #
-      %tbody
-        -@pact.goals.order(:week_id).each do |pg|
-          %tr
-            %td
-              = pg.user_id
-              \/
-              = pg.user.username
-            %td
-              = pg.pact_id
-            %td= pg.goal_days
-            %td= pg.id
-            %td
-              = pg.week_id
-              \/
-              = pg.week.week_number
+  / / the first goal created for the pact is for "current week", then for other weeks
+  / - if @pact.goals.present?
+  /   %table
+  /     %thead
+  /       %tr
+  /         %th User ID / Username
+  /         %th Pact ID
+  /         %th Goal
+  /         %th Goal ID
+  /         %th Week ID / Week #
+  /     %tbody
+  /       -@pact.goals.order(:week_id).each do |pg|
+  /         %tr
+  /           %td
+  /             = pg.user_id
+  /             \/
+  /             = pg.user.username
+  /           %td
+  /             = pg.pact_id
+  /           %td= pg.goal_days
+  /           %td= pg.id
+  /           %td
+  /             = pg.week_id
+  /             \/
+  /             = pg.week.week_number
 
 
   %p= link_to 'Edit Goals', controller: "pacts", action: "add_goals", id: @pact
@@ -342,46 +349,46 @@
         %th Message
         %th Workout?
     %tbody
-      - @pact.messages.order(:msg_date_time).each do |message|
-        %tr
-          / %td.message-id= message.id
-          / %td.message-datetime= message.msg_date_time
-          %td.message-date= message.date.strftime("%-m/%-d/%Y")
-          %td.message-time= message.time
-          / %td.message-user-id= message.user_id
-          %td.message-sender= message.sender
-          %td.message-message
-            - if message.media == true
-              - if message.image != nil
-                = image_tag("/media/#{message.image}.jpg", class: "attached-image")
-              - elsif message.video != nil
-                = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
-            - else
-              = message.message
-          %td.message-is-workout
-            %p= message.is_workout
-            - if message.date < @pact.start_date or message.date > @pact.start_date
-              - if message.media == true
-                - if message.is_workout == true
-                  %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
-                - else 
-                  %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
-            - else
-              - if message.media == true
-                - if message.is_workout == true
-                  %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id}, :class => "button button-full"
-                  -if @pact.workouts.find_by(message_id: message.id) == nil
-                  -else
-                    %p= link_to 'Copy workout', {controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id)}, :class => "button button-full"
-                - else 
-                  %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
-                  / -if @pact.workouts.find_by(message_id: message.id) == nil
-                  / -else
+      / - @pact.messages.order(:msg_date_time).each do |message|
+      /   %tr
+      /     / %td.message-id= message.id
+      /     / %td.message-datetime= message.msg_date_time
+      /     %td.message-date= message.date.strftime("%-m/%-d/%Y")
+      /     %td.message-time= message.time
+      /     / %td.message-user-id= message.user_id
+      /     %td.message-sender= message.sender
+      /     %td.message-message
+      /       - if message.media == true
+      /         - if message.image != nil
+      /           = image_tag("/media/#{message.image}.jpg", class: "attached-image")
+      /         - elsif message.video != nil
+      /           = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
+      /       - else
+      /         = message.message
+      /     %td.message-is-workout
+      /       %p= message.is_workout
+      /       - if message.date < @pact.start_date or message.date > @pact.start_date
+      /         - if message.media == true
+      /           - if message.is_workout == true
+      /             %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+      /           - else 
+      /             %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+      /       - else
+      /         - if message.media == true
+      /           - if message.is_workout == true
+      /             %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id}, :class => "button button-full"
+      /             -if @pact.workouts.find_by(message_id: message.id) == nil
+      /             -else
+      /               %p= link_to 'Copy workout', {controller: "workouts", action: "copy", id: @pact.workouts.find_by(message_id: message.id)}, :class => "button button-full"
+      /           - else 
+      /             %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+      /             / -if @pact.workouts.find_by(message_id: message.id) == nil
+      /             / -else
                     
-                - if !@pact.workouts.find_by(message_id: message.id).nil?
-                  - if @pact.workouts.find_by(message_id: message.id).workout_name == nil
-                    %p= link_to 'Give this workout a name', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"
-                  - else
-                    = @pact.workouts.find_by(message_id: message.id).workout_name
-                    = @pact.workouts.find_by(message_id: message.id).workout_description
-                    %p= link_to 'Edit workout', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"
+      /           - if !@pact.workouts.find_by(message_id: message.id).nil?
+      /             - if @pact.workouts.find_by(message_id: message.id).workout_name == nil
+      /               %p= link_to 'Give this workout a name', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"
+      /             - else
+      /               = @pact.workouts.find_by(message_id: message.id).workout_name
+      /               = @pact.workouts.find_by(message_id: message.id).workout_description
+      /               %p= link_to 'Edit workout', edit_workout_path(@pact.workouts.find_by(message_id: message.id)), :class => "button button-full"

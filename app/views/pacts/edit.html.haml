@@ -1,25 +1,33 @@
-%h1 Edit Pact
-= form_for @pact do |f|
-  - if @pact.errors.any?
-    .error_explanation
-      %h2
-        = pluralize(@pact.errors.count, "error")
-        prohibited this pact from being saved.
-      %ul
-        - @pact.errors.full_messages.each do |msg|
-          %li= msg
-  .col-md-4
-    = f.label :pact_name, 'Pact Name'
-    = f.text_field :pact_name
-  .col-md-4
-    = f.label :start_date, 'Select Start Date'
-    = f.text_field :start_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
-  .col-md-4
-    = f.label :end_date, 'Select End Date'
-    = f.text_field :end_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
-  .col-md-6
-    = f.collection_check_boxes :user_ids, User.all, :id, :username do |b|
-      = b.check_box
-      = b.label
-  .col-md-3
-    = f.submit :class => "btn"
+.content
+  %h1 Edit Pact
+  = form_for @pact do |f|
+    - if @pact.errors.any?
+      .error_explanation
+        %h2
+          = pluralize(@pact.errors.count, "error")
+          prohibited this pact from being saved.
+        %ul
+          - @pact.errors.full_messages.each do |msg|
+            %li= msg
+    .col-md-4
+      = f.label :pact_name, 'Pact Name'
+      = f.text_field :pact_name
+    .col-md-4
+      = f.label :start_date, 'Select Start Date'
+      = f.text_field :start_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
+    .col-md-4
+      = f.label :end_date, 'Select End Date'
+      = f.text_field :end_date, 'data-behaviour' => 'datepicker', :class => 'datepicker'
+    .col-md-12
+      = f.collection_check_boxes :user_ids, User.all, :id, :username do |b|
+        = b.check_box
+        = b.label
+    .col-md-3
+      = f.submit :class => "btn"
+
+  %h2 Upload Media
+  = form_for(@pact, :html => { :multipart => true }) do |f|
+    = f.fields_for :attachments do |p|
+      = p.label :filename
+      = p.file_field :filename, :multiple => true, name: "attachments[filename][]", class: "pact-upload-file"
+    = f.submit "Upload Media", class: "button pact-upload-button"

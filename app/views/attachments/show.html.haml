@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Pact:
+  = @attachment.pact_id
+%p
+  %b Filename:
+  = @attachment.filename
+
+= link_to 'Edit', edit_attachment_path(@attachment)
+\|
+= link_to 'Back', attachments_path

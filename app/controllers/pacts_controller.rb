@@ -12,10 +12,12 @@ class PactsController < ApplicationController
     else
       render 'new'
     end
+
   end
   
   def edit
     @pact = Pact.find(params[:id])
+    @attachment = @pact.attachments.build
   end
 
   def destroy
@@ -29,32 +31,63 @@ class PactsController < ApplicationController
 
   def update
     @pact = Pact.find(params[:id])
-    @pact.update(pact_params)
-    # debugger
+    
+    if params.has_key?(:attachments)
+        respond_to do |format|
+        if @pact.save
+          params[:attachments]['filename'].each do |a|
+            @attachment = @pact.attachments.create!(:filename => a.original_filename)
+            @attachment.save
+          end
+          format.html { redirect_to @pact, notice: 'Pact attachments were successfully uploaded.' }
+        else
+          format.html { render action: 'new' }
+        end
+      end
+      # authorize @pact
+      # if @pact.update(params[:pact].permit(:id, :end_date, :is_active, :pact_name, :start_date))
+        # to handle multiple images upload on update when user add more picture
+        # if params[:attachments]
+        #   params[:attachments].each { |attachment|
+        #     @pact.attachments.create(attachment: attachment)
+        #   }
+        # end
+        # flash[:notice] = "Pact has been updated."
+        # redirect_to @pact
+      # else
+        # render :edit
+      # end
 
-    if @pact.users.exists?
+    else
 
-      if @pact.goals.exists?
+      @pact.update(pact_params)
+      # debugger
 
-        if @pact.penalties.exists?
-          # after adding users, goals, and penalties, redirect to pact
-          redirect_to @pact
+      if @pact.users.exists?
+
+        if @pact.goals.exists?
+
+          if @pact.penalties.exists?
+            # after adding users, goals, and penalties, redirect to pact
+            redirect_to @pact
+
+          else
+            #after adding goals, user will be redirected to add penalties
+            redirect_to add_penalties_path(@pact)
+
+          end
 
         else
-          #after adding goals, user will be redirected to add penalties
-          redirect_to add_penalties_path(@pact)
+          # after adding users, user will be redirected to add goals
+          redirect_to add_goals_path(@pact)
 
         end
 
       else
-        # after adding users, user will be redirected to add goals
-        redirect_to add_goals_path(@pact)
+        # after creating the pact, user will be redirected to add users
+        redirect_to add_users_path(@pact)
 
       end
-
-    else
-      # after creating the pact, user will be redirected to add users
-      redirect_to add_users_path(@pact)
 
     end
 
@@ -66,6 +99,7 @@ class PactsController < ApplicationController
 
   def index
     @pact = Pact.all
+    @attachments = @pact.attachments
   end
 
   def show
@@ -76,6 +110,7 @@ class PactsController < ApplicationController
     @penalties = @pact.penalties
     @workouts = @pact.workouts
     @payments = @pact.payments
+    # @pact_attachment = @pact.pact_attachments.build
   end
 
   def users
@@ -139,6 +174,8 @@ class PactsController < ApplicationController
       :is_active, 
       :pact_name, 
       :start_date, 
+      :attachment,
+      attachments_attributes:[:id, :pact_id, :filename],
       penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
       user_ids:[], 
       goals_attributes:[:id, :pact_id, :goal_days, :user_id, :week_id],

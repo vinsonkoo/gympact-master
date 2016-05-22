@@ -80,7 +80,7 @@ class MessagesController < ApplicationController
   private
   
   def message_params
-    params.require(:message).permit(:pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id)
+    params.require(:message).permit(:pact_id, :user_id, :message, :date_sent, :photo_url, :media, :image, :video, :date, :time, :msg_date_time, :sender, :user, :week_id, :media_filename)
   end
 
 

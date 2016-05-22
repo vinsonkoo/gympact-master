@@ -15,7 +15,11 @@ group :production do
 	gem 'rails_12factor'
 end
 
+gem 'figaro'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'jquery-fileupload-rails'
+gem 'fog'
+gem 'aws-sdk', '~> 2'
 
 gem 'american_date'
 gem 'validates_timeliness', '~> 4.0'

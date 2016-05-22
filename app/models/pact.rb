@@ -26,6 +26,12 @@ class Pact < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments
 
+  # mount_uploader :attachment, AttachmentUploader
+  has_many :attachments
+  accepts_nested_attributes_for :attachments
+
+
+
   #######################################################
   # Makes it so that when you print the "Pact" object, you print the pact_name instead of the "#<ActiveRecord>blahblah" object name
   alias_attribute :name, :pact_name
@@ -42,24 +48,6 @@ class Pact < ActiveRecord::Base
   # Actions you'd want to do on a Pact object
   # Example: The way you would use these would be if in your HTML file, you want to get a list of all the pact's users. You will write <%= pact.get_users %> which would return an array (list) of user objects.
 
-
-
-  # mount_uploader :attachment, PhotoUploader
-  # validates :name, presence: true
-
-  # # single upload for now
-  # def save_photos
-  #   filename = photo.original_filename
-    
-  #   folder = 'public/media/#{pact_name}'
-
-  #   FileUtils::mkdir_p folder
-  #   f.write photo.read()
-  #   f.close
-
-  #   self.photo = nil
-  #   update photo_filename: filename
-  # end
 
 
   # Gets the week that the pact is on as of today

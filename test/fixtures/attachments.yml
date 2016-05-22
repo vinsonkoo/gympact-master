@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pact_id: 1
+  filename: MyString
+
+two:
+  pact_id: 1
+  filename: MyString
