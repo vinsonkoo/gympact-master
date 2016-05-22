@@ -1,0 +1,23 @@
+# Add configuration values here, as shown below.
+#
+# pusher_app_id: "2954"
+# pusher_key: 7381a978f7dd7f9a1117
+# pusher_secret: abdc3b896a0ffb85d373
+# stripe_api_key: sk_test_2J0l093xOyW72XUYJHE4Dv2r
+# stripe_publishable_key: pk_test_ro9jV5SNwGb1yYlQfzG17LHK
+#
+# production:
+#   stripe_api_key: sk_live_EeHnL644i6zo4Iyq4v1KdV9H
+#   stripe_publishable_key: pk_live_9lcthxpSIHbGwmdO941O1XVU
+
+
+SECRET_KEY_BASE: 28f098deeb0f296ef05f6a54bcb8cdc8b4cf5b5bc19f3e4caaa1dfabb11aef052f2e78aa2ee7568907e156846f3b66a45a9eef5a2e4fdb6841dd10c6ab1e8d22
+AWS_ACCESS_KEY: AKIAJZSGNIRDF6HNDKAA
+AWS_SECRET_ACCESS_KEY: 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
+
+development:
+  FOG_DIRECTORY: gympact-app-production-bucket
+  S3_REGION: us-west-2
+production: 
+  FOG_DIRECTORY: gympact-app-production-bucket
+  S3_REGION: us-west-2
