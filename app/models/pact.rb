@@ -26,9 +26,11 @@ class Pact < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments
 
-  # mount_uploader :attachment, AttachmentUploader
-  has_many :attachments
-  accepts_nested_attributes_for :attachments
+  has_many :pact_photos, dependent: :destroy
+  accepts_nested_attributes_for :pact_photos
+  accepts_nested_attributes_for :pact_photos, \
+    reject_if: proc{ |param| param[:photo].blank? && param[:photo_cache].blank? && param[:id].blank? }, \
+    allow_destroy: true
 
 
 
@@ -54,17 +56,20 @@ class Pact < ActiveRecord::Base
   def get_current_week
     @pact = Pact.find_by(id: id)
     today = Date.today
-    week = @pact.weeks.where(["end_date >= ?", today]).order(:week_number).first
-    week_range = week.start_date..week.end_date
-    # if week is before pact start_date, then week should be the first week
-    if today <= @pact.start_date
-      week = @pact.weeks.first
-    # if week is after pact end_date, then week should be the last week
-    elsif today >= @pact.end_date
-      week = @pact.weeks.last
+    if (@pact.start_date..@pact.end_date).cover?(today)
+      week = @pact.weeks.where(["end_date >= ?", today]).order(:week_number).first
+      week_range = week.start_date..week.end_date
     else
-      if week_range.cover?(today)
-        week
+      # if week is before pact start_date, then week should be the first week
+      if today <= @pact.start_date
+        week = @pact.weeks.first
+      # if week is after pact end_date, then week should be the last week
+      elsif today >= @pact.end_date
+        week = @pact.weeks.last
+      else
+        if week_range.cover?(today)
+          week
+        end
       end
     end
     # @pact.weeks already includes the search for pact_id in the below statement

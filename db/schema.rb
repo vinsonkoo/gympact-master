@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412012354) do
+ActiveRecord::Schema.define(version: 20160601004620) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20160412012354) do
     t.string   "filename"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "image"
   end
 
   create_table "goals", force: :cascade do |t|
@@ -109,6 +110,13 @@ ActiveRecord::Schema.define(version: 20160412012354) do
   create_table "pact_attachments", force: :cascade do |t|
     t.integer  "pact_id"
     t.string   "filename"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pact_photos", force: :cascade do |t|
+    t.string   "photo"
+    t.integer  "pact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

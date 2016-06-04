@@ -17,7 +17,6 @@ class PactsController < ApplicationController
   
   def edit
     @pact = Pact.find(params[:id])
-    @attachment = @pact.attachments.build
   end
 
   def destroy
@@ -31,32 +30,18 @@ class PactsController < ApplicationController
 
   def update
     @pact = Pact.find(params[:id])
-    
-    if params.has_key?(:attachments)
-        respond_to do |format|
-        if @pact.save
-          params[:attachments]['filename'].each do |a|
-            @attachment = @pact.attachments.create!(:filename => a.original_filename)
-            @attachment.save
-          end
-          format.html { redirect_to @pact, notice: 'Pact attachments were successfully uploaded.' }
-        else
-          format.html { render action: 'new' }
+    # debugger
+    if params[:pact].has_key?(:pact_photos)
+      if params[:pact].has_key?(:pact_photos)
+
+        params[:pact][:pact_photos].each do |a|
+          @pact_photo = @pact.pact_photos.create!(:photo => a)
+          # debugger
+          # @pact_photo.photo = a.original_filename
+          @pact_photo.save
         end
+        redirect_to @pact
       end
-      # authorize @pact
-      # if @pact.update(params[:pact].permit(:id, :end_date, :is_active, :pact_name, :start_date))
-        # to handle multiple images upload on update when user add more picture
-        # if params[:attachments]
-        #   params[:attachments].each { |attachment|
-        #     @pact.attachments.create(attachment: attachment)
-        #   }
-        # end
-        # flash[:notice] = "Pact has been updated."
-        # redirect_to @pact
-      # else
-        # render :edit
-      # end
 
     else
 
@@ -89,7 +74,7 @@ class PactsController < ApplicationController
 
       end
 
-    end
+    end # if params[:pact].has_key?(:pact_photos)
 
   end
 
@@ -175,7 +160,7 @@ class PactsController < ApplicationController
       :pact_name, 
       :start_date, 
       :attachment,
-      attachments_attributes:[:id, :pact_id, :filename],
+      pact_photos_attributes: [:id, :photo, :pact_photo_cache, :_destroy],
       penalties_attributes:[:id, :pact_id, :penalty, :goal_days], 
       user_ids:[], 
       goals_attributes:[:id, :pact_id, :goal_days, :user_id, :week_id],

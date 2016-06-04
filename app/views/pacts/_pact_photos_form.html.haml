@@ -1,0 +1,16 @@
+= form_for @pact, html: { multipart: true } do |f|
+  - if @pact.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@pact.errors.count, "error")} prohibited this pact from being saved:"
+      %ul
+        - @pact.errors.full_messages.each do |msg|
+          %li= msg
+
+  .pact-photo-form
+    = f.fields_for :pact_photos, PactPhoto.new do |photo|
+      = render 'pact_photos_fields', f: photo
+
+  / .links= link_to_add_association 'add a photo', f, :pact_photos
+
+  .actions
+    = f.submit 'Save'

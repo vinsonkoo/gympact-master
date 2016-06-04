@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-datepicker
-//= require jquery-fileupload
 //= require_tree .
 $(function() {
     $('text_field.datepicker').data({behaviour: "datepicker"}).datepicker();

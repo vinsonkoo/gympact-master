@@ -1,0 +1,7 @@
+.nested-fields
+  = f.file_field :photos, multiple: true, name: "pact[pact_photos][]"
+  = f.hidden_field :photo_cache, :value => f.object.photo_cache
+  .thumb
+    - if f.object.photo.url.present?
+      = image_tag f.object.photo.url
+  / %td= link_to_remove_association "remove", f

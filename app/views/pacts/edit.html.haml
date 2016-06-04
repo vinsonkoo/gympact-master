@@ -1,6 +1,6 @@
 .content
   %h1 Edit Pact
-  = form_for @pact do |f|
+  = form_for @pact, html: { multipart: true } do |f|
     - if @pact.errors.any?
       .error_explanation
         %h2
@@ -24,10 +24,30 @@
         = b.label
     .col-md-3
       = f.submit :class => "btn"
+    
+    .col-md-12
+      %h2 Upload Media
+      = render 'pact_photos_form'
+      / %table.pact-photo-form
+      /   %thead
+      /     %tr
+      /       %td input
+      /       %td preview
+      /       %td remove
+      /   %tbody
+      /     = f.fields_for :pact_photos do |photo|
+      /       / = render 'pact_photos_fields', f: photo
+      /       abc
+      /       %tr.nested-fields
+      /         abc
+      /         %td
+      /           = f.file_field :photos, multiple: true, name: "pact[pact_photos][]"
+      /           = f.hidden_field :photo_cache, :value => f.object.photo_cache
+      /         %td.thumb
+      /           - if f.object.photo.url.present?
+      /             = image_tag f.object.photo.url
+      /         / %td= link_to_remove_association "remove", f
+      / / .links= link_to_add_association 'add a photo', f, :pact_photos
 
-  %h2 Upload Media
-  = form_for(@pact, :html => { :multipart => true }) do |f|
-    = f.fields_for :attachments do |p|
-      = p.label :filename
-      = p.file_field :filename, :multiple => true, name: "attachments[filename][]", class: "pact-upload-file"
-    = f.submit "Upload Media", class: "button pact-upload-button"
+      / .actions
+      /   = f.submit 'Save'
