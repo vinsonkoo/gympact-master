@@ -8,14 +8,18 @@
   %td.message-message
     - if message.media == true
       - if message.image != nil
-        / = image_tag("/media/#{message.image}.jpg", class: "attached-image")
-        / = image_tag("/media#{message.media_filename}.jpg", class: "attached-image")
-        = image_tag( @pact.pact_photos.find_by(photo: message.image).photo.url )
+        - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
 
+        - else
+          = image_tag( @pact.pact_photos.find_by(photo: message.image + ".jpg").photo.url, class: "attached-image" )
+          
       - elsif message.video != nil
-        = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
-        = video_tag("/media/#{message.media_filename},mp4", :size => "320x240", :controls => true)
-        = video_tag(@pact.pact_photos.find_by(photo: message.video) :size => "320x240", :controls => true)
+        / = video_tag("/media/#{message.video}.mp4", :size => "320x240", :controls => true)
+        / = video_tag("/media/#{message.media_filename},mp4", :size => "320x240", :controls => true)
+        - if @pact.pact_photos.find_by(photo: message.video + ".jpg").nil?
+
+        - else
+          = video_tag(@pact.pact_photos.find_by(photo: message.video) :size => "320x240", :controls => true)
     - else
       = message.message
   %td.message-is-workout
