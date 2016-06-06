@@ -15,42 +15,106 @@
         = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
         - previous_message = message
         / -debugger
+    / %table
+    /   %thead
+    /     %tr
+    /       / %th Message ID
+    /       / %th Date+Time
+    /       %th Date
+    /       %th Time
+    /       / %th User ID
+    /       %th Sender
+    /       %th Message
+    /       %th Workout?
+    /   %tbody
+    /     - @pact.messages.each_with_index do |message, el|
+    /       / - @pact.messages[el-1]
+    /       / - @pact.messages[el+1]
+    /       / starting point for chat-like view
+    /       / show the week number
+    /       - if (@pact.start_date..@pact.end_date).include?(message.date)
+    /         - if message.week.messages.empty? == true
+    /           %tr
+    /             %td
+    /               No messages for week #
+    /               \
+    /               - message.week.week_number
+    /         -else
+    /           - if message.id == message.week.messages.first.id
+    /             %tr
+    /               %td{colspan:8}
+    /                 %b
+    /                   Week #
+    /                   \
+    /                   = message.week.week_number
+    /       / render partial for chat's messages
+    /       = render partial: "chat_messages", :object => @week, :locals => {:message => message}
 
-    %table
-      %thead
-        %tr
-          / %th Message ID
-          / %th Date+Time
-          %th Date
-          %th Time
-          / %th User ID
-          %th Sender
-          %th Message
-          %th Workout?
-      %tbody
-        - @pact.messages.each_with_index do |message, el|
-          / - @pact.messages[el-1]
-          / - @pact.messages[el+1]
-          / starting point for chat-like view
-          / show the week number
-          - if (@pact.start_date..@pact.end_date).include?(message.date)
-            - if message.week.messages.empty? == true
-              %tr
-                %td
-                  No messages for week #
-                  \
-                  - message.week.week_number
-            -else
-              - if message.id == message.week.messages.first.id
-                %tr
-                  %td{colspan:8}
-                    %b
-                      Week #
-                      \
-                      = message.week.week_number
-          / render partial for chat's messages
-          = render partial: "chat_messages", :object => @week, :locals => {:message => message}
+.content 
+  - @pact.messages.each_with_index do |message, el|
+    - if (@pact.start_date..@pact.end_date).include?(message.date)
+      - if message.week.messages.empty? == true
+        No messages for week #
+        \
+        - message.week.week_number
+      -else
+        - if message.id == message.week.messages.first.id
+          %h3
+            %b 
+              Week #
+              \
+              = message.week.week_number
+      .chat-row{:class => ("chat-row-photo" if message.image != nil), :id => "message-row-#{message.id}"}
+      .chat-message
+        .chat-message-header
+          %span.chat-message-header-username
+            -if @pact.messages[el-1].user == message.user
+            
+              -if message.user.nil?
+                =message.sender
+              -else
+                =message.user.username
+            -else 
+              %span.chat-message-header-timestamp
+                =message.date.strftime("%B %-d, %Y")
+                =message.time
+              .chat-message-content
+                -if message.media == true
+                  -if message.image != nil
+                    - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+                      %p= message.message
+                    - else
+                      = image_tag( @pact.pact_photos.find_by(photo: message.image + ".jpg").photo.url, class: "chat-message-content-photo" )
 
+                  - elsif message.video != nil
+                    - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+                      %p= message.message
+                    - else
+                      = video_tag(@pact.pact_photos.find_by(photo: message.video, :size => "320x240", :controls => true))
+                -else
+                  = message.message
+        /   %span.chat-message-header-timestamp
+        /     =message.date.strftime("%B %-d, %Y")
+        /     =message.time
+        / .chat-message-content
+        /   -if message.media == true
+        /     -if message.image != nil
+        /       - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+        /         %p= message.message
+        /       - else
+        /         = image_tag( @pact.pact_photos.find_by(photo: message.image + ".jpg").photo.url, class: "chat-message-content-photo" )
+
+        /     - elsif message.video != nil
+        /       - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+        /         %p= message.message
+        /       - else
+        /         = video_tag(@pact.pact_photos.find_by(photo: message.video, :size => "320x240", :controls => true))
+        /   -else
+        /     = message.message
+      / - @pact.messages[el-1]
+      / - @pact.messages[el+1]
+      / starting point for chat-like view
+      / show the week number
 :javascript
   $('#week_numbers').change(function() {
     window.location = "chat/week/"+ $(this).find('option:selected').val();
