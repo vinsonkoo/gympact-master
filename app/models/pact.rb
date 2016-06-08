@@ -454,8 +454,6 @@ class Pact < ActiveRecord::Base
   def get_week_money_owed(current_week)
   end
 
-  private
-
   def check_active
     # @pact = Pact.last because this is done immediately after a pact is created
     @pact = Pact.last
@@ -467,6 +465,8 @@ class Pact < ActiveRecord::Base
       @pact.save
     end
   end
+  
+  private
 
   def parse_weeks
     # @pact = Pact.last because this is done immediately after a pact is created

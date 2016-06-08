@@ -1,4 +1,5 @@
 = render partial: 'partials/pact_menu'
+- @pact.check_active
 .content
   .content-section
     .summary-stats
@@ -121,10 +122,10 @@
     %h2 Upload Media
     = render 'pact_photos_form'
 
-
-.content
-  - @pact.pact_photos.each do |pact_photo|
-    .thumb= image_tag pact_photo.photo.url
+-#
+  .content
+    - @pact.pact_photos.each do |pact_photo|
+      .thumb= image_tag pact_photo.photo.url
 
 
 .content
@@ -132,36 +133,37 @@
   %table
     %thead
       %tr
-        %th Pact ID
-        %th Pact Name
+        -# %th Pact ID
+        -# %th Pact Name
         %th Start Date
         %th End Date
         %th Is Active?
       %tr
-        %td= @pact.id
-        %td= @pact.pact_name
+        -# %td= @pact.id
+        -# %td= @pact.pact_name
         %td= @pact.start_date
         %td= @pact.end_date
-        %td= @pact.is_active
+        %td
+          %b= @pact.is_active
 
   %h1 Weeks
 
   %table
     %thead
       %tr
-        %th Week ID
+        -# %th Week ID
         %th Week Number
         %th Week Start Date
         %th Week End Date
-        %th Pact ID
+        -# %th Pact ID
       %tbody
         -@pact.weeks.each do |week|
           %tr
-            %td= week.id
+            -# %td= week.id
             %td= week.week_number
             %td= week.start_date
             %td= week.end_date
-            %td= week.pact_id
+            -# %td= week.pact_id
 
 
 
@@ -171,14 +173,14 @@
     %table
       %thead
         %tr
-          %th User ID
+          -#%th User ID
           %th First Name
           %th Last Name
           %th Username
       %tbody
         -@users.each do |user|
           %tr
-            %td= user.id
+            -#%td= user.id
             %td= user.first_name
             %td= user.last_name
             %td= user.username
@@ -213,31 +215,31 @@
 
   %h1 Goals
 
-  / the first goal created for the pact is for "current week", then for other weeks
   - if @pact.goals.present?
     %table
       %thead
         %tr
-          %th User ID / Username
-          %th Pact ID
+          %th Username
+          -#%th Pact ID
           %th Goal
-          %th Goal ID
-          %th Week ID / Week #
+          %th Week #
       %tbody
+        -# only show goals for current week
         -@pact.goals.order(:week_id).each do |pg|
-          %tr
-            %td
-              = pg.user_id
-              \/
-              = pg.user.username
-            %td
-              = pg.pact_id
-            %td= pg.goal_days
-            %td= pg.id
-            %td
-              = pg.week_id
-              \/
-              = pg.week.week_number
+          -if @pact.get_current_week == pg.week
+            %tr
+              %td
+                -#= pg.user_id
+                -#\/
+                = pg.user.username
+              -#%td= pg.pact_id
+              %td= pg.goal_days
+              -#%td= pg.id
+              %td
+                -#= pg.week_id
+                -#\/
+                = pg.week.week_number
+
 
 
   %p= link_to 'Edit Goals', controller: "pacts", action: "add_goals", id: @pact
@@ -333,6 +335,7 @@
                       
   /                 /   = f.submit "Update Paid Amount", :class => "button"
 
+-#
   %h1 Pact's Chat/Messages
 
   %table

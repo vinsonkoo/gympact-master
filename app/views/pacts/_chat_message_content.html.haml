@@ -1,0 +1,15 @@
+.chat-message-content
+  -if message.media == true
+    -if message.image != nil
+      - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+        %p= message.message
+      - else
+        = image_tag( @pact.pact_photos.find_by(photo: message.image + ".jpg").photo.url, class: "chat-message-content-photo" )
+
+    - elsif message.video != nil
+      - if @pact.pact_photos.find_by(photo: message.image + ".jpg").nil?
+        %p= message.message
+      - else
+        = video_tag(@pact.pact_photos.find_by(photo: message.video, :size => "320x240", :controls => true))
+  -else
+    = message.message
