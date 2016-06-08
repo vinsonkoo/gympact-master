@@ -1,19 +1,20 @@
 = render partial: 'partials/pact_menu'
-.content
-  %div.text-center
-    %select#week_numbers.text-center
-      %option{:value => nil, include_blank: true}="Navigate to week"
-      = @pact.weeks.each do |week|
-        %option{:value => week.id}="Week #{week.week_number}"
-  - if @messages
-    - previous_message = nil
-    - last_message = false
-    - @messages.each_with_index do |message, index|
-      - if index == @messages.size - 1
-        - last_message = true
-        / - if message.user
-        = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
-        - previous_message = message
+-#
+  .content
+    %div.text-center
+      %select#week_numbers.text-center
+        %option{:value => nil, include_blank: true}="Navigate to week"
+        = @pact.weeks.each do |week|
+          %option{:value => week.id}="Week #{week.week_number}"
+    - if @messages
+      - previous_message = nil
+      - last_message = false
+      - @messages.each_with_index do |message, index|
+        - if index == @messages.size - 1
+          - last_message = true
+          / - if message.user
+          = render partial: "chat_message", locals: {previous_message: previous_message, message: message, last_message: last_message}
+          - previous_message = message
 
 .content 
   - @pact.messages.each_with_index do |message, el|

@@ -11,5 +11,9 @@
         %p= message.message
       - else
         = video_tag(@pact.pact_photos.find_by(photo: message.video, :size => "320x240", :controls => true))
+    - if message.is_workout == true
+      %p= link_to "This is not a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
+    - else 
+      %p= link_to "This is a workout", {controller: "messages", action: "is_workout", id: message.id},  :class => "button button-full"
   -else
     = message.message
