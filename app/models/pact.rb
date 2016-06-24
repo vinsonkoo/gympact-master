@@ -234,6 +234,7 @@ class Pact < ActiveRecord::Base
 
 # original business logic
   def get_user_penalty_end_of_week(week_number, user)
+    # WEEKLY PENALTY TOTAL
     # get the pact's week based on week number
     week = self.weeks.find_by(week_number: week_number)
 
@@ -284,13 +285,6 @@ class Pact < ActiveRecord::Base
         end 
       end
     end
-    @payment = payments.find_by(user_id: user.id)
-    if @payment.paid == nil
-      @payment.owed = total_penalty_at_end_of_week
-    else
-      @payment.owed = total_penalty_at_end_of_week - @payment.paid
-    end
-    @payment.save
     total_penalty_at_end_of_week
   end
 
@@ -311,9 +305,9 @@ class Pact < ActiveRecord::Base
       penalty_for_week = ( week_goal_days - week_workouts ) * penalty.penalty
     end
     # get payment for user
-    @payment = payments.find_by(user_id: user.id)
-    @payment.owed = penalty_for_week
-    @payment.save
+    # @payment = payments.find_by(user_id: user.id)
+    # @payment.owed = penalty_for_week
+    # @payment.save
     penalty_for_week
   end
 

@@ -311,7 +311,7 @@
             %td
               -# METHOD DOES NOT WORK
               / Penalty total at beginning of week
-              / = number_to_currency(@pact.get_user_penalty_beginning_of_week(pw.week_number, pu))
+              = number_to_currency(@pact.get_user_penalty_for_week(pw.week_number, pu))
             %td
               / Amount paid
               - if @pact.payments.find_by(user_id: pu.id) == nil
